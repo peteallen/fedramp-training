@@ -1,13 +1,14 @@
 import { Button } from '@/components/ui/button'
 import { useTrainingStore } from '@/stores/trainingStore'
-import { FaShieldAlt, FaBookOpen, FaChartBar, FaUsers, FaCloud, FaExclamationTriangle } from 'react-icons/fa'
+import { FaShieldAlt, FaBookOpen, FaChartBar, FaUsers, FaCloud, FaExclamationTriangle, FaFileAlt, FaEye, FaUserTie } from 'react-icons/fa'
 
 interface ModuleCardProps {
   moduleId: number
+  onStartModule: (moduleId: number) => void
 }
 
-export const ModuleCard = ({ moduleId }: ModuleCardProps) => {
-  const { getModuleById, completeModule, updateProgress } = useTrainingStore()
+export const ModuleCard = ({ moduleId, onStartModule }: ModuleCardProps) => {
+  const { getModuleById, updateProgress } = useTrainingStore()
   const module = getModuleById(moduleId)
 
   if (!module) {
@@ -22,6 +23,9 @@ export const ModuleCard = ({ moduleId }: ModuleCardProps) => {
       compliance: FaUsers,
       risk: FaExclamationTriangle,
       cloud: FaCloud,
+      policy: FaFileAlt,
+      awareness: FaEye,
+      'role-based': FaUserTie,
     }
     return iconMap[category as keyof typeof iconMap] || FaShieldAlt
   }
@@ -35,10 +39,19 @@ export const ModuleCard = ({ moduleId }: ModuleCardProps) => {
     return colorMap[difficulty as keyof typeof colorMap] || 'text-gray-600 dark:text-gray-400'
   }
 
+  const getCategoryColor = (category: string) => {
+    const colorMap = {
+      policy: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+      awareness: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+      'role-based': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
+    }
+    return colorMap[category as keyof typeof colorMap] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
+  }
+
   const IconComponent = getModuleIcon(module.category)
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg dark:hover:shadow-gray-700/50 transition-all duration-300">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg dark:hover:shadow-gray-700/50 transition-all duration-300 border-l-4 border-blue-500">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center">
           <IconComponent className="text-2xl text-blue-600 dark:text-blue-400 mr-3" />
@@ -46,9 +59,14 @@ export const ModuleCard = ({ moduleId }: ModuleCardProps) => {
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
               {module.title}
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              {module.category} • {module.estimatedTime}
-            </p>
+            <div className="flex items-center gap-2 mt-1">
+              <span className={`text-xs font-medium px-2 py-1 rounded-full ${getCategoryColor(module.category)}`}>
+                {module.category}
+              </span>
+              <span className="text-xs text-gray-600 dark:text-gray-400">
+                {module.estimatedTime}
+              </span>
+            </div>
           </div>
         </div>
         <span className={`text-xs font-medium px-2 py-1 rounded-full ${getDifficultyColor(module.difficulty)}`}>
@@ -56,9 +74,26 @@ export const ModuleCard = ({ moduleId }: ModuleCardProps) => {
         </span>
       </div>
       
-      <p className="text-sm text-gray-700 dark:text-gray-300 mb-4 line-clamp-2">
+      <p className="text-sm text-gray-700 dark:text-gray-300 mb-4 line-clamp-3">
         {module.description}
       </p>
+      
+      <div className="mb-4">
+        <h4 className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">Learning Objectives:</h4>
+        <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
+          {module.objectives.slice(0, 2).map((objective, index) => (
+            <li key={index} className="flex items-start">
+              <span className="text-blue-500 mr-2">•</span>
+              {objective}
+            </li>
+          ))}
+          {module.objectives.length > 2 && (
+            <li className="text-blue-600 dark:text-blue-400 font-medium">
+              +{module.objectives.length - 2} more objectives
+            </li>
+          )}
+        </ul>
+      </div>
       
       <div className="mb-4">
         <div className="flex justify-between items-center mb-2">
@@ -75,17 +110,16 @@ export const ModuleCard = ({ moduleId }: ModuleCardProps) => {
 
       <div className="flex space-x-2">
         <Button 
-          onClick={() => completeModule(module.id)}
+          onClick={() => onStartModule(module.id)}
           className="flex-1"
           variant={module.completed ? "default" : "outline"}
-          disabled={module.completed}
         >
-          {module.completed ? "Completed" : "Start Module"}
+          {module.completed ? "Review Module" : "Start Module"}
         </Button>
         
         {module.progress > 0 && module.progress < 100 && (
           <Button 
-            onClick={() => updateProgress(module.id, module.progress + 25)}
+            onClick={() => updateProgress(module.id, Math.min(module.progress + 25, 100))}
             variant="outline"
             size="sm"
           >
