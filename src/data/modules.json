@@ -2,197 +2,258 @@
   "modules": [
     {
       "id": 1,
-      "title": "FedRAMP Basics",
-      "description": "Learn the fundamental concepts of FedRAMP and its purpose in cloud security",
-      "category": "fundamentals",
-      "estimatedTime": "30 minutes",
+      "title": "AT-1: Security Awareness & Training Policy and Procedures",
+      "description": "Learn about ClearTriage's Security and Privacy Awareness Training Policy, procedures, and our commitment to FedRAMP compliance",
+      "category": "policy",
+      "estimatedTime": "25 minutes",
       "difficulty": "beginner",
       "objectives": [
-        "Understand what FedRAMP is and why it exists",
-        "Learn about the key stakeholders in FedRAMP",
-        "Identify the benefits of FedRAMP for cloud providers and agencies"
+        "Understand ClearTriage's Security and Privacy Awareness Training Policy",
+        "Learn about roles and responsibilities in our security training program",
+        "Identify how policies are reviewed, updated, and disseminated"
       ],
       "content": [
         {
           "type": "introduction",
-          "title": "What is FedRAMP?",
-          "content": "FedRAMP (Federal Risk and Authorization Management Program) is a government-wide program that provides a standardized approach to security assessment, authorization, and continuous monitoring for cloud products and services."
+          "title": "Welcome to ClearTriage Security Training",
+          "content": "Welcome to ClearTriage's Security and Privacy Awareness Training! This training is designed to help our 6-person team understand and meet our FedRAMP Low Impact SaaS (LI-SaaS) requirements. We're working toward FedRAMP authorization for our app running in AWS and Google Drive usage for the VA. Security is everyone's job – even in a small company!"
         },
         {
           "type": "section",
-          "title": "Key Components",
-          "content": "FedRAMP consists of three main components: Security Assessment, Authorization, and Continuous Monitoring."
+          "title": "Our Security Training Policy",
+          "content": "We have a formal Security and Privacy Awareness and Training Policy that outlines how we conduct security training and maintain awareness. The policy is documented, accessible in Google Drive, and disseminated to all six team members. Pete Allen (CTO) owns the training program and is your primary contact for security questions at pete@cleartriage.com, with Dave as backup."
+        },
+        {
+          "type": "section",
+          "title": "Roles and Responsibilities",
+          "content": "Pete Allen (CTO) is responsible for developing and updating training materials and ensuring everyone completes training on time. Our small size means no one slips through the cracks. Dave (President) serves as backup contact and brings his bug-finding expertise to security oversight. Shelly serves as our FedRAMP Coordinator and helps keep everything organized."
+        },
+        {
+          "type": "section",
+          "title": "Regular Reviews and Updates",
+          "content": "The policy is reviewed and updated at least every three years, with Pete conducting annual reviews. Supporting procedures are updated at least yearly or when major changes occur (new tools, security incidents, etc.). All updates are disseminated to the team via email or brief all-hands meetings."
+        },
+        {
+          "type": "section",
+          "title": "Why This Matters",
+          "content": "Having a solid, updated policy shows management commitment and ensures accountability. It's our playbook for security training and demonstrates to auditors that we have our act together. Reading policy updates now prevents security problems later!"
         }
       ],
       "quiz": [
         {
-          "question": "What does FedRAMP stand for?",
+          "question": "Who is the owner of ClearTriage's security training program?",
           "options": [
-            "Federal Risk and Authorization Management Program",
-            "Federal Risk Assessment Management Protocol",
-            "Federal Resource Authorization Management Program",
-            "Federal Risk and Assessment Management Process"
+            "Dave (President)",
+            "Pete Allen (CTO)",
+            "Shelly (FedRAMP Coordinator)",
+            "The whole team equally"
           ],
-          "correctAnswer": 0
+          "correctAnswer": 1
+        },
+        {
+          "question": "How often must the Security Training Policy be formally reviewed and updated?",
+          "options": [
+            "Every year",
+            "Every two years",
+            "At least every three years",
+            "Only when incidents occur"
+          ],
+          "correctAnswer": 2
+        },
+        {
+          "question": "What is ClearTriage's FedRAMP authorization scope?",
+          "options": [
+            "Only the ClearTriage app",
+            "Only Google Drive usage",
+            "ClearTriage app in AWS and Google Drive usage",
+            "All company systems and tools"
+          ],
+          "correctAnswer": 2
         }
       ]
     },
     {
       "id": 2,
-      "title": "Security Controls",
-      "description": "Deep dive into NIST 800-53 security controls and their implementation",
-      "category": "security",
+      "title": "AT-2: Security & Privacy Literacy Training and Awareness",
+      "description": "Comprehensive security and privacy training covering ongoing awareness, insider threat recognition, and year-round security practices",
+      "category": "awareness",
       "estimatedTime": "45 minutes",
       "difficulty": "intermediate",
       "objectives": [
-        "Understand NIST 800-53 security control framework",
-        "Learn about control families and their purposes",
-        "Identify implementation guidance for key controls"
+        "Complete required security and privacy literacy training",
+        "Recognize insider threat indicators and reporting procedures",
+        "Understand ongoing security awareness throughout the year",
+        "Learn about our security culture and incident response"
       ],
       "content": [
         {
           "type": "introduction",
-          "title": "NIST 800-53 Overview",
-          "content": "NIST Special Publication 800-53 provides a catalog of security and privacy controls for federal information systems and organizations."
+          "title": "Security & Privacy Literacy Training",
+          "content": "This module covers our ongoing security and privacy training requirements. Every new team member completes this training during onboarding (within the first week), and all team members retake it annually. We also provide just-in-time training when changes or incidents occur."
         },
         {
           "type": "section",
-          "title": "Control Families",
-          "content": "Security controls are organized into 20 families, each addressing different aspects of security such as Access Control, Audit and Accountability, and Configuration Management."
+          "title": "Training Schedule and Requirements",
+          "content": "New hire training happens Day 1 (or within first week) covering password rules, data handling, phishing awareness, and AWS/Google Drive security. Annual refresher training occurs every 12 months via group sessions. Additional training provided after significant changes, incidents, or near-misses."
+        },
+        {
+          "type": "section",
+          "title": "Year-Round Security Awareness",
+          "content": "Beyond formal training, we maintain ongoing awareness through: Email/Slack security tips, brief team meeting discussions, interactive exercises like phishing simulations, visible system prompts and reminders, and fostering a culture where security concerns are encouraged and welcomed."
+        },
+        {
+          "type": "section",
+          "title": "Insider Threat Awareness",
+          "content": "An insider threat occurs when someone with authorized access misuses it to harm the organization - either intentionally or accidentally. This includes current employees, contractors, or ex-employees with lingering access. Everyone serves as a sensor for potential insider threats."
+        },
+        {
+          "type": "section",
+          "title": "Insider Threat Indicators",
+          "content": "Watch for: Unusual data downloading/accessing, bypassing security controls, unusual hours/access patterns, significant behavior changes or disgruntlement, internal social engineering attempts, and negligent security practices. Trust your instincts - if something seems off, speak up."
+        },
+        {
+          "type": "section",
+          "title": "Reporting and Response",
+          "content": "Report any insider threat concerns immediately to Pete Allen (pete@cleartriage.com) or Dave as backup. Don't wait or tell others first. Reports are handled confidentially, and false alarms are better than missed threats. Pete will investigate discreetly and take appropriate action, including account disabling if necessary."
+        },
+        {
+          "type": "section",
+          "title": "Security Culture",
+          "content": "We encourage a culture where security is part of everyday thinking. You won't get in trouble for raising security concerns - it's encouraged! Share news about vulnerabilities, ask about suspicious emails, and help each other stay secure. We prefer false alarms over missed real threats."
         }
       ],
       "quiz": [
         {
-          "question": "How many control families are there in NIST 800-53?",
-          "options": ["18", "20", "22", "24"],
+          "question": "How often must all team members complete security awareness training?",
+          "options": [
+            "Every 6 months",
+            "At least once per year",
+            "Every 2 years",
+            "Only during onboarding"
+          ],
+          "correctAnswer": 1
+        },
+        {
+          "question": "What should you do if you notice a colleague downloading unusually large amounts of data without clear business need?",
+          "options": [
+            "Ignore it - it's not your business",
+            "Ask the colleague directly first",
+            "Report it immediately to Pete Allen or Dave",
+            "Discuss it with other team members first"
+          ],
+          "correctAnswer": 2
+        },
+        {
+          "question": "Which of the following is NOT an insider threat indicator?",
+          "options": [
+            "Bypassing security controls repeatedly",
+            "Accessing systems at unusual hours regularly",
+            "Asking colleagues for their login credentials",
+            "Working late occasionally on a project deadline"
+          ],
+          "correctAnswer": 3
+        },
+        {
+          "question": "What is the best approach when you're unsure whether something is a security concern?",
+          "options": [
+            "Wait and see if it happens again",
+            "When in doubt, just report it",
+            "Ask other team members what they think",
+            "Only report if you're completely certain"
+          ],
           "correctAnswer": 1
         }
       ]
     },
     {
       "id": 3,
-      "title": "Assessment Process",
-      "description": "Understanding the FedRAMP assessment and authorization process",
-      "category": "process",
-      "estimatedTime": "40 minutes",
+      "title": "AT-3: Role-Based Security Training",
+      "description": "Specialized security training tailored to specific job roles and responsibilities within ClearTriage",
+      "category": "role-based",
+      "estimatedTime": "35 minutes",
       "difficulty": "intermediate",
       "objectives": [
-        "Learn the phases of FedRAMP assessment",
-        "Understand roles and responsibilities",
-        "Identify key deliverables and timelines"
+        "Understand role-specific security requirements and training",
+        "Learn specialized security practices for your job function",
+        "Identify when and how role-based training is delivered",
+        "Recognize the importance of training before privileged access"
       ],
       "content": [
         {
           "type": "introduction",
-          "title": "Assessment Overview",
-          "content": "The FedRAMP assessment process involves multiple phases including preparation, assessment, and authorization."
+          "title": "Role-Based Security Training",
+          "content": "While everyone receives baseline security awareness training, we also provide specialized training based on your specific job duties. In our six-person team, you might wear multiple hats, so we group responsibilities to ensure everyone gets relevant training for their roles."
         },
         {
           "type": "section",
-          "title": "Key Phases",
-          "content": "The process includes Pre-Assessment, Assessment, and Post-Assessment phases, each with specific activities and deliverables."
+          "title": "Technical/Developer Roles",
+          "content": "Developers and DevOps engineers (Savvy, Braden) receive specialized training on: secure coding practices, code review with security mindset, secure AWS configuration, vulnerability management, and incident response. This includes avoiding common vulnerabilities like SQL injection and XSS, plus proper management of access keys and secrets. Training required before production access and annually thereafter."
+        },
+        {
+          "type": "section",
+          "title": "Operational/Administrative Roles",
+          "content": "Operations and administrative staff (like Shelly as FedRAMP Coordinator) receive training on: data handling procedures, privacy considerations, policy compliance, customer support security, recognizing social engineering attempts, and maintaining confidentiality. This includes secure use of Google Drive and verifying customer identity before sharing information."
+        },
+        {
+          "type": "section",
+          "title": "Executive/Leadership Roles",
+          "content": "Leadership (Pete as CTO, Dave as President) receives training on: understanding compliance requirements (FedRAMP, VA requirements), risk management, driving security culture, staying current with FedRAMP updates, and responding to security audits. Leaders must champion security by example and strategic understanding."
+        },
+        {
+          "type": "section",
+          "title": "Sales & Clinical Roles",
+          "content": "Krista (Director of Sales and Clinical Education) receives specialized training on: handling customer communications securely, discussing security features without revealing sensitive details, and leveraging her nursing background's confidentiality and verification experience for our VA customer base."
+        },
+        {
+          "type": "section",
+          "title": "Multiple Roles and Cross-Training",
+          "content": "Team members filling multiple roles receive all relevant training modules. We integrate content rather than duplicate time. For example, a developer doing customer support gets both technical and operational training. This provides a well-rounded security perspective across job functions."
+        },
+        {
+          "type": "section",
+          "title": "Timing and Tracking",
+          "content": "Role-based training is completed before privileged access is granted and annually thereafter. We maintain a simple matrix tracking who needs what training. Content is reviewed and updated at least annually, incorporating new features, procedure changes, and lessons learned from incidents."
         }
       ],
       "quiz": [
         {
-          "question": "What is the first phase of the FedRAMP assessment process?",
-          "options": ["Assessment", "Pre-Assessment", "Authorization", "Monitoring"],
+          "question": "When must role-based security training be completed?",
+          "options": [
+            "Only during annual reviews",
+            "Before privileged access is granted and annually thereafter",
+            "Whenever convenient for the employee",
+            "Only when starting a completely new role"
+          ],
           "correctAnswer": 1
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "title": "Compliance Management",
-      "description": "Maintaining compliance through continuous monitoring and reporting",
-      "category": "compliance",
-      "estimatedTime": "35 minutes",
-      "difficulty": "advanced",
-      "objectives": [
-        "Understand continuous monitoring requirements",
-        "Learn about reporting obligations",
-        "Identify remediation processes"
-      ],
-      "content": [
-        {
-          "type": "introduction",
-          "title": "Continuous Monitoring",
-          "content": "FedRAMP requires ongoing monitoring of security controls to ensure they remain effective over time."
         },
         {
-          "type": "section",
-          "title": "Reporting Requirements",
-          "content": "Organizations must provide regular reports including monthly operating status, annual assessments, and incident reports."
-        }
-      ],
-      "quiz": [
-        {
-          "question": "How often must CSPs provide operational status reports?",
-          "options": ["Weekly", "Monthly", "Quarterly", "Annually"],
-          "correctAnswer": 1
-        }
-      ]
-    },
-    {
-      "id": 5,
-      "title": "Risk Management Framework",
-      "description": "Understanding the RMF process and its integration with FedRAMP",
-      "category": "risk",
-      "estimatedTime": "50 minutes",
-      "difficulty": "advanced",
-      "objectives": [
-        "Learn the six-step RMF process",
-        "Understand how RMF integrates with FedRAMP",
-        "Identify key risk management activities"
-      ],
-      "content": [
-        {
-          "type": "introduction",
-          "title": "Risk Management Framework",
-          "content": "The RMF provides a disciplined and structured process for integrating security and risk management activities into the system development life cycle."
+          "question": "What type of specialized training do developers receive?",
+          "options": [
+            "Only general security awareness",
+            "Customer communication protocols",
+            "Secure coding practices and AWS configuration",
+            "Policy compliance and data handling"
+          ],
+          "correctAnswer": 2
         },
         {
-          "type": "section",
-          "title": "Six Steps of RMF",
-          "content": "The RMF consists of six steps: Categorize, Select, Implement, Assess, Authorize, and Monitor."
-        }
-      ],
-      "quiz": [
-        {
-          "question": "What is the first step in the RMF process?",
-          "options": ["Select", "Categorize", "Implement", "Assess"],
-          "correctAnswer": 1
-        }
-      ]
-    },
-    {
-      "id": 6,
-      "title": "Cloud Security Fundamentals",
-      "description": "Essential cloud security concepts and best practices",
-      "category": "cloud",
-      "estimatedTime": "40 minutes",
-      "difficulty": "beginner",
-      "objectives": [
-        "Understand cloud service models",
-        "Learn about shared responsibility model",
-        "Identify cloud-specific security considerations"
-      ],
-      "content": [
-        {
-          "type": "introduction",
-          "title": "Cloud Service Models",
-          "content": "Cloud computing offers three main service models: Infrastructure as a Service (IaaS), Platform as a Service (PaaS), and Software as a Service (SaaS)."
+          "question": "How often is role-based training content reviewed and updated?",
+          "options": [
+            "Every 3 years",
+            "Only when incidents occur",
+            "At least annually",
+            "Never - it's static content"
+          ],
+          "correctAnswer": 2
         },
         {
-          "type": "section",
-          "title": "Shared Responsibility",
-          "content": "Cloud security operates on a shared responsibility model where both the cloud provider and customer have specific security obligations."
-        }
-      ],
-      "quiz": [
-        {
-          "question": "Which cloud service model provides the most customer control?",
-          "options": ["SaaS", "PaaS", "IaaS", "All are equal"],
+          "question": "What happens if a team member has multiple roles?",
+          "options": [
+            "They only need training for their primary role",
+            "They must complete separate training for each role",
+            "They receive all relevant training modules integrated together",
+            "They can choose which role training to complete"
+          ],
           "correctAnswer": 2
         }
       ]
