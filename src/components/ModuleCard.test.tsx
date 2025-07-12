@@ -17,6 +17,9 @@ vi.mock('react-icons/fa', () => ({
   FaUsers: () => <div data-testid="users-icon">Users</div>,
   FaCloud: () => <div data-testid="cloud-icon">Cloud</div>,
   FaExclamationTriangle: () => <div data-testid="warning-icon">Warning</div>,
+  FaFileAlt: () => <div data-testid="file-icon">File</div>,
+  FaEye: () => <div data-testid="eye-icon">Eye</div>,
+  FaUserTie: () => <div data-testid="user-tie-icon">UserTie</div>,
 }))
 
 describe('ModuleCard', () => {
@@ -43,6 +46,8 @@ describe('ModuleCard', () => {
     updateProgress: vi.fn(),
   }
 
+  const mockOnStartModule = vi.fn()
+
   beforeEach(() => {
     vi.clearAllMocks()
     mockStoreActions.getModuleById.mockReturnValue(mockModule)
@@ -50,16 +55,16 @@ describe('ModuleCard', () => {
   })
 
   it('should render module information', () => {
-    render(<ModuleCard moduleId={1} />)
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
     
     expect(screen.getByText('Test Module')).toBeInTheDocument()
     expect(screen.getByText('Test description')).toBeInTheDocument()
-    expect(screen.getByText('fundamentals • 30 minutes')).toBeInTheDocument()
+    expect(screen.getByText('30 minutes')).toBeInTheDocument()
     expect(screen.getByText('beginner')).toBeInTheDocument()
   })
 
   it('should render correct icon based on category', () => {
-    render(<ModuleCard moduleId={1} />)
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
     expect(screen.getByTestId('shield-icon')).toBeInTheDocument()
   })
 
@@ -67,7 +72,7 @@ describe('ModuleCard', () => {
     const securityModule = { ...mockModule, category: 'security' }
     mockStoreActions.getModuleById.mockReturnValue(securityModule)
     
-    render(<ModuleCard moduleId={1} />)
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
     expect(screen.getByTestId('book-icon')).toBeInTheDocument()
   })
 
@@ -75,49 +80,49 @@ describe('ModuleCard', () => {
     const moduleWithProgress = { ...mockModule, progress: 50 }
     mockStoreActions.getModuleById.mockReturnValue(moduleWithProgress)
     
-    render(<ModuleCard moduleId={1} />)
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
     expect(screen.getByText('50%')).toBeInTheDocument()
   })
 
   it('should render "Start Module" button for incomplete modules', () => {
-    render(<ModuleCard moduleId={1} />)
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
     expect(screen.getByRole('button', { name: 'Start Module' })).toBeInTheDocument()
   })
 
-  it('should render "Completed" button for completed modules', () => {
+  it('should render "Review Module" button for completed modules', () => {
     const completedModule = { ...mockModule, completed: true, progress: 100 }
     mockStoreActions.getModuleById.mockReturnValue(completedModule)
     
-    render(<ModuleCard moduleId={1} />)
-    expect(screen.getByRole('button', { name: 'Completed' })).toBeInTheDocument()
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
+    expect(screen.getByRole('button', { name: 'Review Module' })).toBeInTheDocument()
   })
 
-  it('should disable completed button', () => {
+  it('should not disable completed button', () => {
     const completedModule = { ...mockModule, completed: true, progress: 100 }
     mockStoreActions.getModuleById.mockReturnValue(completedModule)
     
-    render(<ModuleCard moduleId={1} />)
-    expect(screen.getByRole('button', { name: 'Completed' })).toBeDisabled()
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
+    expect(screen.getByRole('button', { name: 'Review Module' })).not.toBeDisabled()
   })
 
-  it('should call completeModule when start button is clicked', async () => {
+  it('should call onStartModule when start button is clicked', async () => {
     const user = userEvent.setup()
-    render(<ModuleCard moduleId={1} />)
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
     
     await user.click(screen.getByRole('button', { name: 'Start Module' }))
-    expect(mockStoreActions.completeModule).toHaveBeenCalledWith(1)
+    expect(mockOnStartModule).toHaveBeenCalledWith(1)
   })
 
   it('should render +25% button for modules with partial progress', () => {
     const moduleWithProgress = { ...mockModule, progress: 50 }
     mockStoreActions.getModuleById.mockReturnValue(moduleWithProgress)
     
-    render(<ModuleCard moduleId={1} />)
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
     expect(screen.getByRole('button', { name: '+25%' })).toBeInTheDocument()
   })
 
   it('should not render +25% button for modules with 0% progress', () => {
-    render(<ModuleCard moduleId={1} />)
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
     expect(screen.queryByRole('button', { name: '+25%' })).not.toBeInTheDocument()
   })
 
@@ -125,7 +130,7 @@ describe('ModuleCard', () => {
     const completedModule = { ...mockModule, completed: true, progress: 100 }
     mockStoreActions.getModuleById.mockReturnValue(completedModule)
     
-    render(<ModuleCard moduleId={1} />)
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
     expect(screen.queryByRole('button', { name: '+25%' })).not.toBeInTheDocument()
   })
 
@@ -134,7 +139,7 @@ describe('ModuleCard', () => {
     const moduleWithProgress = { ...mockModule, progress: 50 }
     mockStoreActions.getModuleById.mockReturnValue(moduleWithProgress)
     
-    render(<ModuleCard moduleId={1} />)
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
     
     await user.click(screen.getByRole('button', { name: '+25%' }))
     expect(mockStoreActions.updateProgress).toHaveBeenCalledWith(1, 75)
@@ -145,12 +150,12 @@ describe('ModuleCard', () => {
     const moduleWithAccess = { ...mockModule, lastAccessed }
     mockStoreActions.getModuleById.mockReturnValue(moduleWithAccess)
     
-    render(<ModuleCard moduleId={1} />)
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
     expect(screen.getByText(/Last accessed: 1\/15\/2024/)).toBeInTheDocument()
   })
 
   it('should not display last accessed when not available', () => {
-    render(<ModuleCard moduleId={1} />)
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
     expect(screen.queryByText(/Last accessed:/)).not.toBeInTheDocument()
   })
 
@@ -158,7 +163,7 @@ describe('ModuleCard', () => {
     const beginnerModule = { ...mockModule, difficulty: 'beginner' }
     mockStoreActions.getModuleById.mockReturnValue(beginnerModule)
     
-    render(<ModuleCard moduleId={1} />)
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
     const difficultyBadge = screen.getByText('beginner')
     expect(difficultyBadge).toHaveClass('text-green-600')
   })
@@ -167,7 +172,7 @@ describe('ModuleCard', () => {
     const intermediateModule = { ...mockModule, difficulty: 'intermediate' }
     mockStoreActions.getModuleById.mockReturnValue(intermediateModule)
     
-    render(<ModuleCard moduleId={1} />)
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
     const difficultyBadge = screen.getByText('intermediate')
     expect(difficultyBadge).toHaveClass('text-yellow-600')
   })
@@ -176,7 +181,7 @@ describe('ModuleCard', () => {
     const advancedModule = { ...mockModule, difficulty: 'advanced' }
     mockStoreActions.getModuleById.mockReturnValue(advancedModule)
     
-    render(<ModuleCard moduleId={1} />)
+    render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
     const difficultyBadge = screen.getByText('advanced')
     expect(difficultyBadge).toHaveClass('text-red-600')
   })
@@ -184,7 +189,7 @@ describe('ModuleCard', () => {
   it('should return null when module is not found', () => {
     mockStoreActions.getModuleById.mockReturnValue(undefined)
     
-    const { container } = render(<ModuleCard moduleId={999} />)
+    const { container } = render(<ModuleCard moduleId={999} onStartModule={mockOnStartModule} />)
     expect(container.firstChild).toBeNull()
   })
 
@@ -201,7 +206,7 @@ describe('ModuleCard', () => {
       const moduleWithCategory = { ...mockModule, category }
       mockStoreActions.getModuleById.mockReturnValue(moduleWithCategory)
       
-      const { unmount } = render(<ModuleCard moduleId={1} />)
+      const { unmount } = render(<ModuleCard moduleId={1} onStartModule={mockOnStartModule} />)
       expect(screen.getByTestId(iconTestId)).toBeInTheDocument()
       unmount()
     })
