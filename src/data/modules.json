@@ -1,0 +1,201 @@
+{
+  "modules": [
+    {
+      "id": 1,
+      "title": "FedRAMP Basics",
+      "description": "Learn the fundamental concepts of FedRAMP and its purpose in cloud security",
+      "category": "fundamentals",
+      "estimatedTime": "30 minutes",
+      "difficulty": "beginner",
+      "objectives": [
+        "Understand what FedRAMP is and why it exists",
+        "Learn about the key stakeholders in FedRAMP",
+        "Identify the benefits of FedRAMP for cloud providers and agencies"
+      ],
+      "content": [
+        {
+          "type": "introduction",
+          "title": "What is FedRAMP?",
+          "content": "FedRAMP (Federal Risk and Authorization Management Program) is a government-wide program that provides a standardized approach to security assessment, authorization, and continuous monitoring for cloud products and services."
+        },
+        {
+          "type": "section",
+          "title": "Key Components",
+          "content": "FedRAMP consists of three main components: Security Assessment, Authorization, and Continuous Monitoring."
+        }
+      ],
+      "quiz": [
+        {
+          "question": "What does FedRAMP stand for?",
+          "options": [
+            "Federal Risk and Authorization Management Program",
+            "Federal Risk Assessment Management Protocol",
+            "Federal Resource Authorization Management Program",
+            "Federal Risk and Assessment Management Process"
+          ],
+          "correctAnswer": 0
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Security Controls",
+      "description": "Deep dive into NIST 800-53 security controls and their implementation",
+      "category": "security",
+      "estimatedTime": "45 minutes",
+      "difficulty": "intermediate",
+      "objectives": [
+        "Understand NIST 800-53 security control framework",
+        "Learn about control families and their purposes",
+        "Identify implementation guidance for key controls"
+      ],
+      "content": [
+        {
+          "type": "introduction",
+          "title": "NIST 800-53 Overview",
+          "content": "NIST Special Publication 800-53 provides a catalog of security and privacy controls for federal information systems and organizations."
+        },
+        {
+          "type": "section",
+          "title": "Control Families",
+          "content": "Security controls are organized into 20 families, each addressing different aspects of security such as Access Control, Audit and Accountability, and Configuration Management."
+        }
+      ],
+      "quiz": [
+        {
+          "question": "How many control families are there in NIST 800-53?",
+          "options": ["18", "20", "22", "24"],
+          "correctAnswer": 1
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Assessment Process",
+      "description": "Understanding the FedRAMP assessment and authorization process",
+      "category": "process",
+      "estimatedTime": "40 minutes",
+      "difficulty": "intermediate",
+      "objectives": [
+        "Learn the phases of FedRAMP assessment",
+        "Understand roles and responsibilities",
+        "Identify key deliverables and timelines"
+      ],
+      "content": [
+        {
+          "type": "introduction",
+          "title": "Assessment Overview",
+          "content": "The FedRAMP assessment process involves multiple phases including preparation, assessment, and authorization."
+        },
+        {
+          "type": "section",
+          "title": "Key Phases",
+          "content": "The process includes Pre-Assessment, Assessment, and Post-Assessment phases, each with specific activities and deliverables."
+        }
+      ],
+      "quiz": [
+        {
+          "question": "What is the first phase of the FedRAMP assessment process?",
+          "options": ["Assessment", "Pre-Assessment", "Authorization", "Monitoring"],
+          "correctAnswer": 1
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Compliance Management",
+      "description": "Maintaining compliance through continuous monitoring and reporting",
+      "category": "compliance",
+      "estimatedTime": "35 minutes",
+      "difficulty": "advanced",
+      "objectives": [
+        "Understand continuous monitoring requirements",
+        "Learn about reporting obligations",
+        "Identify remediation processes"
+      ],
+      "content": [
+        {
+          "type": "introduction",
+          "title": "Continuous Monitoring",
+          "content": "FedRAMP requires ongoing monitoring of security controls to ensure they remain effective over time."
+        },
+        {
+          "type": "section",
+          "title": "Reporting Requirements",
+          "content": "Organizations must provide regular reports including monthly operating status, annual assessments, and incident reports."
+        }
+      ],
+      "quiz": [
+        {
+          "question": "How often must CSPs provide operational status reports?",
+          "options": ["Weekly", "Monthly", "Quarterly", "Annually"],
+          "correctAnswer": 1
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Risk Management Framework",
+      "description": "Understanding the RMF process and its integration with FedRAMP",
+      "category": "risk",
+      "estimatedTime": "50 minutes",
+      "difficulty": "advanced",
+      "objectives": [
+        "Learn the six-step RMF process",
+        "Understand how RMF integrates with FedRAMP",
+        "Identify key risk management activities"
+      ],
+      "content": [
+        {
+          "type": "introduction",
+          "title": "Risk Management Framework",
+          "content": "The RMF provides a disciplined and structured process for integrating security and risk management activities into the system development life cycle."
+        },
+        {
+          "type": "section",
+          "title": "Six Steps of RMF",
+          "content": "The RMF consists of six steps: Categorize, Select, Implement, Assess, Authorize, and Monitor."
+        }
+      ],
+      "quiz": [
+        {
+          "question": "What is the first step in the RMF process?",
+          "options": ["Select", "Categorize", "Implement", "Assess"],
+          "correctAnswer": 1
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Cloud Security Fundamentals",
+      "description": "Essential cloud security concepts and best practices",
+      "category": "cloud",
+      "estimatedTime": "40 minutes",
+      "difficulty": "beginner",
+      "objectives": [
+        "Understand cloud service models",
+        "Learn about shared responsibility model",
+        "Identify cloud-specific security considerations"
+      ],
+      "content": [
+        {
+          "type": "introduction",
+          "title": "Cloud Service Models",
+          "content": "Cloud computing offers three main service models: Infrastructure as a Service (IaaS), Platform as a Service (PaaS), and Software as a Service (SaaS)."
+        },
+        {
+          "type": "section",
+          "title": "Shared Responsibility",
+          "content": "Cloud security operates on a shared responsibility model where both the cloud provider and customer have specific security obligations."
+        }
+      ],
+      "quiz": [
+        {
+          "question": "Which cloud service model provides the most customer control?",
+          "options": ["SaaS", "PaaS", "IaaS", "All are equal"],
+          "correctAnswer": 2
+        }
+      ]
+    }
+  ]
+}

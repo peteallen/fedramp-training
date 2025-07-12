@@ -1,19 +1,38 @@
-import { FaShieldAlt, FaBookOpen, FaChartBar, FaUsers } from 'react-icons/fa'
+import { useState } from 'react'
 import { ThemeToggle } from '@/components/ThemeToggle'
-import { Button } from '@/components/ui/button'
 import { useTrainingStore } from '@/stores/trainingStore'
+import { useTrainingInit } from '@/hooks/useTrainingInit'
+import { ModuleCard } from '@/components/ModuleCard'
+import { ConfirmDialog } from '@/components/ConfirmDialog'
+import { Button } from '@/components/ui/button'
 
 function App() {
-  const { modules, completedCount, totalCount, overallProgress, completeModule } = useTrainingStore()
+  const { modules, completedCount, totalCount, overallProgress, clearAllData } = useTrainingStore()
+  const { initialized } = useTrainingInit()
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false)
 
-  const getModuleIcon = (moduleId: number) => {
-    const iconMap = {
-      1: FaShieldAlt,
-      2: FaBookOpen,
-      3: FaChartBar,
-      4: FaUsers,
-    }
-    return iconMap[moduleId as keyof typeof iconMap] || FaShieldAlt
+  const handleResetClick = () => {
+    setShowConfirmDialog(true)
+  }
+
+  const handleConfirmReset = () => {
+    clearAllData()
+    setShowConfirmDialog(false)
+  }
+
+  const handleCancelReset = () => {
+    setShowConfirmDialog(false)
+  }
+
+  if (!initialized) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-4"></div>
+          <p className="text-xl text-gray-600 dark:text-gray-300">Loading training modules...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -31,41 +50,25 @@ function App() {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {modules.map((module) => {
-            const IconComponent = getModuleIcon(module.id)
-            return (
-              <div key={module.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg dark:hover:shadow-gray-700/50 transition-all duration-300">
-                <div className="flex items-center justify-center mb-4">
-                  <IconComponent className="text-3xl text-blue-600 dark:text-blue-400" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2 text-center">
-                  {module.title}
-                </h3>
-                <div className="mb-4">
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                    <div 
-                      className="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${module.progress}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{module.progress}% Complete</p>
-                </div>
-                <Button 
-                  onClick={() => completeModule(module.id)}
-                  className="w-full"
-                  variant={module.completed ? "default" : "outline"}
-                  disabled={module.completed}
-                >
-                  {module.completed ? "Completed" : "Start Module"}
-                </Button>
-              </div>
-            )
-          })}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {modules.map((module) => (
+            <ModuleCard key={module.id} moduleId={module.id} />
+          ))}
         </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors duration-300">
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">Progress Overview</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Progress Overview</h2>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleResetClick}
+              disabled={overallProgress === 0}
+              className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 border-red-300 hover:border-red-400 dark:border-red-600 dark:hover:border-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Reset All Progress
+            </Button>
+          </div>
           <div className="flex items-center justify-between mb-4">
             <span className="text-lg text-gray-600 dark:text-gray-400">Modules Completed:</span>
             <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">{completedCount} / {totalCount}</span>
@@ -79,6 +82,16 @@ function App() {
           <p className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300">{overallProgress}% Complete</p>
         </div>
       </div>
+
+      <ConfirmDialog
+        isOpen={showConfirmDialog}
+        title="Reset All Progress"
+        message="Are you sure you want to reset all training progress? This action cannot be undone and will clear all module progress, completion status, and quiz scores."
+        confirmText="Reset All"
+        cancelText="Cancel"
+        onConfirm={handleConfirmReset}
+        onCancel={handleCancelReset}
+      />
     </div>
   )
 }
