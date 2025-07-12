@@ -1,19 +1,21 @@
-import { FaShieldAlt, FaBookOpen, FaChartBar, FaUsers } from 'react-icons/fa'
 import { ThemeToggle } from '@/components/ThemeToggle'
-import { Button } from '@/components/ui/button'
 import { useTrainingStore } from '@/stores/trainingStore'
+import { useTrainingInit } from '@/hooks/useTrainingInit'
+import { ModuleCard } from '@/components/ModuleCard'
 
 function App() {
-  const { modules, completedCount, totalCount, overallProgress, completeModule } = useTrainingStore()
+  const { modules, completedCount, totalCount, overallProgress } = useTrainingStore()
+  const { initialized } = useTrainingInit()
 
-  const getModuleIcon = (moduleId: number) => {
-    const iconMap = {
-      1: FaShieldAlt,
-      2: FaBookOpen,
-      3: FaChartBar,
-      4: FaUsers,
-    }
-    return iconMap[moduleId as keyof typeof iconMap] || FaShieldAlt
+  if (!initialized) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-4"></div>
+          <p className="text-xl text-gray-600 dark:text-gray-300">Loading training modules...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -31,37 +33,10 @@ function App() {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {modules.map((module) => {
-            const IconComponent = getModuleIcon(module.id)
-            return (
-              <div key={module.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg dark:hover:shadow-gray-700/50 transition-all duration-300">
-                <div className="flex items-center justify-center mb-4">
-                  <IconComponent className="text-3xl text-blue-600 dark:text-blue-400" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2 text-center">
-                  {module.title}
-                </h3>
-                <div className="mb-4">
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                    <div 
-                      className="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${module.progress}%` }}
-                    ></div>
-                  </div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{module.progress}% Complete</p>
-                </div>
-                <Button 
-                  onClick={() => completeModule(module.id)}
-                  className="w-full"
-                  variant={module.completed ? "default" : "outline"}
-                  disabled={module.completed}
-                >
-                  {module.completed ? "Completed" : "Start Module"}
-                </Button>
-              </div>
-            )
-          })}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {modules.map((module) => (
+            <ModuleCard key={module.id} moduleId={module.id} />
+          ))}
         </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors duration-300">
