@@ -48,6 +48,7 @@ export const ConfirmDialog = ({
       <div 
         className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
         onClick={onCancel}
+        data-testid="dialog-overlay"
       />
       
       {/* Dialog */}
