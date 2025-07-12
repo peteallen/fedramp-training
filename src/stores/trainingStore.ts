@@ -50,6 +50,7 @@ interface TrainingState {
   getModuleById: (moduleId: number) => TrainingModule | undefined
   getModulesByCategory: (category: string) => TrainingModule[]
   getModulesByDifficulty: (difficulty: string) => TrainingModule[]
+  clearAllData: () => void
 }
 
 // Helper function to convert JSON modules to TrainingModule format
@@ -210,6 +211,21 @@ export const useTrainingStore = create<TrainingState>()(
 
       getModulesByDifficulty: (difficulty: string) => {
         return get().modules.filter(module => module.difficulty === difficulty)
+      },
+
+      clearAllData: () => {
+        // Clear localStorage
+        localStorage.removeItem('training-storage')
+        
+        // Reset state to initial values
+        const modules = convertJSONModules(modulesData.modules)
+        set({
+          modules,
+          completedCount: 0,
+          totalCount: modules.length,
+          overallProgress: 0,
+          initialized: true
+        })
       },
     }),
     {
