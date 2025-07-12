@@ -24,7 +24,8 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
     if (module) {
       updateModuleAccess(moduleId)
     }
-  }, [moduleId, module, updateModuleAccess])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [moduleId])
 
   if (!module) {
     return (
