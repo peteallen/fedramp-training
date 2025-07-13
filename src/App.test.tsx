@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from './App'
 import { useTrainingStore } from '@/stores/trainingStore'
@@ -67,7 +67,7 @@ describe('App', () => {
   it('should render the main heading when initialized', () => {
     render(<App />)
     
-    expect(screen.getByRole('heading', { name: /ClearTriage FedRAMP Training LMS/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /ClearTriage Security & Privacy Training/i })).toBeInTheDocument()
   })
 
   it('should render module cards for each module', () => {
@@ -81,10 +81,13 @@ describe('App', () => {
   it('should display progress overview', () => {
     render(<App />)
     
-    expect(screen.getByText('Progress Overview')).toBeInTheDocument()
-    expect(screen.getByText('Modules Completed:')).toBeInTheDocument()
-    expect(screen.getByText('1 / 3')).toBeInTheDocument()
-    expect(screen.getByText('33% Complete')).toBeInTheDocument()
+    expect(screen.getByText('Training Progress')).toBeInTheDocument()
+    expect(screen.getByText('Modules Completed')).toBeInTheDocument()
+    expect(screen.getByText('Total Modules')).toBeInTheDocument()
+    expect(screen.getByText('Overall Progress')).toBeInTheDocument()
+    expect(screen.getByText('1')).toBeInTheDocument() // completed count
+    expect(screen.getByText('3')).toBeInTheDocument() // total count
+    expect(screen.getByText('33%')).toBeInTheDocument() // overall progress
   })
 
   it('should render reset button', () => {
@@ -169,7 +172,9 @@ describe('App', () => {
     
     render(<App />)
     
-    expect(screen.getByText('0 / 0')).toBeInTheDocument()
+    // Use getAllByText since we expect multiple '0' elements
+    const zeros = screen.getAllByText('0')
+    expect(zeros).toHaveLength(2) // One for completed count, one for total count
     expect(screen.getByText('0% Complete')).toBeInTheDocument()
   })
 
@@ -187,8 +192,10 @@ describe('App', () => {
     
     render(<App />)
     
-    expect(screen.getByText('2 / 2')).toBeInTheDocument()
-    expect(screen.getByText('100% Complete')).toBeInTheDocument()
+    // Use getAllByText since we expect multiple '2' elements
+    const twos = screen.getAllByText('2')
+    expect(twos).toHaveLength(2) // One for completed count, one for total count
+    expect(screen.getByText('All training completed! 🎉')).toBeInTheDocument()
   })
 
   it('should render theme toggle', () => {

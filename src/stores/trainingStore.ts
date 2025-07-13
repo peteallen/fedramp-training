@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import modulesData from '../data/modules.json'
+import modulesIndex from '../data/modules.json'
 
 interface ModuleContent {
   type: string
@@ -39,7 +39,7 @@ interface TrainingState {
   initialized: boolean
   
   // Actions
-  initializeModules: () => void
+  initializeModules: () => Promise<void>
   completeModule: (moduleId: number) => void
   updateProgress: (moduleId: number, progress: number) => void
   updateModuleAccess: (moduleId: number) => void
@@ -53,16 +53,38 @@ interface TrainingState {
   clearAllData: () => void
 }
 
-// Helper function to convert JSON modules to TrainingModule format
-const convertJSONModules = (jsonModules: any[]): TrainingModule[] => {
-  return jsonModules.map(module => ({
-    ...module,
+// Helper function to load a single module from its file
+const loadModule = async (moduleInfo: { id: number; file: string }): Promise<TrainingModule> => {
+  // Import the module with explicit file extension for Vite compatibility
+  let moduleData;
+  switch (moduleInfo.file) {
+    case '1.json':
+      moduleData = await import('../data/modules/1.json');
+      break;
+    case '2.json':
+      moduleData = await import('../data/modules/2.json');
+      break;
+    case '3.json':
+      moduleData = await import('../data/modules/3.json');
+      break;
+    default:
+      throw new Error(`Unknown module file: ${moduleInfo.file}`);
+  }
+  
+  return {
+    ...moduleData.default,
     completed: false,
     progress: 0,
     lastAccessed: undefined,
     timeSpent: 0,
     quizScore: undefined
-  }))
+  }
+}
+
+// Helper function to load all modules
+const loadAllModules = async (): Promise<TrainingModule[]> => {
+  const modulePromises = modulesIndex.modules.map(moduleInfo => loadModule(moduleInfo))
+  return Promise.all(modulePromises)
 }
 
 export const useTrainingStore = create<TrainingState>()(
@@ -74,15 +96,40 @@ export const useTrainingStore = create<TrainingState>()(
       overallProgress: 0,
       initialized: false,
 
-      initializeModules: () => {
-        const state = get()
-        if (!state.initialized) {
-          const modules = convertJSONModules(modulesData.modules)
-          set({
-            modules,
-            totalCount: modules.length,
-            initialized: true
+      initializeModules: async () => {
+        try {
+          const freshModules = await loadAllModules()
+
+          set((state) => {
+            // Merge progress data from any existing (possibly persisted) modules
+            const mergedModules = freshModules.map((fresh) => {
+              const existing = state.modules.find((m) => m.id === fresh.id)
+              return existing
+                ? {
+                    ...fresh,
+                    completed: existing.completed,
+                    progress: existing.progress,
+                    lastAccessed: existing.lastAccessed,
+                    timeSpent: existing.timeSpent,
+                    quizScore: existing.quizScore,
+                  }
+                : fresh
+            })
+
+            const completedCount = mergedModules.filter((m) => m.completed).length
+            const overallProgress = Math.round((completedCount / mergedModules.length) * 100)
+
+            return {
+              modules: mergedModules,
+              totalCount: mergedModules.length,
+              completedCount,
+              overallProgress,
+              initialized: true,
+            }
           })
+        } catch (error) {
+          console.error('Failed to load modules:', error)
+          set({ initialized: true })
         }
       },
 
@@ -213,30 +260,74 @@ export const useTrainingStore = create<TrainingState>()(
         return get().modules.filter(module => module.difficulty === difficulty)
       },
 
-      clearAllData: () => {
+      clearAllData: async () => {
         // Clear localStorage
         localStorage.removeItem('training-storage')
         
         // Reset state to initial values
-        const modules = convertJSONModules(modulesData.modules)
-        set({
-          modules,
-          completedCount: 0,
-          totalCount: modules.length,
-          overallProgress: 0,
-          initialized: true
-        })
+        try {
+          const modules = await loadAllModules()
+          set({
+            modules,
+            completedCount: 0,
+            totalCount: modules.length,
+            overallProgress: 0,
+            initialized: true
+          })
+        } catch (error) {
+          console.error('Failed to reload modules:', error)
+          set({
+            modules: [],
+            completedCount: 0,
+            totalCount: 0,
+            overallProgress: 0,
+            initialized: true
+          })
+        }
       },
     }),
     {
       name: 'training-storage',
       partialize: (state) => ({
-        modules: state.modules,
+        // Persist only progress-related fields to keep storage small and
+        // ensure content can be refreshed from disk on reload.
+        modules: state.modules.map((m) => ({
+          id: m.id,
+          completed: m.completed,
+          progress: m.progress,
+          lastAccessed: m.lastAccessed,
+          timeSpent: m.timeSpent,
+          quizScore: m.quizScore,
+        })),
         completedCount: state.completedCount,
         totalCount: state.totalCount,
         overallProgress: state.overallProgress,
-        initialized: state.initialized
+        // NOTE: `initialized` intentionally omitted so app always reloads
+        // module content on startup.
       }),
     }
   )
-) 
+)
+
+// --- Hot-reload support for module JSON files (dev only) ---
+if (import.meta.hot) {
+  // Helper to register an HMR accept handler for a single JSON file
+  const acceptUpdate = (path: string, moduleId: number) => {
+    // Vite will re-import the updated JSON and pass it to the callback
+    import.meta.hot!.accept(path, (mod: any) => {
+      if (!mod?.default) return
+      // Merge the fresh JSON content into the existing module while
+      // preserving runtime fields like progress, completed, etc.
+      useTrainingStore.setState((state) => ({
+        modules: state.modules.map((m) =>
+          m.id === moduleId ? { ...m, ...mod.default } : m
+        ),
+      }))
+    })
+  }
+
+  // Register handlers for each known module file
+  acceptUpdate('../data/modules/1.json', 1)
+  acceptUpdate('../data/modules/2.json', 2)
+  acceptUpdate('../data/modules/3.json', 3)
+} 
