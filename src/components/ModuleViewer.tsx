@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { useTrainingStore } from '@/stores/trainingStore'
 import { FaArrowLeft, FaArrowRight, FaCheck, FaTimes, FaLightbulb, FaQuestionCircle, FaBookOpen, FaClock, FaGraduationCap, FaUserShield } from 'react-icons/fa'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 interface ModuleViewerProps {
   moduleId: number
@@ -109,13 +111,60 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
   }
 
   const formatContent = (content: string) => {
-    // Split content into paragraphs and add some formatting
-    const paragraphs = content.split('\n\n')
-    return paragraphs.map((paragraph, index) => (
-      <p key={index} className="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed">
-        {paragraph}
-      </p>
-    ))
+    return (
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          p: (props: any) => (
+            <p
+              className="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed"
+              {...props}
+            />
+          ),
+          h1: (props: any) => (
+            <h1 className="text-3xl font-bold mb-4" {...props} />
+          ),
+          h2: (props: any) => (
+            <h2 className="text-2xl font-bold mb-3" {...props} />
+          ),
+          h3: (props: any) => (
+            <h3 className="text-xl font-semibold mb-2" {...props} />
+          ),
+          li: (props: any) => (
+            <li className="mb-2 list-disc ml-6" {...props} />
+          ),
+          ul: (props: any) => (
+            <ul className="list-disc ml-6 mb-4" {...props} />
+          ),
+          ol: (props: any) => (
+            <ol className="list-decimal ml-6 mb-4" {...props} />
+          ),
+          blockquote: (props: any) => (
+            <blockquote
+              className="border-l-4 border-blue-500 pl-4 italic text-gray-600 dark:text-gray-400 mb-4"
+              {...props}
+            />
+          ),
+          strong: (props: any) => (
+            <strong className="font-semibold" {...props} />
+          ),
+          table: (props: any) => (
+            <table className="table-auto border-collapse mb-4" {...props} />
+          ),
+          th: (props: any) => (
+            <th
+              className="border px-2 py-1 bg-gray-100 dark:bg-gray-700 text-left"
+              {...props}
+            />
+          ),
+          td: (props: any) => (
+            <td className="border px-2 py-1" {...props} />
+          ),
+        }}
+      >
+        {content}
+      </ReactMarkdown>
+    )
   }
 
   if (showQuiz && !quizSubmitted) {
