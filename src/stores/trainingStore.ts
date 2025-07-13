@@ -97,20 +97,39 @@ export const useTrainingStore = create<TrainingState>()(
       initialized: false,
 
       initializeModules: async () => {
-        const state = get()
-        if (!state.initialized) {
-          try {
-            const modules = await loadAllModules()
-            set({
-              modules,
-              totalCount: modules.length,
-              initialized: true
+        try {
+          const freshModules = await loadAllModules()
+
+          set((state) => {
+            // Merge progress data from any existing (possibly persisted) modules
+            const mergedModules = freshModules.map((fresh) => {
+              const existing = state.modules.find((m) => m.id === fresh.id)
+              return existing
+                ? {
+                    ...fresh,
+                    completed: existing.completed,
+                    progress: existing.progress,
+                    lastAccessed: existing.lastAccessed,
+                    timeSpent: existing.timeSpent,
+                    quizScore: existing.quizScore,
+                  }
+                : fresh
             })
-          } catch (error) {
-            console.error('Failed to load modules:', error)
-            // Still set initialized to true to prevent infinite retries
-            set({ initialized: true })
-          }
+
+            const completedCount = mergedModules.filter((m) => m.completed).length
+            const overallProgress = Math.round((completedCount / mergedModules.length) * 100)
+
+            return {
+              modules: mergedModules,
+              totalCount: mergedModules.length,
+              completedCount,
+              overallProgress,
+              initialized: true,
+            }
+          })
+        } catch (error) {
+          console.error('Failed to load modules:', error)
+          set({ initialized: true })
         }
       },
 
@@ -270,12 +289,45 @@ export const useTrainingStore = create<TrainingState>()(
     {
       name: 'training-storage',
       partialize: (state) => ({
-        modules: state.modules,
+        // Persist only progress-related fields to keep storage small and
+        // ensure content can be refreshed from disk on reload.
+        modules: state.modules.map((m) => ({
+          id: m.id,
+          completed: m.completed,
+          progress: m.progress,
+          lastAccessed: m.lastAccessed,
+          timeSpent: m.timeSpent,
+          quizScore: m.quizScore,
+        })),
         completedCount: state.completedCount,
         totalCount: state.totalCount,
         overallProgress: state.overallProgress,
-        initialized: state.initialized
+        // NOTE: `initialized` intentionally omitted so app always reloads
+        // module content on startup.
       }),
     }
   )
-) 
+)
+
+// --- Hot-reload support for module JSON files (dev only) ---
+if (import.meta.hot) {
+  // Helper to register an HMR accept handler for a single JSON file
+  const acceptUpdate = (path: string, moduleId: number) => {
+    // Vite will re-import the updated JSON and pass it to the callback
+    import.meta.hot!.accept(path, (mod: any) => {
+      if (!mod?.default) return
+      // Merge the fresh JSON content into the existing module while
+      // preserving runtime fields like progress, completed, etc.
+      useTrainingStore.setState((state) => ({
+        modules: state.modules.map((m) =>
+          m.id === moduleId ? { ...m, ...mod.default } : m
+        ),
+      }))
+    })
+  }
+
+  // Register handlers for each known module file
+  acceptUpdate('../data/modules/1.json', 1)
+  acceptUpdate('../data/modules/2.json', 2)
+  acceptUpdate('../data/modules/3.json', 3)
+} 

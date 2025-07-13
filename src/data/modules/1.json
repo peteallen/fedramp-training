@@ -29,23 +29,38 @@
     },
     {
       "type": "section",
-      "title": "Documented & Accessible",
-      "content": "The policy is written down (check our Google Drive for the latest \"ClearTriage Security Training Policy\" document – ask Shelly if you can't find it, she's our FedRAMP Coordinator and keeper of all things organized) and disseminated to all personnel (that's all of us!). Since we don't have departments, it's easy – Pete just makes sure each of the six of us gets a copy or link. If you haven't seen it, check your inbox or ask Pete (he might bribe us with donuts to read it – whatever works, especially if they're from that Vermont bakery Shelly keeps raving about)."
+      "title": "Policy Documentation & Access",
+      "content": "The policy is written down and accessible to all team members. You can find the latest \"ClearTriage Security Training Policy\" document in our Google Drive – ask Shelly if you can't find it, she's our FedRAMP Coordinator and keeper of all things organized. Since we don't have departments, it's easy – Pete just makes sure each of the six of us gets a copy or link. If you haven't seen it, check your inbox or ask Pete (he might bribe us with donuts to read it – whatever works, especially if they're from that Vermont bakery Shelly keeps raving about)."
     },
     {
       "type": "section",
-      "title": "Roles & Responsibilities",
-      "content": "The policy covers who does what. Pete Allen (CTO) is the owner of the training program and the primary contact for any security questions or issues (you can reach him at pete@cleartriage.com for anything from policy clarifications to reporting security concerns – assuming he's not running late to something). Important: If you can't reach Pete or need immediate help, Dave (our President) is your backup contact – and with his CIA-developed psychic bug-finding abilities, he might spot the security issue before you even report it! Pete is responsible for developing and updating the training materials and making sure everyone (yes, all six of us) completes our training on time. Our small size means no one slips through the cracks – if one of us hasn't done the training, we'll all probably hear about it!"
+      "title": "Primary Contacts & Responsibilities",
+      "content": "Pete Allen (CTO) is the owner of the training program and the primary contact for any security questions or issues. You can reach him at pete@cleartriage.com for anything from policy clarifications to reporting security concerns – assuming he's not running late to something. Important: If you can't reach Pete or need immediate help, Dave (our President) is your backup contact – and with his CIA-developed psychic bug-finding abilities, he might spot the security issue before you even report it!"
     },
     {
       "type": "section",
-      "title": "Regular Reviews & Updates",
-      "content": "We don't write the policy and forget it. The policy itself is reviewed regularly and updated at least every three years (or sooner if something big changes). In practice, Pete will review it annually to see if updates are needed, and formally refresh it at least once every 3 years (FedRAMP requires that minimum). The supporting procedures (the step-by-step of running the training program) get updated more frequently – at least yearly, and any time there's a major change in our systems or a new FedRAMP requirement. For example, if we adopt a new tool, if Savvy implements some new DevOps magic, or if a significant security incident occurs, we'd update our procedures to address that. This ensures our training program stays current with emerging threats and changes in our environment."
+      "title": "Training Management",
+      "content": "Pete is responsible for developing and updating the training materials and making sure everyone (yes, all six of us) completes our training on time. Our small size means no one slips through the cracks – if one of us hasn't done the training, we'll all probably hear about it! This personal accountability is one of the advantages of being a small team."
     },
     {
       "type": "section",
-      "title": "Dissemination",
-      "content": "Whenever the policy or procedures are updated, Pete will disseminate the changes to everyone (likely via an email summary or a quick all-hands meeting – hopefully one he's on time for). Given our team's size, a 15-minute chat can suffice to get everyone on the same page. The goal is that all team members are aware of the rules and expectations around security training and awareness. We keep it straightforward – no corporate jargon overload. If something isn't clear, just ask! We prefer a dumb question over a dumb security mistake."
+      "title": "Policy Review Schedule",
+      "content": "We don't write the policy and forget it. The policy itself is reviewed regularly and updated at least every three years (or sooner if something big changes). In practice, Pete will review it annually to see if updates are needed, and formally refresh it at least once every 3 years (FedRAMP requires that minimum)."
+    },
+    {
+      "type": "section",
+      "title": "Procedure Updates",
+      "content": "The supporting procedures (the step-by-step of running the training program) get updated more frequently – at least yearly, and any time there's a major change in our systems or a new FedRAMP requirement. For example, if we adopt a new tool, if Savvy implements some new DevOps magic, or if a significant security incident occurs, we'd update our procedures to address that. This ensures our training program stays current with emerging threats and changes in our environment."
+    },
+    {
+      "type": "section",
+      "title": "Change Communication",
+      "content": "Whenever the policy or procedures are updated, Pete will disseminate the changes to everyone (likely via an email summary or a quick all-hands meeting – hopefully one he's on time for). Given our team's size, a 15-minute chat can suffice to get everyone on the same page. The goal is that all team members are aware of the rules and expectations around security training and awareness."
+    },
+    {
+      "type": "section",
+      "title": "Ask Questions!",
+      "content": "We keep it straightforward – no corporate jargon overload. If something isn't clear, just ask! We prefer a dumb question over a dumb security mistake. Our open communication culture means you should never hesitate to seek clarification on any security topic."
     },
     {
       "type": "section",
