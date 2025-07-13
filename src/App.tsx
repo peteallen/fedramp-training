@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import modulesData from '@/data/modules.json'
 import { ThemeToggle } from '@/components/ThemeToggle'
 import { useTrainingStore } from '@/stores/trainingStore'
 import { useTrainingInit } from '@/hooks/useTrainingInit'
@@ -18,8 +17,8 @@ function App() {
     setShowConfirmDialog(true)
   }
 
-  const handleConfirmReset = () => {
-    clearAllData()
+  const handleConfirmReset = async () => {
+    await clearAllData()
     setShowConfirmDialog(false)
   }
 
@@ -77,9 +76,7 @@ function App() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {modules
-            .filter((m) => modulesData.modules.find((mm) => mm.id === m.id))
-            .map((module) => (
+          {modules.map((module) => (
             <ModuleCard 
               key={module.id} 
               moduleId={module.id} 

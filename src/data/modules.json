@@ -2,191 +2,22 @@
   "modules": [
     {
       "id": 1,
-      "title": "AT-1: Security Awareness & Training Policy and Procedures",
-      "description": "Learn about ClearTriage's Security and Privacy Awareness Training Policy, procedures, and our commitment to FedRAMP compliance",
-      "category": "policy",
-      "estimatedTime": "25 minutes",
-      "difficulty": "beginner",
-      "objectives": [
-        "Understand ClearTriage's Security and Privacy Awareness Training Policy",
-        "Learn about roles and responsibilities in our security training program",
-        "Identify how policies are reviewed, updated, and disseminated"
-      ],
-      "content": [
-        {
-          "type": "introduction",
-          "title": "ClearTriage Security & Privacy Awareness Training",
-          "content": "# ClearTriage Security & Privacy Awareness Training (FedRAMP Low Impact SaaS)\n\nWelcome to ClearTriage's Security and Privacy Awareness Training! 🎉 This training is designed to help our 6-person team understand and meet our FedRAMP Low Impact SaaS (LI-SaaS) requirements for security awareness and training. We know security training can sometimes be as exciting as watching paint dry, so we've added a dash of humor (yes, dad jokes included!) to keep things interesting. But make no mistake – the content here is important for keeping our product and data safe, working toward our FedRAMP authorization (we're in process, not there yet!), and protecting our team and customers. (Don't worry, there's no pop quiz at the end – just pay attention so Pete doesn't have to chase you down... which might take a while since he's often late!)\n\n**Scope & Context:** Our FedRAMP authorization (once we get it – thanks ScaleSec for guiding us!) will cover the ClearTriage app (running in a FedRAMP-approved AWS environment) and our use of Google Drive for work documentation. We're building this for the VA, so getting this right matters. We do not handle sensitive personal data like PII or PHI, which simplifies privacy concerns. However, security is everyone's job – even a small company can be a target, and our app and internal information (code, configs, etc.) must be protected. In a larger company you might have a big security department; here at ClearTriage, we're all the security team (with Pete Allen, our CTO and resident pain-in-the-ass, wearing the team captain's hat 🧢 – when he remembers where he put it). So let's dive in and cover what we all need to know, organized by the key FedRAMP Awareness and Training (AT) controls."
-        },
-        {
-          "type": "section",
-          "title": "AT-1: Security Awareness & Training Policy and Procedures",
-          "content": "## AT-1: Security Awareness & Training Policy and Procedures\n\nWe have a formal Security and Privacy Awareness and Training Policy (because even a 6-person startup needs some paperwork 📄). This policy – along with detailed procedures – outlines how we do security training and keep everyone aware of best practices. Key points about our policy and procedures:\n\n• **Documented & Accessible:** The policy is written down (check our Google Drive for the latest \"ClearTriage Security Training Policy\" document – ask Shelly if you can't find it, she's our FedRAMP Coordinator and keeper of all things organized) and disseminated to all personnel (that's all of us!). Since we don't have departments, it's easy – Pete just makes sure each of the six of us gets a copy or link. If you haven't seen it, check your inbox or ask Pete (he might bribe us with donuts to read it – whatever works, especially if they're from that Vermont bakery Shelly keeps raving about).\n\n• **Roles & Responsibilities:** The policy covers who does what. Pete Allen (CTO) is the owner of the training program and the primary contact for any security questions or issues (you can reach him at pete@cleartriage.com for anything from policy clarifications to reporting security concerns – assuming he's not running late to something). **Important:** If you can't reach Pete or need immediate help, Dave (our President) is your backup contact – and with his CIA-developed psychic bug-finding abilities, he might spot the security issue before you even report it! Pete is responsible for developing and updating the training materials and making sure everyone (yes, all six of us) completes our training on time. Our small size means no one slips through the cracks – if one of us hasn't done the training, we'll all probably hear about it!\n\n• **Regular Reviews & Updates:** We don't write the policy and forget it. The policy itself is reviewed regularly and updated at least every three years (or sooner if something big changes). In practice, Pete will review it annually to see if updates are needed, and formally refresh it at least once every 3 years (FedRAMP requires that minimum). The supporting procedures (the step-by-step of running the training program) get updated more frequently – at least yearly, and any time there's a major change in our systems or a new FedRAMP requirement. For example, if we adopt a new tool, if Savvy implements some new DevOps magic, or if a significant security incident occurs, we'd update our procedures to address that. This ensures our training program stays current with emerging threats and changes in our environment.\n\n• **Dissemination:** Whenever the policy or procedures are updated, Pete will disseminate the changes to everyone (likely via an email summary or a quick all-hands meeting – hopefully one he's on time for). Given our team's size, a 15-minute chat can suffice to get everyone on the same page. The goal is that all team members are aware of the rules and expectations around security training and awareness. We keep it straightforward – no corporate jargon overload. If something isn't clear, just ask! We prefer a dumb question over a dumb security mistake.\n\n*(Why does this matter?)* Having a solid policy (and keeping it updated) might sound bureaucratic, but it's like having a playbook for our security training. It shows management commitment and ensures we're all accountable. Plus, auditors love to see that we have our act together on paper – and we love to keep our future FedRAMP status shiny. So, next time Pete mentions a policy update, remember: reading a few paragraphs now beats dealing with a security fiasco later. 😉"
-        }
-      ],
-      "quiz": [
-        {
-          "question": "Who is the owner of ClearTriage's security training program?",
-          "options": [
-            "Dave (President)",
-            "Pete Allen (CTO)",
-            "Shelly (FedRAMP Coordinator)",
-            "The whole team equally"
-          ],
-          "correctAnswer": 1
-        },
-        {
-          "question": "How often must the Security Training Policy be formally reviewed and updated?",
-          "options": [
-            "Every year",
-            "Every two years",
-            "At least every three years",
-            "Only when incidents occur"
-          ],
-          "correctAnswer": 2
-        },
-        {
-          "question": "What is ClearTriage's FedRAMP authorization scope?",
-          "options": [
-            "Only the ClearTriage app",
-            "Only Google Drive usage",
-            "ClearTriage app in AWS and Google Drive usage",
-            "All company systems and tools"
-          ],
-          "correctAnswer": 2
-        }
-      ]
+      "file": "1.json"
     },
     {
       "id": 2,
-      "title": "AT-2: Security & Privacy Literacy Training and Awareness",
-      "description": "Comprehensive security and privacy training covering ongoing awareness, insider threat recognition, and year-round security practices",
-      "category": "awareness",
-      "estimatedTime": "45 minutes",
-      "difficulty": "intermediate",
-      "objectives": [
-        "Complete required security and privacy literacy training",
-        "Recognize insider threat indicators and reporting procedures",
-        "Understand ongoing security awareness throughout the year",
-        "Learn about our security culture and incident response"
-      ],
-      "content": [
-        {
-          "type": "section",
-          "title": "AT-2: Security & Privacy Literacy Training and Awareness",
-          "content": "## AT-2: Security & Privacy Literacy Training and Awareness\n\nThis control is all about actually training our people (that's you!) in security and privacy basics, and keeping everyone aware throughout the year. Here's what we do to satisfy AT-2:\n\n• **New Hire Training:** When someone new joins ClearTriage, we don't throw them to the wolves. Every new team member completes security and privacy awareness training as part of onboarding – essentially Day 1 (or at least within the first week, once the email and coffee mug are set up). This ensures everyone starts off on the right foot, knowing our security expectations before they get access to sensitive systems. We cover the fundamentals: our password rules, how to handle data, spotting phishing emails, using our AWS and Google Drive securely, etc. If you're new and reading this, welcome aboard! 🎉 Expect Pete (or Dave if Pete's running late) to walk you through the dos and don'ts ASAP, before you get those AWS keys that Savvy guards like a samurai protects their sword.\n\n• **Annual Refresher Training:** Security isn't \"one-and-done.\" All team members must retake security/privacy awareness training at least once each year. Once every 12 months we'll gather (either in-person or via a video call/screen-share – hopefully everyone can make it, even if Braden has to join from whatever state he's actually from this week) for an annual refresher. We know your time is valuable, so we keep this concise and relevant – hitting the important updates and reminders. (Think of it as the yearly sequel that's actually useful, not the never-ending movie franchise kind.) FedRAMP and our policy require this annual cadence to make sure knowledge stays fresh and habits stay sharp. So even if you've been here 5 years and can recite our security policy in your sleep, you still need the yearly training – threats evolve, and so do our defenses.\n\n• **Training After Changes or Incidents:** We also provide just-in-time training when needed. If there's a significant change – say Braden deploys a slick new UI feature, Savvy adopts a new DevOps technology, or we update a policy – and it impacts security or privacy, we'll update our training materials and inform everyone. Similarly, if a security incident or \"near-miss\" happens, we treat it as a learning opportunity. For example, if someone falls for a phishing test (don't worry, we won't name and shame 😉), or if Savvy finds one of Pete's bugs in our app, Pete will incorporate the lessons learned into our training content promptly. That might mean sending out a \"Security Alert\" email with what happened and how to avoid it, or adding a new module to the next training session. Our goal is to make sure we learn from mistakes – whether ours or others in the industry – so we don't repeat them.\n\n• **Awareness All Year Round:** Beyond formal training sessions, we run an ongoing awareness program to keep security and privacy in mind throughout the year. (Because let's face it, one class a year isn't enough to cover 365 days of risks.) We use a variety of techniques:\n  - **Email/Slack Reminders:** Occasionally, you'll see security tips or reminders pop up in our team Slack or inbox. Pete might share a quick \"Security Tip of the Month\" or an article about a new scam targeting small businesses. We promise to keep these infrequent and to-the-point (bonus points if they include a funny meme).\n  - **Team Meetings:** We'll take a few minutes in team meetings now and then for a security topic. For instance, a quick demo on how to use our password manager, or a reminder to update your laptop's software. We keep it interactive – you can ask questions or share experiences. Maybe Krista will share some wisdom from her nursing days about double-checking critical information, or Savvy might show us a cool security feature they discovered.\n  - **Interactive Exercises:** Once in a while, we may do something fun like a simulated phishing email to see if we're on our toes. If you click the fake bad link – no real harm done – you'll get a friendly \"gotcha!\" and a reminder of what clues you missed. It's okay to fail in a simulation as long as we learn from it.\n  - **Visible Prompts:** We have a short login banner on our systems that reminds you of your responsibility (ever noticed that little blurb when logging into the AWS console or our app admin panel?). It's there to keep security in the back of your mind. Around the office (or virtual office), we might also share quick-reference guides (one-pagers on data handling, for example) or even the occasional poster or infographic on our Google Drive for you to glance at.\n  - **Culture of Security:** Most importantly, we encourage a culture where security is part of everyday thinking. That means you won't get in trouble for bringing up a potential security concern – in fact, it's encouraged. Hear about a new vulnerability on the news? Share it. Not sure if a weird email is legit? Ask! We'd rather have false alarms than missed real threats.\n\n• **Content Updates & Improvement:** We keep our training content fresh and engaging. The materials are reviewed and updated at least annually – which lines up with the annual training cycle. Each year, Pete (with input from any volunteers – maybe Shelly will add some Vermont wisdom) will spruce up the slides/notes to remove stale information and add current topics. We also consider feedback: if last year everyone already knew the basics cold, we might go a bit more advanced or vice versa. And as mentioned, any new trends (e.g., a rise in phishing attempts, new compliance rules from our work with the VA) or incident learnings will be baked in promptly. By the time you see the training again, it won't be exactly the same each year – we try to avoid the \"ugh, this again\" syndrome.\n\n• **No Distinction Between Basic/Advanced – Unified Training:** FedRAMP guidance notes that we don't necessarily need separate \"basic\" and \"advanced\" courses as long as we cover all necessary topics. Given our small size, we roll everything into one comprehensive program that's appropriate for all. We'll cover both security awareness (general knowledge for everyone) and security literacy (a bit more in-depth understanding of threats and best practices) together. If something is too technical or not relevant to some roles, we'll explain it in simple terms or mark it optional, but we prefer to empower everyone with knowledge. After all, a well-informed team is harder for bad guys to trick.\n\n*(Quick reality check:)* Yes, that's a lot of talk about training, but the bottom line is we want to keep ClearTriage secure and compliant without boring you to tears. So we aim to make training sessions engaging and concise. Ask questions, share your funny security fail stories (like that time Pete forgot his laptop at the coffee shop – oh wait, we're not supposed to mention that), and take the content seriously. And remember, staying secure is an ongoing process, not just a once-a-year event. Keep that cautious mindset year-round – it's like keeping an eye out for the \"wet floor\" sign to avoid slips, except in cyberspace. 🕵️‍♂️"
-        },
-        {
-          "type": "section",
-          "title": "AT-2(2): Insider Threat Awareness",
-          "content": "## AT-2(2): Insider Threat Awareness\n\nNow it's time for a special topic: Insider Threat Awareness. (Cue the dramatic music! 🎻) Don't worry, this isn't about making you paranoid or turning our friendly little team into a spy movie. It's about being aware that sometimes, threats can come from within. An \"insider threat\" is when someone with authorized access to our systems or data misuses that access – either wittingly or unwittingly (on purpose or by accident) – to harm the organization. In plain English, it could be a disgruntled employee doing something malicious, or a well-meaning teammate who inadvertently causes a security breach by being careless. Insider threats can be anyone: a full-time employee, a contractor, or even an ex-employee who still has access they shouldn't.\n\nWhy do we care? Because even though we trust each other on this team (after all, we've shared enough medical histories to know that half the team is missing their appendix!), mistakes happen, and very rarely, people's intentions can change. We're a small company, which actually helps – it's hard to be a sneaky bad guy when you sit next to (or Zoom with) everyone every day. But we still need to cover this for FedRAMP, and more importantly, so that if something seems off, we know how to recognize it and respond.\n\nHere's what you need to know about insider threats and how to stay vigilant:\n\n• **Everyone's a Sensor:** We are all the first line of defense against insider threats. That means if you see signs that \"something's not right,\" it's up to you to speak up. Trust your instincts – if a teammate's behavior or actions make you uneasy from a security perspective, don't ignore it. This doesn't mean we start suspecting each other for no reason; it just means we stay observant. (Think of it like neighborhood watch: we keep an eye out, but we're not putting on tinfoil hats or starting a security conspiracy theory blog.)\n\n• **Potential Indicators:** What might an insider threat look like? Here are a few red flags or scenarios to keep on your radar:\n  - **Downloading or Accessing Unusually Large Amounts of Data:** For example, if you notice someone suddenly exporting our entire database, code repository, or customer list to a personal device or external drive without a clear need, that's suspicious. In a company of our size, roles are well-known, so if Krista starts poking around AWS infrastructure files, or if Braden starts cloning all the sales documents, it's okay to raise an eyebrow (and a question).\n  - **Bypassing Security Controls:** If someone tries to disable antivirus on their laptop, or frequently complains about and attempts to circumvent access controls (\"Ugh, I turned off multi-factor auth because it's annoying\"), that's a warning sign. Policy violations, especially if deliberate and repeated, shouldn't be ignored.\n  - **Unusual Hours or Access Patterns:** We all might pull the occasional late night (especially Savvy with a baby on the way!), but if you see a colleague who typically works 9–5 suddenly accessing systems at 2 AM regularly, or logging in from unusual locations, it might merit a check-in. They could be working on a secret passion project – or something could be amiss.\n  - **Disgruntled or Drastic Behavior Changes:** Keep an eye on morale. If someone becomes very disgruntled (e.g., openly bad-mouthing the company's mission or threatening like \"this place will regret this\" after a conflict), or if a normally social teammate suddenly becomes very withdrawn and secretive, we should show concern. Sometimes personal issues or conflicts can escalate to someone acting against the company's interest. Often, simply reaching out as a friend can help – other times, it might foreshadow problematic actions.\n  - **Social Engineering Within:** An insider threat isn't always stealing data – it could be manipulating others internally. For instance, if Bob (just a hypothetical name – we don't have a Bob) starts asking Mary for her login info saying \"Pete said I need it\" or tries to get someone else's higher privileges, that's not okay. No one should be sharing credentials or rights unofficially.\n  - **Negligence and Accidents:** Not all insider issues are malicious. Carelessness can be just as risky. Example: someone leaving a laptop unattended in a public place (like at one of Dave's hiking spots), or accidentally emailing a sensitive document to the wrong address. These mistakes happen – we're all human – but part of insider threat awareness is recognizing risky situations and taking action (like reminding a teammate, \"Hey, you left your laptop unlocked,\" or reporting a lost device immediately so we can secure accounts).\n\n• **Reporting and Response:** So you've observed something concerning – what now? Report it to Pete Allen immediately. Pete is our designated security point of contact for any insider threat concerns (as well as other security issues). You can email him (pete@cleartriage.com), message him on Slack, or if it's urgent, call him. **Remember: If you can't reach Pete, contact Dave as your backup!** Don't wait or tell others first – officially let Pete or Dave know so they can handle it appropriately. Prompt reporting is key; the sooner we investigate, the better we can prevent a possible incident. And don't worry about false alarms – we'd rather investigate and find nothing than miss a real problem. Your report will be handled as confidentially as possible, and retaliation for reporting an honest concern is absolutely against our values (and would itself be an insider threat in a way!).\n\n• **What Pete/Management Will Do:** If an insider threat is suspected or reported, Pete (with maybe Dave or Shelly) will discreetly investigate. This could involve checking system logs, having a one-on-one conversation with the person in question, or involving external authorities if it's something very serious. We also have procedures in place (per our policy) for disabling accounts quickly if needed, to prevent further harm. In extreme cases, law enforcement might be contacted – but let's hope we never go there. Most of the time, a potential insider issue can be resolved by addressing the person's grievances or correcting a mistake.\n\n• **Training & Support:** As part of this training module, we include scenarios and discussions about insider threats. We want you to recognize the signs and feel confident in taking action. Remember, insider threat awareness isn't about spying on your coworkers – it's about looking out for each other and the company. Often, catching a concern early means we can help that person (if they're struggling or unaware of risk) or stop a bad decision in its tracks. If you're unsure whether to report something, a good rule is: when in doubt, just report it. Pete or Dave can help figure out if it's an issue or not.\n\n• **Real-world Example & Lesson:** (Hypothetical scenario) Imagine one of us, \"Alex,\" has been working long hours and seems very frustrated with a project. Alex starts saying things like \"This codebase is a disaster, maybe I should just post it online and let the world see!\" – half-joking, but also visibly upset. 🚩 Red flag! We talk to Alex, and at the same time give Pete a heads-up. Together, we find out Alex is burnt out and feels underappreciated. The solution might be some time off and a team discussion – maybe even a team outing to watch a Chiefs game with Krista's husband! Crisis averted, trust preserved. The key is we noticed and we acted. Insider threat training helped us know what to look for, and it turned a possible threat into an opportunity to support a teammate.\n\nIn summary, insider threat awareness is about maintaining a vigilant, caring environment. We look out for odd behavior regarding security, and we have each other's backs by reporting concerns. As one official course put it: \"You are your organization's first line of defense against someone who could do harm.\" If you see something, say something. We'd rather have a dozen false alarms than miss the one real danger. And in the unlikely case one of us did intend harm, we want to catch it early for everyone's sake. Stay alert, trust but verify, and remember that even on the inside, security is a team sport.\n\n*(Fun analogy:)* Think of insider threat awareness like the game Among Us – we're all crewmates working on tasks (our jobs), but we stay alert in case someone is acting \"sus.\" We hope there's no impostor, but if there is, we report it and hit the emergency meeting button! 🛎️ In real life, that button is Pete's phone number (or Dave's if Pete is late to answer). Fortunately, our odds are much better than in the game – we hire good people and treat each other well, which is the best defense. Still, a little vigilance goes a long way."
-        }
-      ],
-      "quiz": [
-        {
-          "question": "How often must all team members complete security awareness training?",
-          "options": [
-            "Every 6 months",
-            "At least once per year",
-            "Every 2 years",
-            "Only during onboarding"
-          ],
-          "correctAnswer": 1
-        },
-        {
-          "question": "What should you do if you notice a colleague downloading unusually large amounts of data without clear business need?",
-          "options": [
-            "Ignore it - it's not your business",
-            "Ask the colleague directly first",
-            "Report it immediately to Pete Allen or Dave",
-            "Discuss it with other team members first"
-          ],
-          "correctAnswer": 2
-        },
-        {
-          "question": "Which of the following is NOT an insider threat indicator?",
-          "options": [
-            "Bypassing security controls repeatedly",
-            "Accessing systems at unusual hours regularly",
-            "Asking colleagues for their login credentials",
-            "Working late occasionally on a project deadline"
-          ],
-          "correctAnswer": 3
-        },
-        {
-          "question": "What is the best approach when you're unsure whether something is a security concern?",
-          "options": [
-            "Wait and see if it happens again",
-            "When in doubt, just report it",
-            "Ask other team members what they think",
-            "Only report if you're completely certain"
-          ],
-          "correctAnswer": 1
-        }
-      ]
+      "file": "2.json"
     },
     {
       "id": 3,
-      "title": "AT-3: Role-Based Security Training",
-      "description": "Specialized security training tailored to specific job roles and responsibilities within ClearTriage",
-      "category": "role-based",
-      "estimatedTime": "35 minutes",
-      "difficulty": "intermediate",
-      "objectives": [
-        "Understand role-specific security requirements and training",
-        "Learn specialized security practices for your job function",
-        "Identify when and how role-based training is delivered",
-        "Recognize the importance of training before privileged access"
-      ],
-      "content": [
-        {
-          "type": "section",
-          "title": "AT-3: Role-Based Security Training",
-          "content": "## AT-3: Role-Based Security Training\n\nOne size doesn't always fit all when it comes to training. Role-based training means we tailor extra training content based on your specific job duties. Since we're a six-person outfit, you might wear multiple hats, but we can group our responsibilities to cover what each person needs:\n\n• **General Awareness for All Roles:** First off, everyone gets the baseline training (that's the AT-2 stuff above – security awareness, phishing, basic IT hygiene, etc.). That covers the common ground applicable to every role. No one is exempt from knowing things like how to spot a scam or why we don't share passwords. But on top of that…\n\n• **Technical/Developer Roles:** If you are a developer, DevOps engineer, or otherwise handle our AWS cloud environment, codebase, or infrastructure (looking at you, Savvy and Braden!), you receive specialized training before you get production access, and annually thereafter, focusing on those areas. This includes topics like secure coding practices, code review with a security mindset, secure configuration of AWS services, vulnerability management, and incident response procedures. For example, you'll learn about how to avoid common coding vulnerabilities (like SQL injection, cross-site scripting – all the \"fun\" stuff) and how to properly manage access keys and secrets in AWS. We might use real-world scenarios (e.g., \"What do you do if you find a security bug in the app?\") to train our tech folks. Don't worry, we keep it practical – no 100-slide death by PowerPoint. If you're writing code or deploying infrastructure, this training is a must before you touch live systems. Think of it as earning your \"keys to the kingdom\" – or in Savvy's case, the keys to the samurai dojo. 🗝️\n\n• **Operational/Administrative Roles:** If your role is more on the operations, support, or administrative side (Shelly, this definitely includes you as our FedRAMP Coordinator!), you'll get role-based guidance on things like data handling procedures, privacy considerations, and policy compliance. For instance, if someone handles customer support emails or business records, we'll train them on not sharing sensitive info over insecure channels, recognizing social engineering attempts (since support folks can be targets for trickery), and maintaining confidentiality. We don't currently collect PII/PHI, but support might deal with user inquiries – so it's still important to protect any user communications and not divulge internal info. This role-based content ensures even non-engineers know the rules relevant to their work (e.g., how to use Google Drive securely for documents, how to verify identity of a customer before discussing account details, etc.).\n\n• **Executive/Leadership Roles:** Well, we basically have Pete (CTO) and Dave (President) – plus others who might not be hands-on tech but have oversight. For leadership, the training emphasizes understanding compliance requirements (FedRAMP, VA requirements, etc.), risk management, and driving the security culture. Pete, for example, gets training on staying current with FedRAMP updates and how to respond to security audits from ScaleSec. He's also our in-house trainer, so part of his \"role-based\" training is actually training on how to train others and keep the program effective. Dave might use his psychic abilities to sense security risks before they manifest (kidding!), but he also needs to understand the strategic security landscape. In a small company, leaders lead by example: you'll notice Pete always completes his training first (well, maybe not first if he's running late, but he gets it done), and he'll often attend external security webinars to bring back knowledge. So leadership's role training is about being able to champion security and privacy at the organizational level.\n\n• **Sales & Clinical Roles:** Krista, as our Director of Sales and Clinical Education, gets specialized training on handling customer communications securely, especially given our VA customer base. Her nursing background actually helps here – she already knows about confidentiality and verification procedures from her L&D days! We'll ensure she knows how to discuss our security features with potential clients without revealing sensitive implementation details.\n\n• **Multiple Hats / Cross-Training:** Given our size, it's common for one person to fill several roles. In those cases, you'll receive all relevant training modules. We're not going to double the time, but we integrate the content. For example, if you're a developer who also does customer support (maybe while skateboarding, Braden?), you might sit in both the technical training and any ops-focused briefing. The beauty is you get a well-rounded perspective – and you might even help connect the dots (\"Oh, so that's why the support team needs me to build that feature securely\").\n\n• **Timing – Before Privileged Access & Annual Updates:** We ensure that role-based training is completed before you're granted any privileged access or new role responsibilities, and then at least yearly after that. For instance, if you're moving into a DevOps role and will get AWS admin rights, you'll go through a cloud security training module first. Or if we hire a contractor to help with a task, we'll brief them on relevant security procedures before they start. Then, like general training, we'll refresh this role-specific training annually. Each year, we re-evaluate what specialized knowledge needs to be reinforced or updated for each role. Did AWS release a new security feature we should use? We'll mention it. Did our procedures for customer data change? We'll update the ops training. Role-based content is reviewed and updated at least annually (more often if the job function or threats change significantly). We also incorporate any role-specific lessons learned from incidents into the next training. Example: if a developer fell for a targeted code-editing scam (rare, but imagine someone tricked a dev into inserting malicious code), that would definitely become a case study in the next dev training session so it doesn't happen again.\n\n• **Tracking Completion per Role:** We maintain a simple matrix of who needs what training. With six people, it's not hard – but it is important. Shelly helps Pete ensure that, say, all developers have done their secure coding module, all support-facing folks did the privacy module, etc. If you ever feel you haven't gotten training you need for your job, speak up! We'll get you covered. We want everyone to feel confident that they know how to do their job securely.\n\nTo keep things engaging, role-based training might involve more interactive elements. For example, developers might do a short secure code review exercise, and support staff might do a role-play of handling a tricky phone call from someone asking for info. We encourage folks to share tips from their experience too. By tailoring training to roles, we ensure relevance – you get info that helps you in your day-to-day work, not a bunch of abstract theory. And remember, even if something isn't directly in your role, it can be useful knowledge (no harm in a support person understanding a bit about how our code is secured, for instance). So we foster an environment where knowledge sharing is welcome.\n\n*(Light-hearted note:)* If you find yourself receiving all the role-based modules… you probably are Pete. 😜 Kidding aside, being in a small company means wearing multiple hats, which means learning a bit of everything. Look on the bright side: you'll be a well-rounded security ninja in no time – maybe even skilled enough to help Braden finally figure out which state he's from!\n\n---\n\nRemember: the goal of all this – policies, training, insider threat awareness, and role-specific knowledge – is to build a secure, privacy-conscious culture at ClearTriage. We're working hard toward our FedRAMP authorization, and that comes with responsibilities that each of us shares. By staying informed and engaged with this training content, you're doing your part to keep our app safe, our VA customer happy, and our compliance record spotless.\n\nThank you for taking the time to read through this and participate in the training. Security and privacy are truly team efforts, and every one of us is a crucial player. Keep the lessons from this training in mind as you go about your work – whether you're building houses by hand (Braden), preparing for a new arrival (Savvy), or using psychic debugging powers (Dave) – and don't hesitate to ask questions or raise concerns anytime.\n\nIn the wise words often repeated in security circles: \"Security is everybody's business.\" By being here and staying aware, you've just helped make our business that much more secure. Now, go forth and may your passwords be strong, your emails phish-free, and your jokes be as safe as our AWS servers! 😁👍\n\nIf you have any questions or need further clarification on any topic covered, reach out to Pete Allen (pete@cleartriage.com) or Dave if Pete's unavailable. They're always happy to help (and will be even happier that you were paying attention). Stay safe out there in cyberspace, team!"
-        }
-      ],
-      "quiz": [
-        {
-          "question": "When must role-based security training be completed?",
-          "options": [
-            "Only during annual reviews",
-            "Before privileged access is granted and annually thereafter",
-            "Whenever convenient for the employee",
-            "Only when starting a completely new role"
-          ],
-          "correctAnswer": 1
-        },
-        {
-          "question": "What type of specialized training do developers receive?",
-          "options": [
-            "Only general security awareness",
-            "Customer communication protocols",
-            "Secure coding practices and AWS configuration",
-            "Policy compliance and data handling"
-          ],
-          "correctAnswer": 2
-        },
-        {
-          "question": "How often is role-based training content reviewed and updated?",
-          "options": [
-            "Every 3 years",
-            "Only when incidents occur",
-            "At least annually",
-            "Never - it's static content"
-          ],
-          "correctAnswer": 2
-        },
-        {
-          "question": "What happens if a team member has multiple roles?",
-          "options": [
-            "They only need training for their primary role",
-            "They must complete separate training for each role",
-            "They receive all relevant training modules integrated together",
-            "They can choose which role training to complete"
-          ],
-          "correctAnswer": 2
-        }
-      ]
+      "file": "3.json"
     }
   ]
 }
+  
+  
+  
+  
+  
+  
+  

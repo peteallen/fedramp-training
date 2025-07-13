@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import modulesData from '../data/modules.json'
+import modulesIndex from '../data/modules.json'
 
 interface ModuleContent {
   type: string
@@ -39,7 +39,7 @@ interface TrainingState {
   initialized: boolean
   
   // Actions
-  initializeModules: () => void
+  initializeModules: () => Promise<void>
   completeModule: (moduleId: number) => void
   updateProgress: (moduleId: number, progress: number) => void
   updateModuleAccess: (moduleId: number) => void
@@ -53,16 +53,38 @@ interface TrainingState {
   clearAllData: () => void
 }
 
-// Helper function to convert JSON modules to TrainingModule format
-const convertJSONModules = (jsonModules: any[]): TrainingModule[] => {
-  return jsonModules.map(module => ({
-    ...module,
+// Helper function to load a single module from its file
+const loadModule = async (moduleInfo: { id: number; file: string }): Promise<TrainingModule> => {
+  // Import the module with explicit file extension for Vite compatibility
+  let moduleData;
+  switch (moduleInfo.file) {
+    case '1.json':
+      moduleData = await import('../data/modules/1.json');
+      break;
+    case '2.json':
+      moduleData = await import('../data/modules/2.json');
+      break;
+    case '3.json':
+      moduleData = await import('../data/modules/3.json');
+      break;
+    default:
+      throw new Error(`Unknown module file: ${moduleInfo.file}`);
+  }
+  
+  return {
+    ...moduleData.default,
     completed: false,
     progress: 0,
     lastAccessed: undefined,
     timeSpent: 0,
     quizScore: undefined
-  }))
+  }
+}
+
+// Helper function to load all modules
+const loadAllModules = async (): Promise<TrainingModule[]> => {
+  const modulePromises = modulesIndex.modules.map(moduleInfo => loadModule(moduleInfo))
+  return Promise.all(modulePromises)
 }
 
 export const useTrainingStore = create<TrainingState>()(
@@ -74,15 +96,21 @@ export const useTrainingStore = create<TrainingState>()(
       overallProgress: 0,
       initialized: false,
 
-      initializeModules: () => {
+      initializeModules: async () => {
         const state = get()
         if (!state.initialized) {
-          const modules = convertJSONModules(modulesData.modules)
-          set({
-            modules,
-            totalCount: modules.length,
-            initialized: true
-          })
+          try {
+            const modules = await loadAllModules()
+            set({
+              modules,
+              totalCount: modules.length,
+              initialized: true
+            })
+          } catch (error) {
+            console.error('Failed to load modules:', error)
+            // Still set initialized to true to prevent infinite retries
+            set({ initialized: true })
+          }
         }
       },
 
@@ -213,19 +241,30 @@ export const useTrainingStore = create<TrainingState>()(
         return get().modules.filter(module => module.difficulty === difficulty)
       },
 
-      clearAllData: () => {
+      clearAllData: async () => {
         // Clear localStorage
         localStorage.removeItem('training-storage')
         
         // Reset state to initial values
-        const modules = convertJSONModules(modulesData.modules)
-        set({
-          modules,
-          completedCount: 0,
-          totalCount: modules.length,
-          overallProgress: 0,
-          initialized: true
-        })
+        try {
+          const modules = await loadAllModules()
+          set({
+            modules,
+            completedCount: 0,
+            totalCount: modules.length,
+            overallProgress: 0,
+            initialized: true
+          })
+        } catch (error) {
+          console.error('Failed to reload modules:', error)
+          set({
+            modules: [],
+            completedCount: 0,
+            totalCount: 0,
+            overallProgress: 0,
+            initialized: true
+          })
+        }
       },
     }),
     {
