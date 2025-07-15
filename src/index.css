@@ -117,5 +117,166 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Enhanced typography base styles */
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Custom syntax highlighting styles */
+  .hljs {
+    background: theme(colors.gray.50) !important;
+    color: theme(colors.gray.900) !important;
+    border-radius: theme(borderRadius.lg);
+    padding: theme(spacing.4);
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Source Code Pro', monospace;
+    line-height: 1.6;
+    border: 1px solid theme(colors.gray.200);
+  }
+  
+  .dark .hljs {
+    background: theme(colors.gray.950) !important;
+    color: theme(colors.gray.100) !important;
+    border-color: theme(colors.gray.700);
+  }
+  
+  /* Syntax highlighting colors */
+  .hljs-comment,
+  .hljs-quote {
+    color: theme(colors.gray.500);
+    font-style: italic;
+  }
+  
+  .dark .hljs-comment,
+  .dark .hljs-quote {
+    color: theme(colors.gray.400);
+  }
+  
+  .hljs-keyword,
+  .hljs-selector-tag,
+  .hljs-subst {
+    color: theme(colors.purple.600);
+    font-weight: 600;
+  }
+  
+  .dark .hljs-keyword,
+  .dark .hljs-selector-tag,
+  .dark .hljs-subst {
+    color: theme(colors.purple.400);
+  }
+  
+  .hljs-number,
+  .hljs-literal,
+  .hljs-variable,
+  .hljs-template-variable {
+    color: theme(colors.blue.600);
+  }
+  
+  .dark .hljs-number,
+  .dark .hljs-literal,
+  .dark .hljs-variable,
+  .dark .hljs-template-variable {
+    color: theme(colors.blue.400);
+  }
+  
+  .hljs-string,
+  .hljs-doctag {
+    color: theme(colors.green.600);
+  }
+  
+  .dark .hljs-string,
+  .dark .hljs-doctag {
+    color: theme(colors.green.400);
+  }
+  
+  .hljs-title,
+  .hljs-section,
+  .hljs-selector-id {
+    color: theme(colors.yellow.600);
+    font-weight: 600;
+  }
+  
+  .dark .hljs-title,
+  .dark .hljs-section,
+  .dark .hljs-selector-id {
+    color: theme(colors.yellow.400);
+  }
+  
+  .hljs-attr,
+  .hljs-name,
+  .hljs-attribute {
+    color: theme(colors.red.600);
+  }
+  
+  .dark .hljs-attr,
+  .dark .hljs-name,
+  .dark .hljs-attribute {
+    color: theme(colors.red.400);
+  }
+  
+  /* Enhanced readability for code blocks */
+  .prose pre {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Source Code Pro', monospace;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  
+  .prose code {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Source Code Pro', monospace;
+  }
+  
+  /* Better spacing for lists in prose */
+  .prose ul > li::marker {
+    color: theme(colors.blue.500);
+  }
+  
+  .prose ol > li::marker {
+    color: theme(colors.blue.500);
+    font-weight: 600;
+  }
+  
+  /* Enhanced blockquote styling */
+  .prose blockquote {
+    border-left: 4px solid theme(colors.blue.500);
+    background: theme(colors.blue.50);
+    margin: theme(spacing.6) 0;
+    padding: theme(spacing.4);
+    font-style: italic;
+    position: relative;
+  }
+  
+  .dark .prose blockquote {
+    background: theme(colors.blue.900 / 20%);
+    border-left-color: theme(colors.blue.400);
+  }
+  
+  /* Enhanced table styling */
+  .prose table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: theme(spacing.6) 0;
+  }
+  
+  .prose th {
+    background: theme(colors.gray.50);
+    border: 1px solid theme(colors.gray.300);
+    padding: theme(spacing.3) theme(spacing.4);
+    text-align: left;
+    font-weight: 600;
+  }
+  
+  .dark .prose th {
+    background: theme(colors.gray.800);
+    border-color: theme(colors.gray.600);
+  }
+  
+  .prose td {
+    border: 1px solid theme(colors.gray.300);
+    padding: theme(spacing.3) theme(spacing.4);
+  }
+  
+  .dark .prose td {
+    border-color: theme(colors.gray.600);
   }
 }

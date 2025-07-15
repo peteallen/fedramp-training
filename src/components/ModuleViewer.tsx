@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { useTrainingStore } from '@/stores/trainingStore'
-import { FaArrowLeft, FaArrowRight, FaCheck, FaTimes, FaLightbulb, FaQuestionCircle, FaBookOpen, FaClock, FaGraduationCap, FaUserShield } from 'react-icons/fa'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkBreaks from 'remark-breaks'
+import rehypeHighlight from 'rehype-highlight'
+import { FaArrowLeft, FaArrowRight, FaCheck, FaTimes, FaLightbulb, FaQuestionCircle, FaBookOpen, FaClock, FaGraduationCap, FaUserShield } from 'react-icons/fa'
+import { Button } from '@/components/ui/button'
+import { useTrainingStore } from '@/stores/trainingStore'
 
 interface ModuleViewerProps {
   moduleId: number
@@ -108,16 +110,6 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
       conclusion: FaCheck,
     }
     return iconMap[type as keyof typeof iconMap] || FaBookOpen
-  }
-
-  const formatContent = (content: string) => {
-    // Split content into paragraphs and add some formatting
-    const paragraphs = content.split('\n\n')
-    return paragraphs.map((paragraph, index) => (
-      <p key={index} className="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed">
-        {paragraph}
-      </p>
-    ))
   }
 
   if (showQuiz && !quizSubmitted) {
@@ -339,8 +331,29 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
             </h2>
           </div>
 
-          <div className="prose prose-lg prose-gray dark:prose-invert max-w-none prose-headings:text-gray-800 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-strong:text-gray-900 dark:prose-strong:text-gray-100 prose-a:text-blue-600 dark:prose-a:text-blue-400">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{currentContent.content}</ReactMarkdown>
+          <div className="prose prose-xl prose-slate dark:prose-invert max-w-none
+            prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-gray-50
+            prose-h1:text-3xl prose-h1:leading-tight prose-h1:mb-6
+            prose-h2:text-2xl prose-h2:leading-snug prose-h2:mt-8 prose-h2:mb-4 prose-h2:border-b prose-h2:border-gray-200 dark:prose-h2:border-gray-700 prose-h2:pb-2
+            prose-h3:text-xl prose-h3:leading-snug prose-h3:mt-6 prose-h3:mb-3
+            prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-4
+            prose-strong:text-gray-900 dark:prose-strong:text-gray-100 prose-strong:font-semibold
+            prose-em:text-gray-800 dark:prose-em:text-gray-200
+            prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:font-medium hover:prose-a:text-blue-700 dark:hover:prose-a:text-blue-300
+            prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 dark:prose-blockquote:bg-blue-900/20 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:italic
+            prose-ul:space-y-2 prose-ol:space-y-2
+            prose-li:text-gray-700 dark:prose-li:text-gray-300 prose-li:leading-relaxed
+            prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-sm
+            prose-pre:bg-gray-900 dark:prose-pre:bg-gray-950 prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-700 prose-pre:rounded-lg prose-pre:overflow-x-auto
+            prose-table:border-collapse prose-table:w-full
+            prose-th:border prose-th:border-gray-300 dark:prose-th:border-gray-600 prose-th:bg-gray-50 dark:prose-th:bg-gray-800 prose-th:px-4 prose-th:py-2 prose-th:text-left prose-th:font-semibold
+            prose-td:border prose-td:border-gray-300 dark:prose-td:border-gray-600 prose-td:px-4 prose-td:py-2">
+            <ReactMarkdown 
+              remarkPlugins={[remarkGfm, remarkBreaks]}
+              rehypePlugins={[rehypeHighlight]}
+            >
+              {currentContent.content}
+            </ReactMarkdown>
           </div>
 
           {currentSection === 0 && (

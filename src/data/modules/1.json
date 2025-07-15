@@ -25,7 +25,7 @@
     {
       "type": "section",
       "title": "AT-1: Security Awareness & Training Policy Overview",
-      "content": "We have a formal **Security and Privacy Awareness and Training Policy** (because even a 6-person startup needs some paperwork 📄). This policy – along with detailed procedures – outlines how we do security training and keep everyone aware of best practices. Let's break down the key points about our policy and procedures."
+      "content": "We have a formal **Security and Privacy Awareness and Training Policy** (because even a 6-person startup needs some paperwork 📄). This policy – along with detailed procedures – outlines how we do security training and keep everyone aware of best practices.\n\n> **Important Note:** This policy framework ensures we meet FedRAMP requirements while maintaining our startup agility and culture.\n\nLet's break down the key points about our policy and procedures:\n\n### Key Policy Components\n\n| Component | Description | Frequency |\n|-----------|-------------|----------|\n| Initial Training | New hire security awareness | Within first week |\n| Annual Refresher | Complete policy review | Yearly |\n| Role-based Training | Specialized by job function | As needed |\n| Incident Response | Training after security events | Immediate |\n\n### Quick Reference Commands\n\nFor accessing policy documents in our system:\n\n```bash\n# Access the main policy document\naws s3 cp s3://cleartriage-policies/security-training-policy.pdf .\n\n# View current training status\ngrep \"training_completed\" team-status.json\n```\n\nRemember: Security training isn't just a compliance checkbox – it's our collective shield against cyber threats! 🛡️"
     },
     {
       "type": "section",
