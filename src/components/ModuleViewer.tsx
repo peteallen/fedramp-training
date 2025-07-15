@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { useTrainingStore } from '@/stores/trainingStore'
 import { FaArrowLeft, FaArrowRight, FaCheck, FaTimes, FaLightbulb, FaQuestionCircle, FaBookOpen, FaClock, FaGraduationCap, FaUserShield } from 'react-icons/fa'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 interface ModuleViewerProps {
   moduleId: number
@@ -338,7 +340,7 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
           </div>
 
           <div className="prose prose-lg max-w-none">
-            {formatContent(currentContent.content)}
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{currentContent.content}</ReactMarkdown>
           </div>
 
           {currentSection === 0 && (
