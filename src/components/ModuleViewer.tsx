@@ -339,9 +339,10 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
             </h2>
           </div>
 
-          <div className="prose prose-lg prose-gray dark:prose-invert max-w-none prose-headings:text-gray-800 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-strong:text-gray-900 dark:prose-strong:text-gray-100 prose-a:text-blue-600 dark:prose-a:text-blue-400">
+          {/* Apply Tailwind Typography plugin classes for rich text styling */}
+          <article className="prose prose-lg dark:prose-invert max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{currentContent.content}</ReactMarkdown>
-          </div>
+          </article>
 
           {currentSection === 0 && (
             <div className="mt-8 bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6">
