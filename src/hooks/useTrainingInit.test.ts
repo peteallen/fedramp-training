@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook } from '@testing-library/react'
-import { useTrainingInit } from './useTrainingInit'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { useTrainingStore } from '@/stores/trainingStore'
+import { useTrainingInit } from './useTrainingInit'
 
 // Mock the training store
 vi.mock('@/stores/trainingStore', () => ({

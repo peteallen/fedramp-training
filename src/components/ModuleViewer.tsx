@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-import { useTrainingStore } from '@/stores/trainingStore'
 import { FaArrowLeft, FaArrowRight, FaCheck, FaTimes, FaLightbulb, FaQuestionCircle, FaBookOpen, FaClock, FaGraduationCap, FaUserShield } from 'react-icons/fa'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { Button } from '@/components/ui/button'
+import { useTrainingStore } from '@/stores/trainingStore'
 
 interface ModuleViewerProps {
   moduleId: number
@@ -108,16 +108,6 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
       conclusion: FaCheck,
     }
     return iconMap[type as keyof typeof iconMap] || FaBookOpen
-  }
-
-  const formatContent = (content: string) => {
-    // Split content into paragraphs and add some formatting
-    const paragraphs = content.split('\n\n')
-    return paragraphs.map((paragraph, index) => (
-      <p key={index} className="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed">
-        {paragraph}
-      </p>
-    ))
   }
 
   if (showQuiz && !quizSubmitted) {
