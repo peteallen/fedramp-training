@@ -1,6 +1,6 @@
+import { FaShieldAlt, FaBookOpen, FaChartBar, FaUsers, FaCloud, FaExclamationTriangle, FaFileAlt, FaEye, FaUserTie } from 'react-icons/fa'
 import { Button } from '@/components/ui/button'
 import { useTrainingStore } from '@/stores/trainingStore'
-import { FaShieldAlt, FaBookOpen, FaChartBar, FaUsers, FaCloud, FaExclamationTriangle, FaFileAlt, FaEye, FaUserTie } from 'react-icons/fa'
 
 interface ModuleCardProps {
   moduleId: number

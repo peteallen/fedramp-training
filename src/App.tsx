@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { ThemeToggle } from '@/components/ThemeToggle'
-import { useTrainingStore } from '@/stores/trainingStore'
-import { useTrainingInit } from '@/hooks/useTrainingInit'
+import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { ModuleCard } from '@/components/ModuleCard'
 import { ModuleViewer } from '@/components/ModuleViewer'
-import { ConfirmDialog } from '@/components/ConfirmDialog'
+import { ThemeToggle } from '@/components/ThemeToggle'
 import { Button } from '@/components/ui/button'
+import { useTrainingInit } from '@/hooks/useTrainingInit'
+import { useTrainingStore } from '@/stores/trainingStore'
 
 function App() {
   const { modules, completedCount, totalCount, overallProgress, clearAllData } = useTrainingStore()

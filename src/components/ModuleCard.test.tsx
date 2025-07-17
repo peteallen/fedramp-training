@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ModuleCard } from './ModuleCard'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { useTrainingStore } from '@/stores/trainingStore'
+import { ModuleCard } from './ModuleCard'
 
 // Mock the training store
 vi.mock('@/stores/trainingStore', () => ({

@@ -45,10 +45,19 @@ export const ConfirmDialog = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Overlay */}
-      <div 
+      <div
         className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+        role="button"
+        tabIndex={0}
         onClick={onCancel}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            onCancel()
+          }
+        }}
         data-testid="dialog-overlay"
+        aria-label="Close dialog"
       />
       
       {/* Dialog */}

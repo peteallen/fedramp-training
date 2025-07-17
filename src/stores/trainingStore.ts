@@ -128,6 +128,7 @@ export const useTrainingStore = create<TrainingState>()(
             }
           })
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.error('Failed to load modules:', error)
           set({ initialized: true })
         }
@@ -275,6 +276,7 @@ export const useTrainingStore = create<TrainingState>()(
             initialized: true
           })
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.error('Failed to reload modules:', error)
           set({
             modules: [],
@@ -314,7 +316,7 @@ if (import.meta.hot) {
   // Helper to register an HMR accept handler for a single JSON file
   const acceptUpdate = (path: string, moduleId: number) => {
     // Vite will re-import the updated JSON and pass it to the callback
-    import.meta.hot!.accept(path, (mod: any) => {
+    import.meta.hot.accept(path, (mod: { default?: Partial<TrainingModule> }) => {
       if (!mod?.default) return
       // Merge the fresh JSON content into the existing module while
       // preserving runtime fields like progress, completed, etc.
