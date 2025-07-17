@@ -34,6 +34,32 @@ vi.mock('@/components/ConfirmDialog', () => ({
   ),
 }))
 
+// Mock the certificate components
+vi.mock('@/components/CertificateButton', () => ({
+  CertificateButton: () => <button data-testid="certificate-button">🏆 Generate Certificate</button>,
+}))
+
+vi.mock('@/components/CertificateModal', () => ({
+  CertificateModal: ({ isOpen, onClose }: any) => (
+    isOpen ? (
+      <div data-testid="certificate-modal">
+        <button onClick={onClose}>Close</button>
+      </div>
+    ) : null
+  ),
+}))
+
+// Mock the certificate store
+vi.mock('@/stores/certificateStore', () => ({
+  useCertificateStore: vi.fn(() => ({
+    showModal: false,
+    setShowModal: vi.fn(),
+    saveUserData: vi.fn(),
+    setGenerating: vi.fn(),
+    addGeneratedCertificate: vi.fn(),
+  })),
+}))
+
 describe('App', () => {
   const mockStoreData = {
     modules: [
@@ -196,6 +222,9 @@ describe('App', () => {
     const twos = screen.getAllByText('2')
     expect(twos).toHaveLength(2) // One for completed count, one for total count
     expect(screen.getByText('All training completed! 🎉')).toBeInTheDocument()
+    
+    // Certificate button should be visible when training is complete
+    expect(screen.getByTestId('certificate-button')).toBeInTheDocument()
   })
 
   it('should render theme toggle', () => {
@@ -204,4 +233,12 @@ describe('App', () => {
     // The ThemeToggle component should be rendered in the header
     expect(document.querySelector('.absolute.top-0.right-0')).toBeInTheDocument()
   })
+
+  it('should render certificate button in progress section', () => {
+    render(<App />)
+    
+    expect(screen.getByTestId('certificate-button')).toBeInTheDocument()
+  })
+
+
 }) 

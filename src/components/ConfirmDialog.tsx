@@ -77,6 +77,7 @@ export const ConfirmDialog = ({
             variant="outline" 
             onClick={onCancel}
             className="px-4 py-2"
+            autoFocus
           >
             {cancelText}
           </Button>

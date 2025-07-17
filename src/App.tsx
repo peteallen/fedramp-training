@@ -1,14 +1,20 @@
 import { useState } from 'react'
-import { ConfirmDialog } from '@/components/ConfirmDialog'
+import { ThemeToggle } from '@/components/ThemeToggle'
+import { useTrainingStore } from '@/stores/trainingStore'
+import { useCertificateStore } from '@/stores/certificateStore'
+import { useTrainingInit } from '@/hooks/useTrainingInit'
 import { ModuleCard } from '@/components/ModuleCard'
 import { ModuleViewer } from '@/components/ModuleViewer'
-import { ThemeToggle } from '@/components/ThemeToggle'
+import { ConfirmDialog } from '@/components/ConfirmDialog'
+import { CertificateButton } from '@/components/CertificateButton'
+import { CertificateModal } from '@/components/CertificateModal'
 import { Button } from '@/components/ui/button'
 import { useTrainingInit } from '@/hooks/useTrainingInit'
 import { useTrainingStore } from '@/stores/trainingStore'
 
 function App() {
   const { modules, completedCount, totalCount, overallProgress, clearAllData } = useTrainingStore()
+  const { showModal, setShowModal, saveUserData, setGenerating, addGeneratedCertificate } = useCertificateStore()
   const { initialized } = useTrainingInit()
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [currentModuleId, setCurrentModuleId] = useState<number | null>(null)
@@ -32,6 +38,92 @@ function App() {
 
   const handleBackToModules = () => {
     setCurrentModuleId(null)
+  }
+
+  const handleCloseCertificateModal = () => {
+    setShowModal(false)
+  }
+
+  const handleGenerateCertificate = async (userData: { fullName: string }) => {
+    try {
+      setGenerating(true)
+      
+      // Save user data for future use
+      saveUserData(userData)
+      
+      // Import certificate service and template dynamically to reduce bundle size
+      const [{ CertificateService }, { CertificateTemplate }] = await Promise.all([
+        import('@/services/certificateService'),
+        import('@/components/CertificateTemplate')
+      ])
+      
+      // Extract completion data
+      const { extractCompletionData } = await import('@/stores/certificateStore')
+      const completionData = extractCompletionData()
+      
+      if (!completionData) {
+        throw new Error('Training not completed. Please complete all modules first.')
+      }
+      
+      // Generate certificate ID and create certificate data
+      const certificateId = CertificateService.generateCertificateId()
+      const issueDate = new Date()
+      
+      // Create a temporary container for the certificate template
+      const tempContainer = document.createElement('div')
+      tempContainer.style.position = 'absolute'
+      tempContainer.style.left = '-9999px'
+      tempContainer.style.top = '-9999px'
+      tempContainer.style.width = '11in'
+      tempContainer.style.height = '8.5in'
+      document.body.appendChild(tempContainer)
+      
+      // Render the certificate template
+      const { createRoot } = await import('react-dom/client')
+      const root = createRoot(tempContainer)
+      
+      await new Promise<void>((resolve) => {
+        root.render(
+          CertificateTemplate({
+            userData,
+            completionData,
+            certificateId,
+            issueDate
+          })
+        )
+        // Wait for rendering to complete
+        setTimeout(resolve, 100)
+      })
+      
+      // Generate filename and PDF
+      const filename = CertificateService.generateFilename(userData.fullName, issueDate)
+      await CertificateService.generatePDF(tempContainer.firstElementChild as HTMLElement, filename)
+      
+      // Save certificate to history
+      addGeneratedCertificate({
+        id: certificateId,
+        issueDate,
+        userData,
+        completionSnapshot: completionData
+      })
+      
+      // Clean up
+      root.unmount()
+      document.body.removeChild(tempContainer)
+      
+      // Close modal
+      setShowModal(false)
+      
+      // Show success message
+      alert('Certificate generated successfully! Your certificate has been downloaded.')
+      
+    } catch (error) {
+      console.error('Certificate generation failed:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Failed to generate certificate. Please try again.'
+      alert(`Certificate generation failed: ${errorMessage}`)
+    } finally {
+      setGenerating(false)
+    }
   }
 
   if (!initialized) {
@@ -126,9 +218,14 @@ function App() {
               style={{ width: `${overallProgress}%` }}
             ></div>
           </div>
-          <p className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300">
+          <p className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
             {overallProgress === 100 ? 'All training completed! 🎉' : `${overallProgress}% Complete`}
           </p>
+          
+          {/* Certificate Button - only shown when training is complete */}
+          <div className="flex justify-center">
+            <CertificateButton />
+          </div>
         </div>
 
         <div className="mt-8 bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6">
@@ -160,6 +257,12 @@ function App() {
         cancelText="Cancel"
         onConfirm={handleConfirmReset}
         onCancel={handleCancelReset}
+      />
+
+      <CertificateModal
+        isOpen={showModal}
+        onClose={handleCloseCertificateModal}
+        onGenerate={handleGenerateCertificate}
       />
     </div>
   )

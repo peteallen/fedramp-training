@@ -329,7 +329,17 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
             </h2>
           </div>
 
-          <div className="prose prose-lg prose-gray dark:prose-invert max-w-none prose-headings:text-gray-800 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-strong:text-gray-900 dark:prose-strong:text-gray-100 prose-a:text-blue-600 dark:prose-a:text-blue-400">
+          <div className="prose prose-lg prose-gray dark:prose-invert max-w-none 
+                         prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-gray-100 
+                         prose-h1:text-2xl prose-h1:mb-6 prose-h1:mt-8 prose-h1:leading-tight
+                         prose-h2:text-xl prose-h2:mb-4 prose-h2:mt-6 prose-h2:leading-tight
+                         prose-h3:text-lg prose-h3:mb-3 prose-h3:mt-5 prose-h3:leading-tight
+                         prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-4
+                         prose-strong:text-gray-900 dark:prose-strong:text-gray-100 prose-strong:font-semibold
+                         prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:font-medium prose-a:no-underline hover:prose-a:underline
+                         prose-ul:my-4 prose-li:my-1 prose-li:leading-relaxed
+                         prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-4 prose-blockquote:italic
+                         prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{currentContent.content}</ReactMarkdown>
           </div>
 

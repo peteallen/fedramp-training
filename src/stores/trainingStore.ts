@@ -29,6 +29,7 @@ interface TrainingModule {
   lastAccessed?: Date
   timeSpent?: number
   quizScore?: number
+  completionDate?: Date
 }
 
 interface TrainingState {
@@ -51,6 +52,14 @@ interface TrainingState {
   getModulesByCategory: (category: string) => TrainingModule[]
   getModulesByDifficulty: (difficulty: string) => TrainingModule[]
   clearAllData: () => void
+}
+
+// Add interface for persisted state
+interface PersistedTrainingState {
+  modules: Pick<TrainingModule, 'id' | 'completed' | 'progress' | 'lastAccessed' | 'timeSpent' | 'quizScore' | 'completionDate'>[]
+  completedCount: number
+  totalCount: number
+  overallProgress: number
 }
 
 // Helper function to load a single module from its file
@@ -77,7 +86,8 @@ const loadModule = async (moduleInfo: { id: number; file: string }): Promise<Tra
     progress: 0,
     lastAccessed: undefined,
     timeSpent: 0,
-    quizScore: undefined
+    quizScore: undefined,
+    completionDate: undefined
   }
 }
 
@@ -87,7 +97,7 @@ const loadAllModules = async (): Promise<TrainingModule[]> => {
   return Promise.all(modulePromises)
 }
 
-export const useTrainingStore = create<TrainingState>()(
+export const useTrainingStore = create<TrainingState, [["zustand/persist", PersistedTrainingState]]>()(
   persist(
     (set, get) => ({
       modules: [],
@@ -97,6 +107,9 @@ export const useTrainingStore = create<TrainingState>()(
       initialized: false,
 
       initializeModules: async () => {
+        const state = get();
+        if (state.initialized) return;
+
         try {
           const freshModules = await loadAllModules()
 
@@ -112,6 +125,7 @@ export const useTrainingStore = create<TrainingState>()(
                     lastAccessed: existing.lastAccessed,
                     timeSpent: existing.timeSpent,
                     quizScore: existing.quizScore,
+                    completionDate: existing.completionDate || (existing.completed && existing.lastAccessed ? existing.lastAccessed : undefined)
                   }
                 : fresh
             })
@@ -138,7 +152,7 @@ export const useTrainingStore = create<TrainingState>()(
         set((state) => {
           const updatedModules = state.modules.map((module) =>
             module.id === moduleId
-              ? { ...module, completed: true, progress: 100, lastAccessed: new Date() }
+              ? { ...module, completed: true, progress: 100, lastAccessed: new Date(), completionDate: module.completionDate || new Date() }
               : module
           )
           const completedCount = updatedModules.filter(m => m.completed).length
@@ -160,7 +174,8 @@ export const useTrainingStore = create<TrainingState>()(
                   ...module, 
                   progress, 
                   completed: progress >= 100,
-                  lastAccessed: new Date()
+                  lastAccessed: new Date(),
+                  completionDate: (progress >= 100 && !module.completed) ? new Date() : module.completionDate
                 }
               : module
           )
@@ -206,14 +221,15 @@ export const useTrainingStore = create<TrainingState>()(
       },
 
       resetProgress: () => {
-        set((state) => {
-          const resetModules = state.modules.map(module => ({
+        set((state: TrainingState) => {
+          const resetModules = state.modules.map((module: TrainingModule) => ({
             ...module,
             completed: false,
             progress: 0,
             lastAccessed: undefined,
             timeSpent: 0,
-            quizScore: undefined
+            quizScore: undefined,
+            completionDate: undefined
           }))
           
           return {
@@ -225,8 +241,8 @@ export const useTrainingStore = create<TrainingState>()(
       },
 
       resetModule: (moduleId: number) => {
-        set((state) => {
-          const updatedModules = state.modules.map((module) =>
+        set((state: TrainingState) => {
+          const updatedModules = state.modules.map((module: TrainingModule) =>
             module.id === moduleId
               ? { 
                   ...module, 
@@ -234,11 +250,12 @@ export const useTrainingStore = create<TrainingState>()(
                   progress: 0,
                   lastAccessed: undefined,
                   timeSpent: 0,
-                  quizScore: undefined
+                  quizScore: undefined,
+                  completionDate: undefined
                 }
               : module
           )
-          const completedCount = updatedModules.filter(m => m.completed).length
+          const completedCount = updatedModules.filter((m: TrainingModule) => m.completed).length
           const overallProgress = Math.round((completedCount / state.totalCount) * 100)
           
           return {
@@ -290,16 +307,17 @@ export const useTrainingStore = create<TrainingState>()(
     }),
     {
       name: 'training-storage',
-      partialize: (state) => ({
+      partialize: (state: TrainingState) => ({
         // Persist only progress-related fields to keep storage small and
         // ensure content can be refreshed from disk on reload.
-        modules: state.modules.map((m) => ({
+        modules: state.modules.map((m: TrainingModule) => ({
           id: m.id,
           completed: m.completed,
           progress: m.progress,
           lastAccessed: m.lastAccessed,
           timeSpent: m.timeSpent,
           quizScore: m.quizScore,
+          completionDate: m.completionDate
         })),
         completedCount: state.completedCount,
         totalCount: state.totalCount,

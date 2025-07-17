@@ -1,0 +1,338 @@
+/* Certificate Template Styles - Optimized for PDF Generation */
+
+.certificate-container {
+  width: 8.5in;
+  height: 11in;
+  margin: 0;
+  padding: 0;
+  background: white;
+  font-family: 'Times New Roman', Times, serif;
+  color: #1a1a1a;
+  box-sizing: border-box;
+  page-break-inside: avoid;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.certificate-border {
+  width: 100%;
+  height: 100%;
+  border: 8px solid #2563eb;
+  border-radius: 12px;
+  padding: 40px;
+  box-sizing: border-box;
+  position: relative;
+  background: linear-gradient(135deg, #fefefe 0%, #f8fafc 100%);
+}
+
+/* Header Section */
+.certificate-header {
+  text-align: center;
+  margin-bottom: 40px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 30px;
+}
+
+.certificate-logo {
+  margin-bottom: 20px;
+}
+
+.logo-placeholder {
+  font-size: 32px;
+  font-weight: bold;
+  color: #2563eb;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: 'Arial', sans-serif;
+}
+
+.certificate-title {
+  font-size: 36px;
+  font-weight: bold;
+  color: #1e293b;
+  margin: 20px 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.certificate-subtitle {
+  font-size: 18px;
+  color: #64748b;
+  font-style: italic;
+  margin: 0;
+}
+
+/* Main Content */
+.certificate-content {
+  margin-bottom: 40px;
+}
+
+.certificate-recipient {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.recipient-label {
+  font-size: 16px;
+  color: #64748b;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+.recipient-name {
+  font-size: 42px;
+  font-weight: bold;
+  color: #2563eb;
+  margin: 15px 0;
+  text-decoration: underline;
+  text-decoration-color: #2563eb;
+  text-underline-offset: 8px;
+  text-decoration-thickness: 3px;
+}
+
+.completion-text {
+  font-size: 18px;
+  color: #374151;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 20px auto 0;
+}
+
+/* Completion Details */
+.completion-details {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.completion-date {
+  font-size: 16px;
+  color: #1e293b;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.completion-stats {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.stat-item {
+  font-size: 14px;
+  color: #374151;
+  text-align: center;
+}
+
+/* Modules Section */
+.modules-section {
+  margin-bottom: 30px;
+}
+
+.modules-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #1e293b;
+  margin-bottom: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.modules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.module-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.module-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.module-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.module-date {
+  font-size: 12px;
+  color: #64748b;
+  font-style: italic;
+}
+
+.module-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.module-score,
+.module-time {
+  font-size: 12px;
+  color: #059669;
+  font-weight: bold;
+}
+
+/* Footer Section */
+.certificate-footer {
+  border-top: 2px solid #e2e8f0;
+  padding-top: 30px;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.compliance-info {
+  text-align: center;
+}
+
+.compliance-text {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.5;
+  font-style: italic;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.certificate-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.issue-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.issue-date,
+.certificate-id {
+  font-size: 12px;
+  color: #374151;
+}
+
+.signature-section {
+  text-align: center;
+}
+
+.signature-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.signature-placeholder {
+  width: 200px;
+  height: 1px;
+  background: #1e293b;
+  margin-bottom: 5px;
+}
+
+.signature-label {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Print and PDF Optimizations */
+@media print {
+  .certificate-container {
+    width: 8.5in;
+    height: 11in;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+  
+  .certificate-border {
+    border-color: #2563eb !important;
+    background: white !important;
+  }
+  
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+/* Responsive adjustments for preview */
+@media screen and (max-width: 768px) {
+  .certificate-container {
+    width: 100%;
+    height: auto;
+    min-height: 11in;
+    transform: scale(0.8);
+    transform-origin: top center;
+  }
+  
+  .completion-stats {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .certificate-meta {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .module-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .module-stats {
+    align-items: flex-start;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .certificate-border {
+    border-color: #000000;
+    background: #ffffff;
+  }
+  
+  .certificate-title,
+  .recipient-name {
+    color: #000000;
+  }
+  
+  .completion-details {
+    background: #f0f0f0;
+    border-color: #000000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .certificate-container {
+    transition: none;
+  }
+}
