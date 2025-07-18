@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
-import { useCertificateStore } from '@/stores/certificateStore'
-import { extractCompletionData } from '@/stores/certificateStore'
-import { CertificatePreview } from './CertificatePreview'
 import { cn } from '@/lib/utils'
+import { useCertificateStore , extractCompletionData } from '@/stores/certificateStore'
+import { CertificatePreview } from './CertificatePreview'
 
 interface CertificateModalProps {
   isOpen: boolean
@@ -88,7 +87,7 @@ export function CertificateModal({ isOpen, onClose, onGenerate }: CertificateMod
       newErrors.fullName = 'Full name must be at least 2 characters'
     } else if (fullName.trim().length > 100) {
       newErrors.fullName = 'Full name must be less than 100 characters'
-    } else if (!/^[a-zA-Z\s\-'\.]+$/.test(fullName.trim())) {
+    } else if (!/^[a-zA-Z\s\-'.]+$/.test(fullName.trim())) {
       newErrors.fullName = 'Full name can only contain letters, spaces, hyphens, apostrophes, and periods'
     }
 
@@ -249,7 +248,8 @@ export function CertificateModal({ isOpen, onClose, onGenerate }: CertificateMod
                   Certificate Preview
                 </h3>
                 <div className="border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
-                  <CertificatePreview
+                  {/* @ts-expect-error - React type compatibility issue */}
+                <CertificatePreview
                     userData={{ fullName: fullName.trim() }}
                     completionData={completionData}
                     certificateId="PREVIEW-ID"

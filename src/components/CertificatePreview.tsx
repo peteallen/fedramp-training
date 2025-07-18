@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
-import type { CertificateUserData, CompletionData } from '@/types/certificate'
 import { cn } from '@/lib/utils'
+import type { CertificateUserData, CompletionData } from '@/types/certificate'
 
 interface CertificatePreviewProps {
   userData: CertificateUserData
@@ -22,16 +22,7 @@ export const CertificatePreview = forwardRef<HTMLDivElement, CertificatePreviewP
       })
     }
 
-    const formatTime = (minutes: number) => {
-      if (minutes < 60) {
-        return `${minutes} minutes`
-      }
-      const hours = Math.floor(minutes / 60)
-      const remainingMinutes = minutes % 60
-      return remainingMinutes > 0 
-        ? `${hours} hour${hours > 1 ? 's' : ''} ${remainingMinutes} minutes`
-        : `${hours} hour${hours > 1 ? 's' : ''}`
-    }
+
 
     return (
       <div 

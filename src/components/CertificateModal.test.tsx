@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { CertificateModal } from './CertificateModal'
 import { useCertificateStore, extractCompletionData } from '@/stores/certificateStore'
+import { CertificateModal } from './CertificateModal'
 
 // Mock the stores and functions
 vi.mock('@/stores/certificateStore')

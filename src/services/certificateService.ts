@@ -1,5 +1,5 @@
-import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
 import type { CertificateUserData, ValidationResult } from '../types/certificate'
 
 export class CertificateService {
@@ -30,7 +30,7 @@ export class CertificateService {
       errors.push('Full name is required')
     } else if (userData.fullName.trim().length > 100) {
       errors.push('Full name must be less than 100 characters')
-    } else if (!/^[a-zA-Z\s\-'\.]+$/.test(userData.fullName.trim())) {
+    } else if (!/^[a-zA-Z\s\-'.]+$/.test(userData.fullName.trim())) {
       errors.push('Full name can only contain letters, spaces, hyphens, apostrophes, and periods')
     }
 
@@ -90,8 +90,7 @@ export class CertificateService {
 
       // Save the PDF
       pdf.save(filename)
-    } catch (error) {
-      console.error('Error generating PDF:', error)
+    } catch (_error) {
       throw new Error('Failed to generate certificate PDF. Please try again.')
     }
   }

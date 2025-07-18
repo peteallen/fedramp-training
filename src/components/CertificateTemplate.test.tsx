@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { CertificateTemplate } from './CertificateTemplate'
+import { describe, it, expect } from 'vitest'
 import type { CertificateTemplateProps } from '../types/certificate'
+import { CertificateTemplate } from './CertificateTemplate'
 
 // Mock data for testing
 const mockProps: CertificateTemplateProps = {

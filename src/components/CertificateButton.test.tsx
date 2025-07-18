@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { CertificateButton } from './CertificateButton'
-import { useTrainingStore } from '@/stores/trainingStore'
 import { useCertificateStore } from '@/stores/certificateStore'
+import { useTrainingStore } from '@/stores/trainingStore'
+import { CertificateButton } from './CertificateButton'
 
 // Mock the stores
 vi.mock('@/stores/trainingStore')

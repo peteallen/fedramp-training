@@ -1,0 +1,23 @@
+{
+  "enabled": true,
+  "name": "Code Quality Analyzer",
+  "description": "Monitors source code files for changes and provides automated code quality analysis including code smells, design patterns, and best practices suggestions",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "src/**/*.js",
+      "src/**/*.jsx",
+      "*.ts",
+      "*.tsx",
+      "*.js",
+      "*.jsx"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Analyze the modified code files for potential improvements. Focus on:\n\n1. **Code Smells**: Identify any code smells like long functions, duplicate code, complex conditionals, or inappropriate naming\n2. **Design Patterns**: Suggest appropriate design patterns that could improve the code structure\n3. **Best Practices**: Check adherence to React, TypeScript, and general JavaScript best practices\n4. **Performance**: Look for potential performance optimizations without changing functionality\n5. **Readability**: Suggest improvements for code clarity and maintainability\n6. **Type Safety**: Ensure proper TypeScript usage and type definitions\n\nFor each suggestion, provide:\n- Clear explanation of the issue\n- Specific code example showing the improvement\n- Reasoning for why the change improves quality\n- Impact on readability, maintainability, or performance\n\nMaintain existing functionality while focusing on code quality improvements. Consider the project's React 18 + TypeScript + Vite stack and existing patterns."
+  }
+}

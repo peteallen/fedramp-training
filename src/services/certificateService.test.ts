@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
-import { CertificateService } from './certificateService'
 import type { CertificateUserData } from '../types/certificate'
+import { CertificateService } from './certificateService'
 
 // Mock crypto for testing
 Object.defineProperty(globalThis, 'crypto', {

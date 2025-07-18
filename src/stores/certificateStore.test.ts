@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
+import type { CertificateUserData, GeneratedCertificate } from '../types/certificate'
 import { useCertificateStore, extractCompletionData, isCertificateAvailable, getCompletionSummary } from './certificateStore'
 import { useTrainingStore } from './trainingStore'
-import type { CertificateUserData, GeneratedCertificate } from '../types/certificate'
 
 describe('useCertificateStore', () => {
   beforeEach(() => {
@@ -216,17 +216,19 @@ describe('Certificate Integration Functions', () => {
       const result = extractCompletionData()
       
       expect(result).not.toBeNull()
-      expect(result!.modules).toHaveLength(2)
-      expect(result!.modules[0]).toEqual({
-        id: 1,
-        title: 'Module 1',
-        completionDate: new Date('2024-01-01'),
-        score: 85,
-        timeSpent: 60
-      })
-      expect(result!.totalTimeSpent).toBe(150)
-      expect(result!.overallScore).toBe(90) // Average of 85 and 95
-      expect(result!.overallCompletionDate).toEqual(new Date('2024-01-02'))
+      if (result) {
+        expect(result.modules).toHaveLength(2)
+        expect(result.modules[0]).toEqual({
+          id: 1,
+          title: 'Module 1',
+          completionDate: new Date('2024-01-01'),
+          score: 85,
+          timeSpent: 60
+        })
+        expect(result.totalTimeSpent).toBe(150)
+        expect(result.overallScore).toBe(90) // Average of 85 and 95
+        expect(result.overallCompletionDate).toEqual(new Date('2024-01-02'))
+      }
     })
 
     it('should handle modules without scores', () => {
@@ -258,7 +260,9 @@ describe('Certificate Integration Functions', () => {
       const result = extractCompletionData()
       
       expect(result).not.toBeNull()
-      expect(result!.overallScore).toBe(0)
+      if (result) {
+        expect(result.overallScore).toBe(0)
+      }
     })
   })
 

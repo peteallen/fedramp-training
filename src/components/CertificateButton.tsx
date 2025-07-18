@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import { useCertificateStore } from '@/stores/certificateStore'
 import { useTrainingStore } from '@/stores/trainingStore'
-import { cn } from '@/lib/utils'
 
 interface CertificateButtonProps {
   className?: string
