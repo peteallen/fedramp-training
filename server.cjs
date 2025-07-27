@@ -28,7 +28,7 @@ app.get('/health', (req, res) => {
 });
 
 // Handle all other routes by serving index.html
-app.get('*', (req, res) => {
+app.use((req, res) => {
   const indexPath = path.join(__dirname, 'dist', 'index.html');
   if (!fs.existsSync(indexPath)) {
     console.error('ERROR: index.html not found at', indexPath);
