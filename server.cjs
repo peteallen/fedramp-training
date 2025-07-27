@@ -20,6 +20,11 @@ if (!fs.existsSync(distPath)) {
 
 console.log('Serving static files from:', distPath);
 
+// Health check endpoint (must be before auth middleware)
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
 // Configure basic authentication
 // Only apply auth if credentials are provided via environment variables
 if (process.env.BASIC_AUTH_USER && process.env.BASIC_AUTH_PASSWORD) {
@@ -36,19 +41,19 @@ if (process.env.BASIC_AUTH_USER && process.env.BASIC_AUTH_PASSWORD) {
     }
   });
 
-  // Apply auth middleware before serving any files
-  app.use(authMiddleware);
+  // Apply auth middleware to all routes except /health
+  app.use((req, res, next) => {
+    if (req.path === '/health') {
+      return next();
+    }
+    authMiddleware(req, res, next);
+  });
 } else {
   console.log('Basic authentication disabled (no credentials configured)');
 }
 
 // Serve static files from the dist directory
 app.use(express.static(distPath));
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).send('OK');
-});
 
 // Handle all other routes by serving index.html
 app.use((req, res) => {
