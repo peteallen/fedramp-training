@@ -17,8 +17,13 @@ interface ModuleViewerProps {
 }
 
 export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
-  const { getModuleById, updateProgress, completeModule, updateModuleAccess, updateQuizScore } = useTrainingStore()
-  const module = getModuleById(moduleId)
+  const module = useTrainingStore((state) => 
+    state.modules.find(m => m.id === moduleId)
+  )
+  const updateProgress = useTrainingStore((state) => state.updateProgress)
+  const completeModule = useTrainingStore((state) => state.completeModule)
+  const updateModuleAccess = useTrainingStore((state) => state.updateModuleAccess)
+  const updateQuizScore = useTrainingStore((state) => state.updateQuizScore)
   
   const [currentSection, setCurrentSection] = useState(0)
   const [showQuiz, setShowQuiz] = useState(false)
