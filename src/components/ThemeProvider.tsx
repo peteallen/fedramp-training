@@ -11,7 +11,8 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   useEffect(() => {
     const cleanup = initializeTheme()
     return cleanup
-  }, [initializeTheme])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // Remove initializeTheme from dependencies to prevent loops
 
   return <>{children}</>
 } 

@@ -8,7 +8,8 @@ export const useTrainingInit = () => {
     if (!initialized) {
       initializeModules()
     }
-  }, [initializeModules, initialized])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // Remove dependencies to prevent potential loops in production
 
   return { initialized }
 }
