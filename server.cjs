@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const basicAuth = require('express-basic-auth');
 
 console.log('Starting server...');
 console.log('Current directory:', __dirname);
@@ -18,6 +19,28 @@ if (!fs.existsSync(distPath)) {
 }
 
 console.log('Serving static files from:', distPath);
+
+// Configure basic authentication
+// Only apply auth if credentials are provided via environment variables
+if (process.env.BASIC_AUTH_USER && process.env.BASIC_AUTH_PASSWORD) {
+  console.log('Basic authentication enabled');
+  
+  const authMiddleware = basicAuth({
+    users: {
+      [process.env.BASIC_AUTH_USER]: process.env.BASIC_AUTH_PASSWORD
+    },
+    challenge: true, // Shows browser popup for credentials
+    realm: 'FedRAMP Training Portal',
+    unauthorizedResponse: (req) => {
+      return 'Authentication required to access the FedRAMP Training Portal';
+    }
+  });
+
+  // Apply auth middleware before serving any files
+  app.use(authMiddleware);
+} else {
+  console.log('Basic authentication disabled (no credentials configured)');
+}
 
 // Serve static files from the dist directory
 app.use(express.static(distPath));
