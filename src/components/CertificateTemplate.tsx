@@ -19,18 +19,7 @@ export const CertificateTemplate: React.FC<CertificateTemplateProps> = ({
     }).format(dateObj)
   }
 
-  // Format time duration (minutes to hours/minutes)
-  const formatDuration = (minutes: number) => {
-    if (minutes < 60) {
-      return `${minutes} minutes`
-    }
-    const hours = Math.floor(minutes / 60)
-    const remainingMinutes = minutes % 60
-    if (remainingMinutes === 0) {
-      return `${hours} ${hours === 1 ? 'hour' : 'hours'}`
-    }
-    return `${hours}h ${remainingMinutes}m`
-  }
+
 
   return (
     <div className="certificate-container">
@@ -76,9 +65,7 @@ export const CertificateTemplate: React.FC<CertificateTemplateProps> = ({
                   <strong>Overall Score:</strong> {completionData.overallScore}%
                 </div>
               )}
-              <div className="stat-item">
-                <strong>Total Training Time:</strong> {formatDuration(completionData.totalTimeSpent)}
-              </div>
+
             </div>
           </div>
 

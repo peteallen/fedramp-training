@@ -54,7 +54,6 @@ describe('CertificateTemplate', () => {
     expect(screen.getByText(/Completion Date:/)).toBeInTheDocument()
     expect(screen.getByText('Modules Completed:')).toBeInTheDocument()
     expect(screen.getByText('2')).toBeInTheDocument()
-    expect(screen.getByText(/Total Training Time:/)).toBeInTheDocument()
     expect(screen.getByText('Overall Score:')).toBeInTheDocument()
     expect(screen.getByText('92%')).toBeInTheDocument()
   })
@@ -85,13 +84,6 @@ describe('CertificateTemplate', () => {
     render(<CertificateTemplate {...mockProps} />)
     
     expect(screen.getByText('ClearTriage')).toBeInTheDocument()
-  })
-
-  it('formats time duration correctly', () => {
-    render(<CertificateTemplate {...mockProps} />)
-    
-    // Should show "1h 45m" for 105 minutes total
-    expect(screen.getByText(/1h 45m/)).toBeInTheDocument()
   })
 
   it('handles modules without scores gracefully', () => {

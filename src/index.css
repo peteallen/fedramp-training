@@ -118,6 +118,34 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Ensure minimum touch target size for accessibility */
+  button, [role="button"], input, select, textarea {
+    @apply min-h-[44px];
+  }
+  
+  /* Improve focus visibility */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-blue-500 dark:outline-blue-400;
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .border {
+      @apply border-2;
+    }
+    
+    .focus\:ring-2:focus {
+      @apply ring-4;
+    }
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      @apply transition-none animate-none;
+    }
+  }
 }
 
 /* Enhanced typography for module content */
@@ -146,12 +174,24 @@
     @apply italic text-gray-800 dark:text-gray-200;
   }
   
-  .prose ul, .prose ol {
-    @apply my-4;
+  .prose ul {
+    @apply my-4 list-disc pl-6;
+  }
+  
+  .prose ol {
+    @apply my-4 list-decimal pl-6;
   }
   
   .prose li {
     @apply my-1 leading-relaxed text-gray-700 dark:text-gray-300;
+  }
+  
+  .prose ul li::marker {
+    @apply text-gray-500 dark:text-gray-400;
+  }
+  
+  .prose ol li::marker {
+    @apply text-gray-500 dark:text-gray-400;
   }
   
   .prose blockquote {

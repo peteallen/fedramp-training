@@ -1,10 +1,15 @@
-// @ts-nocheck - React icons type compatibility issue
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { FaArrowLeft, FaArrowRight, FaCheck, FaTimes, FaLightbulb, FaQuestionCircle, FaBookOpen, FaClock, FaGraduationCap, FaUserShield } from 'react-icons/fa'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Button } from '@/components/ui/button'
+import { ProgressBar } from '@/components/ui/ProgressBar'
 import { useTrainingStore } from '@/stores/trainingStore'
+
+// Constants
+const PASSING_SCORE = 70
+const QUIZ_PROGRESS_THRESHOLD = 90
+const COMPLETE_PROGRESS = 100
 
 interface ModuleViewerProps {
   moduleId: number
@@ -30,30 +35,53 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moduleId])
 
+  const totalSections = module?.content?.length ?? 0;
+
+  const progressPercent = useMemo(() => {
+    if (showQuiz) return COMPLETE_PROGRESS;
+    if (totalSections === 0) return 0;
+    return Math.round(((currentSection + 1) / totalSections) * QUIZ_PROGRESS_THRESHOLD);
+  }, [currentSection, totalSections, showQuiz]);
+
+  const getContentIcon = useMemo(() => {
+    const iconMap = {
+      introduction: FaLightbulb,
+      section: FaBookOpen,
+      conclusion: FaCheck,
+    } as const
+    
+    return (type: string) => iconMap[type as keyof typeof iconMap] || FaBookOpen
+  }, [])
+
   if (!module) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-8">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-xl text-gray-600 dark:text-gray-300">Module not found</p>
-          <Button onClick={onBack} className="mt-4">
-            <FaArrowLeft className="mr-2" />
-            Back to Modules
-          </Button>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+            <div className="text-red-500 text-6xl mb-4">⚠️</div>
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+              Module Not Found
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+              The requested module (ID: {moduleId}) could not be found.
+            </p>
+            <Button onClick={onBack} className="bg-blue-600 hover:bg-blue-700 text-white">
+              <FaArrowLeft className="mr-2" />
+              Back to Modules
+            </Button>
+          </div>
         </div>
       </div>
     )
   }
 
-  const totalSections = module.content.length
-  const progressPercent = showQuiz ? 100 : Math.round(((currentSection + 1) / totalSections) * 90)
-
   const handleNextSection = () => {
     if (currentSection < totalSections - 1) {
       setCurrentSection(currentSection + 1)
-      updateProgress(moduleId, Math.round(((currentSection + 2) / totalSections) * 90))
+      updateProgress(moduleId, Math.round(((currentSection + 2) / totalSections) * QUIZ_PROGRESS_THRESHOLD))
     } else {
       setShowQuiz(true)
-      updateProgress(moduleId, 90)
+      updateProgress(moduleId, QUIZ_PROGRESS_THRESHOLD)
     }
   }
 
@@ -96,19 +124,10 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
     setQuizSubmitted(true)
     updateQuizScore(moduleId, score)
     
-    if (score >= 70) {
+    if (score >= PASSING_SCORE) {
       completeModule(moduleId)
-      updateProgress(moduleId, 100)
+      updateProgress(moduleId, COMPLETE_PROGRESS)
     }
-  }
-
-  const getContentIcon = (type: string) => {
-    const iconMap = {
-      introduction: FaLightbulb,
-      section: FaBookOpen,
-      conclusion: FaCheck,
-    }
-    return iconMap[type as keyof typeof iconMap] || FaBookOpen
   }
 
   if (showQuiz && !quizSubmitted) {
@@ -193,7 +212,7 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
 
   if (quizSubmitted) {
     const timeSpent = Math.round((Date.now() - startTime) / 1000 / 60)
-    const passed = quizScore >= 70
+    const passed = quizScore >= PASSING_SCORE
     
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-8">
@@ -237,7 +256,7 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
               {passed 
                 ? 'You have successfully completed this training module!'
-                : 'You need at least 70% to pass. Review the material and try again.'
+                : `You need at least ${PASSING_SCORE}% to pass. Review the material and try again.`
               }
             </p>
 
@@ -306,16 +325,11 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
           </div>
           
           <div className="mt-4">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">Progress</span>
-              <span className="text-sm font-medium text-gray-800 dark:text-gray-200">{progressPercent}%</span>
-            </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-              <div 
-                className="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${progressPercent}%` }}
-              ></div>
-            </div>
+            <ProgressBar 
+              progress={progressPercent} 
+              showLabel 
+              label="Progress"
+            />
           </div>
         </div>
 
@@ -338,9 +352,11 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
                          prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-4
                          prose-strong:text-gray-900 dark:prose-strong:text-gray-100 prose-strong:font-semibold
                          prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:font-medium prose-a:no-underline hover:prose-a:underline
-                         prose-ul:my-4 prose-li:my-1 prose-li:leading-relaxed
+                         prose-ul:my-4 prose-ul:list-disc prose-ul:pl-6 prose-li:my-1 prose-li:leading-relaxed prose-li:marker:text-gray-500
+                         prose-ol:my-4 prose-ol:list-decimal prose-ol:pl-6
                          prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-4 prose-blockquote:italic
                          prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm">
+
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{currentContent.content}</ReactMarkdown>
           </div>
 
@@ -350,7 +366,7 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
                 Learning Objectives
               </h3>
               <ul className="space-y-2">
-                {module.objectives.map((objective, index) => (
+                {module.objectives.map((objective: string, index: number) => (
                   <li key={index} className="flex items-start">
                     <FaCheck className="text-blue-600 dark:text-blue-400 mr-3 mt-1 flex-shrink-0" />
                     <span className="text-gray-700 dark:text-gray-300">{objective}</span>

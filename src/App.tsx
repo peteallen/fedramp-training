@@ -5,14 +5,18 @@ import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { ModuleCard } from '@/components/ModuleCard'
 import { ModuleViewer } from '@/components/ModuleViewer'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { WelcomeScreen } from '@/components/WelcomeScreen'
 import { Button } from '@/components/ui/button'
 import { useTrainingInit } from '@/hooks/useTrainingInit'
 import { useCertificateStore } from '@/stores/certificateStore'
 import { useTrainingStore } from '@/stores/trainingStore'
+import useUserStore from '@/stores/userStore'
+import type { UserOnboardingData } from '@/types/user'
 
 function App() {
   const { modules, completedCount, totalCount, overallProgress, clearAllData } = useTrainingStore()
   const { showModal, setShowModal, saveUserData, setGenerating, addGeneratedCertificate } = useCertificateStore()
+  const { isOnboarded, completeOnboarding } = useUserStore()
   const { initialized } = useTrainingInit()
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [currentModuleId, setCurrentModuleId] = useState<number | null>(null)
@@ -40,6 +44,10 @@ function App() {
 
   const handleCloseCertificateModal = () => {
     setShowModal(false)
+  }
+
+  const handleOnboardingComplete = (userData: UserOnboardingData) => {
+    completeOnboarding(userData)
   }
 
   const handleGenerateCertificate = async (userData: { fullName: string }) => {
@@ -135,6 +143,11 @@ function App() {
     )
   }
 
+  // Show welcome screen if user hasn't completed onboarding
+  if (!isOnboarded) {
+    return <WelcomeScreen onComplete={handleOnboardingComplete} />
+  }
+
   // If a module is selected, show the module viewer
   if (currentModuleId !== null) {
     return (
@@ -227,25 +240,7 @@ function App() {
           </div>
         </div>
 
-        <div className="mt-8 bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">
-            💡 About This Training
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700 dark:text-gray-300">
-            <div>
-              <strong>Scope:</strong> FedRAMP Low Impact SaaS requirements for ClearTriage app and Google Drive usage
-            </div>
-            <div>
-              <strong>Customer:</strong> Department of Veterans Affairs (VA)
-            </div>
-            <div>
-              <strong>Team Size:</strong> 6 ClearTriage team members
-            </div>
-            <div>
-              <strong>Compliance:</strong> FedRAMP AT-1, AT-2, AT-3 controls
-            </div>
-          </div>
-        </div>
+
       </div>
 
       <ConfirmDialog

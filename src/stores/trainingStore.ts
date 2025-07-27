@@ -1,11 +1,13 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import modulesIndex from '../data/modules.json'
+import type { UserRole } from '@/types/user'
 
 interface ModuleContent {
   type: string
   title: string
   content: string
+  roles?: UserRole[]
 }
 
 interface QuizQuestion {
@@ -72,9 +74,6 @@ const loadModule = async (moduleInfo: { id: number; file: string }): Promise<Tra
       break;
     case '2.json':
       moduleData = await import('../data/modules/2.json');
-      break;
-    case '3.json':
-      moduleData = await import('../data/modules/3.json');
       break;
     default:
       throw new Error(`Unknown module file: ${moduleInfo.file}`);

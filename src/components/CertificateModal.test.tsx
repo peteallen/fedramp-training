@@ -1,17 +1,16 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { useCertificateStore, extractCompletionData } from '@/stores/certificateStore'
+import useUserStore from '@/stores/userStore'
 import { CertificateModal } from './CertificateModal'
 
 // Mock the stores and functions
 vi.mock('@/stores/certificateStore')
-vi.mock('./CertificatePreview', () => ({
-  CertificatePreview: ({ userData }: { userData: { fullName: string } }) => (
-    <div data-testid="certificate-preview">Preview for {userData.fullName}</div>
-  )
-}))
+vi.mock('@/stores/userStore')
+
 
 const mockUseCertificateStore = vi.mocked(useCertificateStore)
+const mockUseUserStore = vi.mocked(useUserStore)
 const mockExtractCompletionData = vi.mocked(extractCompletionData)
 
 describe('CertificateModal', () => {
@@ -31,6 +30,19 @@ describe('CertificateModal', () => {
       setGenerating: vi.fn(),
       setShowModal: vi.fn(),
       clearData: vi.fn(),
+    })
+
+    mockUseUserStore.mockReturnValue({
+      isOnboarded: false,
+      role: null,
+      fullName: null,
+      onboardingCompletedAt: null,
+      completeOnboarding: vi.fn(),
+      updateRole: vi.fn(),
+      updateName: vi.fn(),
+      resetOnboarding: vi.fn(),
+      getUserData: vi.fn().mockReturnValue(null),
+      isRoleRelevant: vi.fn(),
     })
 
     mockExtractCompletionData.mockReturnValue({
@@ -95,7 +107,8 @@ describe('CertificateModal', () => {
       />
     )
     
-    expect(screen.getByDisplayValue('John Doe')).toBeInTheDocument()
+    expect(screen.getByText('John Doe')).toBeInTheDocument()
+    expect(screen.getByText('Using your saved profile information')).toBeInTheDocument()
   })
 
   it('should validate required name field', async () => {
@@ -192,26 +205,7 @@ describe('CertificateModal', () => {
     })
   })
 
-  it('should show preview when toggled', async () => {
-    render(
-      <CertificateModal 
-        isOpen={true} 
-        onClose={mockOnClose} 
-        onGenerate={mockOnGenerate} 
-      />
-    )
-    
-    const nameInput = screen.getByLabelText('Full Name *')
-    fireEvent.change(nameInput, { target: { value: 'John Doe' } })
-    
-    const previewButton = screen.getByText('Show Preview')
-    fireEvent.click(previewButton)
-    
-    await waitFor(() => {
-      expect(screen.getByTestId('certificate-preview')).toBeInTheDocument()
-      expect(screen.getByText('Preview for John Doe')).toBeInTheDocument()
-    })
-  })
+
 
   it('should handle loading state', () => {
     mockUseCertificateStore.mockReturnValue({
@@ -266,5 +260,224 @@ describe('CertificateModal', () => {
       fireEvent.click(overlay)
       expect(mockOnClose).toHaveBeenCalled()
     }
+  })
+
+  describe('User Store Integration', () => {
+    it('should pre-populate name from user store when available', () => {
+      mockUseUserStore.mockReturnValue({
+        isOnboarded: true,
+        role: 'Development',
+        fullName: 'Jane Smith',
+        onboardingCompletedAt: new Date(),
+        completeOnboarding: vi.fn(),
+        updateRole: vi.fn(),
+        updateName: vi.fn(),
+        resetOnboarding: vi.fn(),
+        getUserData: vi.fn().mockReturnValue({
+          role: 'Development',
+          fullName: 'Jane Smith'
+        }),
+        isRoleRelevant: vi.fn(),
+      })
+
+      render(
+        <CertificateModal 
+          isOpen={true} 
+          onClose={mockOnClose} 
+          onGenerate={mockOnGenerate} 
+        />
+      )
+      
+      expect(screen.getByText('Jane Smith')).toBeInTheDocument()
+      expect(screen.getByText('Using your saved profile information')).toBeInTheDocument()
+      expect(screen.queryByLabelText('Full Name *')).not.toBeInTheDocument()
+    })
+
+    it('should prioritize user store data over certificate store data', () => {
+      mockUseUserStore.mockReturnValue({
+        isOnboarded: true,
+        role: 'Development',
+        fullName: 'User Store Name',
+        onboardingCompletedAt: new Date(),
+        completeOnboarding: vi.fn(),
+        updateRole: vi.fn(),
+        updateName: vi.fn(),
+        resetOnboarding: vi.fn(),
+        getUserData: vi.fn().mockReturnValue({
+          role: 'Development',
+          fullName: 'User Store Name'
+        }),
+        isRoleRelevant: vi.fn(),
+      })
+
+      mockUseCertificateStore.mockReturnValue({
+        savedUserData: { fullName: 'Certificate Store Name' },
+        isGenerating: false,
+        generatedCertificates: [],
+        showModal: false,
+        saveUserData: vi.fn(),
+        addGeneratedCertificate: vi.fn(),
+        setGenerating: vi.fn(),
+        setShowModal: vi.fn(),
+        clearData: vi.fn(),
+      })
+
+      render(
+        <CertificateModal 
+          isOpen={true} 
+          onClose={mockOnClose} 
+          onGenerate={mockOnGenerate} 
+        />
+      )
+      
+      expect(screen.getByText('User Store Name')).toBeInTheDocument()
+    })
+
+    it('should fall back to certificate store data when user store is empty', () => {
+      mockUseCertificateStore.mockReturnValue({
+        savedUserData: { fullName: 'Certificate Store Name' },
+        isGenerating: false,
+        generatedCertificates: [],
+        showModal: false,
+        saveUserData: vi.fn(),
+        addGeneratedCertificate: vi.fn(),
+        setGenerating: vi.fn(),
+        setShowModal: vi.fn(),
+        clearData: vi.fn(),
+      })
+
+      render(
+        <CertificateModal 
+          isOpen={true} 
+          onClose={mockOnClose} 
+          onGenerate={mockOnGenerate} 
+        />
+      )
+      
+      expect(screen.getByText('Certificate Store Name')).toBeInTheDocument()
+    })
+
+    it('should show name input when no stored data is available', () => {
+      render(
+        <CertificateModal 
+          isOpen={true} 
+          onClose={mockOnClose} 
+          onGenerate={mockOnGenerate} 
+        />
+      )
+      
+      expect(screen.getByLabelText('Full Name *')).toBeInTheDocument()
+      expect(screen.getByText(/Enter your name to generate your certificate/)).toBeInTheDocument()
+    })
+
+    it('should generate certificate with stored user data without validation', async () => {
+      mockUseUserStore.mockReturnValue({
+        isOnboarded: true,
+        role: 'Development',
+        fullName: 'Stored User',
+        onboardingCompletedAt: new Date(),
+        completeOnboarding: vi.fn(),
+        updateRole: vi.fn(),
+        updateName: vi.fn(),
+        resetOnboarding: vi.fn(),
+        getUserData: vi.fn().mockReturnValue({
+          role: 'Development',
+          fullName: 'Stored User'
+        }),
+        isRoleRelevant: vi.fn(),
+      })
+
+      render(
+        <CertificateModal 
+          isOpen={true} 
+          onClose={mockOnClose} 
+          onGenerate={mockOnGenerate} 
+        />
+      )
+      
+      const submitButton = screen.getByRole('button', { name: 'Generate Certificate' })
+      fireEvent.click(submitButton)
+      
+      await waitFor(() => {
+        expect(mockOnGenerate).toHaveBeenCalledWith({ fullName: 'Stored User' })
+      })
+    })
+
+
+
+    it('should not validate name input when using stored data', async () => {
+      mockUseUserStore.mockReturnValue({
+        isOnboarded: true,
+        role: 'Development',
+        fullName: 'A', // This would normally fail validation
+        onboardingCompletedAt: new Date(),
+        completeOnboarding: vi.fn(),
+        updateRole: vi.fn(),
+        updateName: vi.fn(),
+        resetOnboarding: vi.fn(),
+        getUserData: vi.fn().mockReturnValue({
+          role: 'Development',
+          fullName: 'A'
+        }),
+        isRoleRelevant: vi.fn(),
+      })
+
+      render(
+        <CertificateModal 
+          isOpen={true} 
+          onClose={mockOnClose} 
+          onGenerate={mockOnGenerate} 
+        />
+      )
+      
+      const submitButton = screen.getByRole('button', { name: 'Generate Certificate' })
+      fireEvent.click(submitButton)
+      
+      await waitFor(() => {
+        expect(mockOnGenerate).toHaveBeenCalledWith({ fullName: 'A' })
+      })
+      
+      // Should not show validation errors
+      expect(screen.queryByText(/Full name must be at least 2 characters/)).not.toBeInTheDocument()
+    })
+
+    it('should update message based on stored data availability', () => {
+      const { rerender } = render(
+        <CertificateModal 
+          isOpen={true} 
+          onClose={mockOnClose} 
+          onGenerate={mockOnGenerate} 
+        />
+      )
+      
+      expect(screen.getByText(/Enter your name to generate your certificate/)).toBeInTheDocument()
+      
+      // Update to have stored data
+      mockUseUserStore.mockReturnValue({
+        isOnboarded: true,
+        role: 'Development',
+        fullName: 'Test User',
+        onboardingCompletedAt: new Date(),
+        completeOnboarding: vi.fn(),
+        updateRole: vi.fn(),
+        updateName: vi.fn(),
+        resetOnboarding: vi.fn(),
+        getUserData: vi.fn().mockReturnValue({
+          role: 'Development',
+          fullName: 'Test User'
+        }),
+        isRoleRelevant: vi.fn(),
+      })
+      
+      rerender(
+        <CertificateModal 
+          isOpen={true} 
+          onClose={mockOnClose} 
+          onGenerate={mockOnGenerate} 
+        />
+      )
+      
+      expect(screen.getByText(/Your certificate will be generated for Test User/)).toBeInTheDocument()
+    })
   })
 })

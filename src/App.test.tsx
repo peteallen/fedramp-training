@@ -34,6 +34,25 @@ vi.mock('@/components/ConfirmDialog', () => ({
   ),
 }))
 
+// Mock the user store
+vi.mock('@/stores/userStore', () => ({
+  default: vi.fn(() => ({
+    isOnboarded: true,
+    completeOnboarding: vi.fn(),
+  })),
+}))
+
+// Mock the certificate store
+vi.mock('@/stores/certificateStore', () => ({
+  useCertificateStore: vi.fn(() => ({
+    showModal: false,
+    setShowModal: vi.fn(),
+    saveUserData: vi.fn(),
+    setGenerating: vi.fn(),
+    addGeneratedCertificate: vi.fn(),
+  })),
+}))
+
 // Mock the certificate components
 vi.mock('@/components/CertificateButton', () => ({
   CertificateButton: () => <button data-testid="certificate-button">🏆 Generate Certificate</button>,

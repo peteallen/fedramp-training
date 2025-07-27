@@ -1,8 +1,22 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { useCertificateStore , extractCompletionData } from '@/stores/certificateStore'
-import { CertificatePreview } from './CertificatePreview'
+import { useCertificateStore } from '@/stores/certificateStore'
+import useUserStore from '@/stores/userStore'
+
+// Constants
+const VALIDATION_RULES = {
+  MIN_NAME_LENGTH: 2,
+  MAX_NAME_LENGTH: 100,
+  NAME_PATTERN: /^[a-zA-Z\s\-'.]+$/
+} as const
+
+const VALIDATION_MESSAGES = {
+  REQUIRED: 'Full name is required',
+  TOO_SHORT: `Full name must be at least ${VALIDATION_RULES.MIN_NAME_LENGTH} characters`,
+  TOO_LONG: `Full name must be less than ${VALIDATION_RULES.MAX_NAME_LENGTH} characters`,
+  INVALID_FORMAT: 'Full name can only contain letters, spaces, hyphens, apostrophes, and periods'
+} as const
 
 interface CertificateModalProps {
   isOpen: boolean
@@ -10,21 +24,48 @@ interface CertificateModalProps {
   onGenerate: (userData: { fullName: string }) => void
 }
 
+interface FormErrors {
+  fullName?: string
+}
+
+interface UserDataForCertificate {
+  effectiveName: string
+  hasStoredName: boolean
+  shouldShowNameInput: boolean
+}
+
+// Custom hook for user data management
+const useUserDataForCertificate = (): UserDataForCertificate => {
+  const { savedUserData } = useCertificateStore()
+  const { getUserData } = useUserStore()
+  
+  const storedUserData = getUserData()
+  const effectiveName = storedUserData?.fullName || savedUserData?.fullName || ''
+  const hasStoredName = Boolean(effectiveName)
+  
+  return {
+    effectiveName,
+    hasStoredName,
+    shouldShowNameInput: !hasStoredName
+  }
+}
+
 export function CertificateModal({ isOpen, onClose, onGenerate }: CertificateModalProps) {
-  const { savedUserData, isGenerating } = useCertificateStore()
+  const { isGenerating } = useCertificateStore()
+  const { effectiveName, hasStoredName, shouldShowNameInput } = useUserDataForCertificate()
   const [fullName, setFullName] = useState('')
-  const [errors, setErrors] = useState<{ fullName?: string }>({})
-  const [showPreview, setShowPreview] = useState(false)
+  const [errors, setErrors] = useState<FormErrors>({})
+
   
   const nameInputRef = useRef<HTMLInputElement>(null)
   const modalRef = useRef<HTMLDivElement>(null)
 
-  // Pre-populate with saved user data
+  // Pre-populate with stored user data
   useEffect(() => {
-    if (isOpen && savedUserData?.fullName) {
-      setFullName(savedUserData.fullName)
+    if (isOpen) {
+      setFullName(effectiveName)
     }
-  }, [isOpen, savedUserData])
+  }, [isOpen, effectiveName])
 
   // Focus management and escape key handling
   useEffect(() => {
@@ -36,14 +77,16 @@ export function CertificateModal({ isOpen, onClose, onGenerate }: CertificateMod
 
     if (isOpen) {
       document.addEventListener('keydown', handleEscape)
-      // Focus the name input when modal opens
-      setTimeout(() => {
-        nameInputRef.current?.focus()
-      }, 0)
+      // Focus the name input when modal opens (only if name input is shown)
+      if (shouldShowNameInput) {
+        setTimeout(() => {
+          nameInputRef.current?.focus()
+        }, 0)
+      }
     }
 
     return () => document.removeEventListener('keydown', handleEscape)
-  }, [isOpen, onClose, isGenerating])
+  }, [isOpen, onClose, isGenerating, shouldShowNameInput])
 
   // Trap focus within modal
   useEffect(() => {
@@ -78,24 +121,34 @@ export function CertificateModal({ isOpen, onClose, onGenerate }: CertificateMod
     return () => document.removeEventListener('keydown', handleTabKey)
   }, [isOpen])
 
-  const validateForm = (): boolean => {
-    const newErrors: { fullName?: string } = {}
+  // Validation utility - could be extracted to a separate file if used elsewhere
+  const validateFullName = useCallback((name: string): string | null => {
+    const trimmedName = name.trim()
+    
+    if (!trimmedName) return VALIDATION_MESSAGES.REQUIRED
+    if (trimmedName.length < VALIDATION_RULES.MIN_NAME_LENGTH) return VALIDATION_MESSAGES.TOO_SHORT
+    if (trimmedName.length > VALIDATION_RULES.MAX_NAME_LENGTH) return VALIDATION_MESSAGES.TOO_LONG
+    if (!VALIDATION_RULES.NAME_PATTERN.test(trimmedName)) return VALIDATION_MESSAGES.INVALID_FORMAT
+    
+    return null
+  }, [])
 
-    if (!fullName.trim()) {
-      newErrors.fullName = 'Full name is required'
-    } else if (fullName.trim().length < 2) {
-      newErrors.fullName = 'Full name must be at least 2 characters'
-    } else if (fullName.trim().length > 100) {
-      newErrors.fullName = 'Full name must be less than 100 characters'
-    } else if (!/^[a-zA-Z\s\-'.]+$/.test(fullName.trim())) {
-      newErrors.fullName = 'Full name can only contain letters, spaces, hyphens, apostrophes, and periods'
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {}
+
+    // Only validate if name input is shown (no stored name available)
+    if (shouldShowNameInput) {
+      const nameError = validateFullName(fullName)
+      if (nameError) {
+        newErrors.fullName = nameError
+      }
     }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setFullName(value)
     
@@ -103,9 +156,9 @@ export function CertificateModal({ isOpen, onClose, onGenerate }: CertificateMod
     if (errors.fullName && value.trim()) {
       setErrors(prev => ({ ...prev, fullName: undefined }))
     }
-  }
+  }, [errors.fullName])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault()
     
     if (!validateForm()) {
@@ -114,16 +167,16 @@ export function CertificateModal({ isOpen, onClose, onGenerate }: CertificateMod
 
     const userData = { fullName: fullName.trim() }
     onGenerate(userData)
-  }
+  }, [fullName, shouldShowNameInput, onGenerate])
 
-  const handlePreviewToggle = () => {
-    if (validateForm()) {
-      setShowPreview(!showPreview)
-    }
-  }
 
-  // Only extract completion data when showing preview
-  const completionData = showPreview ? extractCompletionData() : null
+
+  // Check if we can proceed (either have stored name or valid manual input)
+  const canProceed = useMemo(() => {
+    return hasStoredName || (shouldShowNameInput && fullName.trim())
+  }, [hasStoredName, shouldShowNameInput, fullName])
+
+
 
   if (!isOpen) return null
 
@@ -139,10 +192,7 @@ export function CertificateModal({ isOpen, onClose, onGenerate }: CertificateMod
       {/* Modal */}
       <div 
         ref={modalRef}
-        className={cn(
-          "relative bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full transition-all",
-          showPreview ? "max-w-4xl" : "max-w-md"
-        )}
+        className="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md transition-all"
         role="dialog"
         aria-modal="true"
         aria-labelledby="certificate-modal-title"
@@ -155,63 +205,82 @@ export function CertificateModal({ isOpen, onClose, onGenerate }: CertificateMod
             >
               Generate Certificate
             </h2>
-            <p className="text-gray-600 dark:text-gray-300">
-              Congratulations on completing all training modules! Enter your name to generate your certificate.
+            <p 
+              className="text-gray-600 dark:text-gray-300"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              {hasStoredName 
+                ? `Congratulations on completing all training modules! Your certificate will be generated for ${fullName}.`
+                : 'Congratulations on completing all training modules! Enter your name to generate your certificate.'
+              }
             </p>
           </div>
 
-          <div className={cn("grid gap-6", showPreview && "grid-cols-1 lg:grid-cols-2")}>
-            {/* Form Section */}
-            <div className="space-y-4">
+          {/* Form Section */}
+          <div className="space-y-4">
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label 
-                    htmlFor="fullName"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-                  >
-                    Full Name *
-                  </label>
-                  <input
-                    ref={nameInputRef}
-                    type="text"
-                    id="fullName"
-                    value={fullName}
-                    onChange={handleNameChange}
-                    disabled={isGenerating}
-                    className={cn(
-                      "w-full px-3 py-2 border rounded-md shadow-sm",
-                      "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
-                      "dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100",
-                      "disabled:opacity-50 disabled:cursor-not-allowed",
-                      errors.fullName 
-                        ? "border-red-500 focus:ring-red-500 focus:border-red-500" 
-                        : "border-gray-300 dark:border-gray-600"
-                    )}
-                    placeholder="Enter your full name as it should appear on the certificate"
-                    aria-invalid={!!errors.fullName}
-                    aria-describedby={errors.fullName ? "fullName-error" : undefined}
-                  />
-                  {errors.fullName && (
-                    <p 
-                      id="fullName-error"
-                      className="mt-1 text-sm text-red-600 dark:text-red-400"
-                      role="alert"
+                {shouldShowNameInput && (
+                  <div>
+                    <label 
+                      htmlFor="fullName"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                     >
-                      {errors.fullName}
-                    </p>
-                  )}
-                </div>
+                      Full Name *
+                    </label>
+                    <input
+                      ref={nameInputRef}
+                      type="text"
+                      id="fullName"
+                      value={fullName}
+                      onChange={handleNameChange}
+                      disabled={isGenerating}
+                      className={cn(
+                        "w-full px-3 py-2 border rounded-md shadow-sm",
+                        "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                        "dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100",
+                        "disabled:opacity-50 disabled:cursor-not-allowed",
+                        errors.fullName 
+                          ? "border-red-500 focus:ring-red-500 focus:border-red-500" 
+                          : "border-gray-300 dark:border-gray-600"
+                      )}
+                      placeholder="Enter your full name as it should appear on the certificate"
+                      aria-invalid={!!errors.fullName}
+                      aria-describedby={errors.fullName ? "fullName-error" : undefined}
+                    />
+                    {errors.fullName && (
+                      <p 
+                        id="fullName-error"
+                        className="mt-1 text-sm text-red-600 dark:text-red-400"
+                        role="alert"
+                      >
+                        {errors.fullName}
+                      </p>
+                    )}
+                  </div>
+                )}
 
-                {/* Preview Toggle Button */}
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handlePreviewToggle}
-                  disabled={isGenerating || !fullName.trim()}
-                  className="w-full"
-                >
-                  {showPreview ? 'Hide Preview' : 'Show Preview'}
-                </Button>
+                {hasStoredName && (
+                  <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-4">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm font-medium text-green-800 dark:text-green-200">
+                          Certificate will be generated for: <strong>{fullName}</strong>
+                        </p>
+                        <p className="text-xs text-green-600 dark:text-green-300 mt-1">
+                          Using your saved profile information
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+
 
                 {/* Action Buttons */}
                 <div className="flex justify-end space-x-3 pt-4">
@@ -225,7 +294,7 @@ export function CertificateModal({ isOpen, onClose, onGenerate }: CertificateMod
                   </Button>
                   <Button 
                     type="submit"
-                    disabled={isGenerating || !fullName.trim()}
+                    disabled={isGenerating || !canProceed}
                     className="bg-green-600 hover:bg-green-700 text-white"
                   >
                     {isGenerating ? (
@@ -240,25 +309,6 @@ export function CertificateModal({ isOpen, onClose, onGenerate }: CertificateMod
                 </div>
               </form>
             </div>
-
-            {/* Preview Section */}
-            {showPreview && completionData && (
-              <div className="border-l border-gray-200 dark:border-gray-600 pl-6">
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">
-                  Certificate Preview
-                </h3>
-                <div className="border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
-                  {/* @ts-expect-error - React type compatibility issue */}
-                <CertificatePreview
-                    userData={{ fullName: fullName.trim() }}
-                    completionData={completionData}
-                    certificateId="PREVIEW-ID"
-                    issueDate={new Date()}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>
