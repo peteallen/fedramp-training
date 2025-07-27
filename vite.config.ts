@@ -9,4 +9,9 @@ export default defineConfig({
       '@': '/src',
     },
   },
+  preview: {
+    port: parseInt(process.env.PORT || '4173'),
+    strictPort: true,
+    host: true,
+  },
 })
