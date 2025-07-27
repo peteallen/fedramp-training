@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "preview": "vite preview",
-    "start": "node server.js",
+    "start": "node server.cjs",
     "test": "vitest --run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage --run"
