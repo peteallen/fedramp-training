@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { useTrainingStore } from '@/stores/trainingStore'
+import { createMockTrainingStore } from '@/test-utils/mockStores'
 import { useTrainingInit } from './useTrainingInit'
 
 // Mock the training store
@@ -14,10 +15,10 @@ describe('useTrainingInit', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
-    mockUseTrainingStore.mockReturnValue({
+    mockUseTrainingStore.mockImplementation(createMockTrainingStore({
       initializeModules: mockInitializeModules,
       initialized: false,
-    })
+    }))
   })
 
   it('should call initializeModules when not initialized', () => {
@@ -27,10 +28,10 @@ describe('useTrainingInit', () => {
   })
 
   it('should not call initializeModules when already initialized', () => {
-    mockUseTrainingStore.mockReturnValue({
+    mockUseTrainingStore.mockImplementation(createMockTrainingStore({
       initializeModules: mockInitializeModules,
       initialized: true,
-    })
+    }))
     
     renderHook(() => useTrainingInit())
     
@@ -38,10 +39,10 @@ describe('useTrainingInit', () => {
   })
 
   it('should return initialized state', () => {
-    mockUseTrainingStore.mockReturnValue({
+    mockUseTrainingStore.mockImplementation(createMockTrainingStore({
       initializeModules: mockInitializeModules,
       initialized: true,
-    })
+    }))
     
     const { result } = renderHook(() => useTrainingInit())
     
@@ -54,10 +55,10 @@ describe('useTrainingInit', () => {
     expect(result.current.initialized).toBe(false)
     
     // Mock store returning initialized: true
-    mockUseTrainingStore.mockReturnValue({
+    mockUseTrainingStore.mockImplementation(createMockTrainingStore({
       initializeModules: mockInitializeModules,
       initialized: true,
-    })
+    }))
     
     rerender()
     
@@ -72,10 +73,10 @@ describe('useTrainingInit', () => {
     expect(mockInitializeModules).toHaveBeenCalledTimes(1)
     
     // Mock store returning new function
-    mockUseTrainingStore.mockReturnValue({
+    mockUseTrainingStore.mockImplementation(createMockTrainingStore({
       initializeModules: newInitializeModules,
       initialized: false,
-    })
+    }))
     
     rerender()
     

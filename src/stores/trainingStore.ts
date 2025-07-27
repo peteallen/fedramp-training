@@ -34,7 +34,7 @@ interface TrainingModule {
   completionDate?: Date
 }
 
-interface TrainingState {
+export interface TrainingState {
   modules: TrainingModule[]
   completedCount: number
   totalCount: number
@@ -56,13 +56,6 @@ interface TrainingState {
   clearAllData: () => void
 }
 
-// Add interface for persisted state
-interface PersistedTrainingState {
-  modules: Pick<TrainingModule, 'id' | 'completed' | 'progress' | 'lastAccessed' | 'timeSpent' | 'quizScore' | 'completionDate'>[]
-  completedCount: number
-  totalCount: number
-  overallProgress: number
-}
 
 // Helper function to load a single module from its file
 const loadModule = async (moduleInfo: { id: number; file: string }): Promise<TrainingModule> => {
@@ -96,7 +89,7 @@ const loadAllModules = async (): Promise<TrainingModule[]> => {
   return Promise.all(modulePromises)
 }
 
-export const useTrainingStore = create<TrainingState, [["zustand/persist", PersistedTrainingState]]>()(
+export const useTrainingStore = create<TrainingState>()(
   persist(
     (set, get) => ({
       modules: [],
@@ -333,13 +326,14 @@ if (import.meta.hot) {
   // Helper to register an HMR accept handler for a single JSON file
   const acceptUpdate = (path: string, moduleId: number) => {
     // Vite will re-import the updated JSON and pass it to the callback
-    import.meta.hot.accept(path, (mod: { default?: Partial<TrainingModule> }) => {
-      if (!mod?.default) return
+    import.meta.hot!.accept(path, (mod) => {
+      const moduleData = mod as { default?: Partial<TrainingModule> } | undefined
+      if (!moduleData?.default) return
       // Merge the fresh JSON content into the existing module while
       // preserving runtime fields like progress, completed, etc.
       useTrainingStore.setState((state) => ({
         modules: state.modules.map((m) =>
-          m.id === moduleId ? { ...m, ...mod.default } : m
+          m.id === moduleId ? { ...m, ...moduleData.default } : m
         ),
       }))
     })

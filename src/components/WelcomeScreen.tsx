@@ -22,7 +22,7 @@ export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
   const [role, setRole] = useState<UserRole | null>(null)
   const [fullName, setFullName] = useState('')
   const [errors, setErrors] = useState<FormErrors>({})
-  const [validation, setValidation] = useState<FormValidation>({
+  const [, setValidation] = useState<FormValidation>({
     isRoleValid: false,
     isNameValid: false
   })

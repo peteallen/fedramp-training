@@ -260,7 +260,7 @@ describe('RoleTag - Integration Tests', () => {
     it('should not re-render unnecessarily when props are the same', () => {
       const { rerender } = render(<RoleTag roles={['Development']} />)
       
-      const initialTag = screen.getByText('Development')
+      screen.getByText('Development')
       
       // Re-render with same props
       rerender(<RoleTag roles={['Development']} />)

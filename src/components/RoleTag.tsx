@@ -24,7 +24,7 @@ const roleTagVariants = cva(
 )
 
 export interface RoleTagProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'role'>,
     VariantProps<typeof roleTagVariants> {
   roles: UserRole[]
   variant?: 'default' | 'compact'
@@ -43,8 +43,11 @@ function RoleTag({
   // Remove duplicates while preserving order
   const uniqueRoles = Array.from(new Set(roles))
 
+  // Extract role prop from rest to avoid conflict
+  const { role: _, ...divProps } = props
+  
   return (
-    <div className={cn("flex gap-1 flex-wrap", className)} {...props}>
+    <div className={cn("flex gap-1 flex-wrap", className)} {...divProps}>
       {uniqueRoles.map((role) => {
         const roleKey = role.toLowerCase().replace(' ', '-') as 'development' | 'non-development'
         return (

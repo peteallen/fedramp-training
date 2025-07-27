@@ -292,7 +292,7 @@ describe('App Integration - Accessibility and Keyboard Navigation', () => {
     
     // Focus on Non-Development role
     const nonDevButton = screen.getByText('Non-Development').closest('[role="button"]')
-    nonDevButton?.focus()
+    ;(nonDevButton as HTMLElement)?.focus()
     
     // Select with spacebar
     await user.keyboard(' ')

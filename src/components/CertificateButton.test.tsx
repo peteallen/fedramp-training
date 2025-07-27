@@ -2,6 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { useCertificateStore } from '@/stores/certificateStore'
 import { useTrainingStore } from '@/stores/trainingStore'
+import { createMockTrainingStore } from '@/test-utils/mockStores'
 import { CertificateButton } from './CertificateButton'
 
 // Mock the stores
@@ -32,7 +33,7 @@ describe('CertificateButton', () => {
   })
 
   it('should not render when training is not complete', () => {
-    mockUseTrainingStore.mockReturnValue({
+    mockUseTrainingStore.mockImplementation(createMockTrainingStore({
       overallProgress: 75,
       modules: [],
       completedCount: 2,
@@ -50,7 +51,7 @@ describe('CertificateButton', () => {
       getModulesByCategory: vi.fn(),
       getModulesByDifficulty: vi.fn(),
       clearAllData: vi.fn(),
-    })
+    }))
 
     render(<CertificateButton />)
     
@@ -58,7 +59,7 @@ describe('CertificateButton', () => {
   })
 
   it('should render when training is complete', () => {
-    mockUseTrainingStore.mockReturnValue({
+    mockUseTrainingStore.mockImplementation(createMockTrainingStore({
       overallProgress: 100,
       modules: [],
       completedCount: 3,
@@ -76,7 +77,7 @@ describe('CertificateButton', () => {
       getModulesByCategory: vi.fn(),
       getModulesByDifficulty: vi.fn(),
       clearAllData: vi.fn(),
-    })
+    }))
 
     render(<CertificateButton />)
     
@@ -84,7 +85,7 @@ describe('CertificateButton', () => {
   })
 
   it('should show loading state when generating', () => {
-    mockUseTrainingStore.mockReturnValue({
+    mockUseTrainingStore.mockImplementation(createMockTrainingStore({
       overallProgress: 100,
       modules: [],
       completedCount: 3,
@@ -102,7 +103,7 @@ describe('CertificateButton', () => {
       getModulesByCategory: vi.fn(),
       getModulesByDifficulty: vi.fn(),
       clearAllData: vi.fn(),
-    })
+    }))
 
     mockUseCertificateStore.mockReturnValue({
       isGenerating: true,
@@ -123,7 +124,7 @@ describe('CertificateButton', () => {
   })
 
   it('should call setShowModal when clicked', () => {
-    mockUseTrainingStore.mockReturnValue({
+    mockUseTrainingStore.mockImplementation(createMockTrainingStore({
       overallProgress: 100,
       modules: [],
       completedCount: 3,
@@ -141,7 +142,7 @@ describe('CertificateButton', () => {
       getModulesByCategory: vi.fn(),
       getModulesByDifficulty: vi.fn(),
       clearAllData: vi.fn(),
-    })
+    }))
 
     render(<CertificateButton />)
     
@@ -153,7 +154,7 @@ describe('CertificateButton', () => {
   it('should call custom onGenerateCertificate when provided', () => {
     const mockOnGenerate = vi.fn()
     
-    mockUseTrainingStore.mockReturnValue({
+    mockUseTrainingStore.mockImplementation(createMockTrainingStore({
       overallProgress: 100,
       modules: [],
       completedCount: 3,
@@ -171,7 +172,7 @@ describe('CertificateButton', () => {
       getModulesByCategory: vi.fn(),
       getModulesByDifficulty: vi.fn(),
       clearAllData: vi.fn(),
-    })
+    }))
 
     render(<CertificateButton onGenerateCertificate={mockOnGenerate} />)
     
@@ -182,7 +183,7 @@ describe('CertificateButton', () => {
   })
 
   it('should apply custom className', () => {
-    mockUseTrainingStore.mockReturnValue({
+    mockUseTrainingStore.mockImplementation(createMockTrainingStore({
       overallProgress: 100,
       modules: [],
       completedCount: 3,
@@ -200,7 +201,7 @@ describe('CertificateButton', () => {
       getModulesByCategory: vi.fn(),
       getModulesByDifficulty: vi.fn(),
       clearAllData: vi.fn(),
-    })
+    }))
 
     render(<CertificateButton className="custom-class" />)
     

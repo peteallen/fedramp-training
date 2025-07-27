@@ -90,7 +90,6 @@ export const getCompletionSummary = () => {
 }
 
 export const useCertificateStore = create<CertificateState>()(
-  // @ts-expect-error - Zustand type compatibility issue with persist middleware
   persist(
     (set) => ({
       // User data

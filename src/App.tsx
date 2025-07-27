@@ -105,7 +105,6 @@ function App() {
       
       await new Promise<void>((resolve) => {
         root.render(
-          // @ts-expect-error - React type compatibility issue with dynamic rendering
           CertificateTemplate({
             userData,
             completionData,

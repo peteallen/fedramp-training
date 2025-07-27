@@ -81,19 +81,19 @@ describe('Module Data Structure with Roles', () => {
   it('should have specific role assignments in test modules', () => {
     // Module 1 should have Development role section
     const module1DevSection = module1.content.find(
-      section => section.title === 'Scope & Context'
+      (section): section is ModuleContent => section.title === 'Scope & Context'
     )
     expect(module1DevSection?.roles).toEqual(['Development'])
 
     // Module 2 should have Development role section
     const module2DevSection = module2.content.find(
-      section => section.title === 'Just‑in‑Time Training'
+      (section): section is ModuleContent => section.title === 'Just‑in‑Time Training'
     )
     expect(module2DevSection?.roles).toEqual(['Development'])
 
     // Module 2 should have both roles section
     const module2BothSection = module2.content.find(
-      section => section.title === 'AT‑2(02): Insider Threat Awareness'
+      (section): section is ModuleContent => section.title === 'AT‑2(02): Insider Threat Awareness'
     )
     expect(module2BothSection?.roles).toEqual(['Development', 'Non-Development'])
   })

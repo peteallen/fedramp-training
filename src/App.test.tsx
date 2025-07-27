@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { useTrainingInit } from '@/hooks/useTrainingInit'
 import { useTrainingStore } from '@/stores/trainingStore'
+import { createMockTrainingStore, createMockModule } from '@/test-utils/mockStores'
 import App from './App'
 
 // Mock the training store
@@ -82,9 +83,9 @@ vi.mock('@/stores/certificateStore', () => ({
 describe('App', () => {
   const mockStoreData = {
     modules: [
-      { id: 1, title: 'Module 1', completed: false, progress: 0 },
-      { id: 2, title: 'Module 2', completed: true, progress: 100 },
-      { id: 3, title: 'Module 3', completed: false, progress: 50 },
+      createMockModule({ id: 1, title: 'Module 1', completed: false, progress: 0 }),
+      createMockModule({ id: 2, title: 'Module 2', completed: true, progress: 100 }),
+      createMockModule({ id: 3, title: 'Module 3', completed: false, progress: 50 }),
     ],
     completedCount: 1,
     totalCount: 3,
@@ -97,7 +98,7 @@ describe('App', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
-    mockUseTrainingStore.mockReturnValue(mockStoreData)
+    mockUseTrainingStore.mockImplementation(createMockTrainingStore(mockStoreData))
     mockUseTrainingInit.mockReturnValue({ initialized: true })
   })
 
@@ -142,10 +143,10 @@ describe('App', () => {
   })
 
   it('should disable reset button when no progress', () => {
-    mockUseTrainingStore.mockReturnValue({
+    mockUseTrainingStore.mockImplementation(createMockTrainingStore({
       ...mockStoreData,
       overallProgress: 0,
-    })
+    }))
     
     render(<App />)
     
@@ -207,13 +208,13 @@ describe('App', () => {
   })
 
   it('should handle empty module list', () => {
-    mockUseTrainingStore.mockReturnValue({
+    mockUseTrainingStore.mockImplementation(createMockTrainingStore({
       ...mockStoreData,
       modules: [],
       completedCount: 0,
       totalCount: 0,
       overallProgress: 0,
-    })
+    }))
     
     render(<App />)
     
@@ -224,16 +225,16 @@ describe('App', () => {
   })
 
   it('should handle 100% completion', () => {
-    mockUseTrainingStore.mockReturnValue({
+    mockUseTrainingStore.mockImplementation(createMockTrainingStore({
       ...mockStoreData,
       modules: [
-        { id: 1, title: 'Module 1', completed: true, progress: 100 },
-        { id: 2, title: 'Module 2', completed: true, progress: 100 },
+        createMockModule({ id: 1, title: 'Module 1', completed: true, progress: 100 }),
+        createMockModule({ id: 2, title: 'Module 2', completed: true, progress: 100 }),
       ],
       completedCount: 2,
       totalCount: 2,
       overallProgress: 100,
-    })
+    }))
     
     render(<App />)
     
