@@ -8,7 +8,10 @@ interface ModuleCardProps {
 }
 
 export const ModuleCard = ({ moduleId, onStartModule }: ModuleCardProps) => {
-  const { getModuleById, updateProgress } = useTrainingStore()
+  const { getModuleById, updateProgress } = useTrainingStore((state) => ({
+    getModuleById: state.getModuleById,
+    updateProgress: state.updateProgress
+  }))
   const module = getModuleById(moduleId)
 
   if (!module) {

@@ -14,9 +14,24 @@ import useUserStore from '@/stores/userStore'
 import type { UserOnboardingData } from '@/types/user'
 
 function App() {
-  const { modules, completedCount, totalCount, overallProgress, clearAllData } = useTrainingStore()
-  const { showModal, setShowModal, saveUserData, setGenerating, addGeneratedCertificate } = useCertificateStore()
-  const { isOnboarded, completeOnboarding } = useUserStore()
+  const { modules, completedCount, totalCount, overallProgress, clearAllData } = useTrainingStore((state) => ({
+    modules: state.modules,
+    completedCount: state.completedCount,
+    totalCount: state.totalCount,
+    overallProgress: state.overallProgress,
+    clearAllData: state.clearAllData
+  }))
+  const { showModal, setShowModal, saveUserData, setGenerating, addGeneratedCertificate } = useCertificateStore((state) => ({
+    showModal: state.showModal,
+    setShowModal: state.setShowModal,
+    saveUserData: state.saveUserData,
+    setGenerating: state.setGenerating,
+    addGeneratedCertificate: state.addGeneratedCertificate
+  }))
+  const { isOnboarded, completeOnboarding } = useUserStore((state) => ({
+    isOnboarded: state.isOnboarded,
+    completeOnboarding: state.completeOnboarding
+  }))
   const { initialized } = useTrainingInit()
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [currentModuleId, setCurrentModuleId] = useState<number | null>(null)
