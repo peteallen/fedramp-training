@@ -1,29 +1,24 @@
 import { useState, useCallback } from 'react'
-import { RoleSelector } from '@/components/RoleSelector'
 import { TeamMemberSelector } from '@/components/TeamMemberSelector'
 import { Button } from '@/components/ui/button'
-import type { UserOnboardingData, UserRole } from '@/types/user'
+import type { UserOnboardingData } from '@/types/user'
 
 interface WelcomeScreenProps {
   onComplete: (userData: UserOnboardingData) => void
 }
 
 interface FormErrors {
-  role?: string
   fullName?: string
 }
 
 interface FormValidation {
-  isRoleValid: boolean
   isNameValid: boolean
 }
 
 export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
-  const [role, setRole] = useState<UserRole | null>(null)
   const [fullName, setFullName] = useState('')
   const [errors, setErrors] = useState<FormErrors>({})
   const [, setValidation] = useState<FormValidation>({
-    isRoleValid: false,
     isNameValid: false
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -31,12 +26,7 @@ export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {}
     const newValidation: FormValidation = {
-      isRoleValid: !!role,
       isNameValid: !!fullName.trim()
-    }
-
-    if (!role) {
-      newErrors.role = 'Please select your role'
     }
 
     if (!fullName.trim()) {
@@ -61,27 +51,15 @@ export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
       // Simulate a brief delay for better UX
       await new Promise(resolve => setTimeout(resolve, 300))
       
-      if (role) {
-        onComplete({
-          role: role,
-          fullName: fullName.trim()
-        })
-      }
+      onComplete({
+        fullName: fullName.trim()
+      })
     } catch (_error) {
       // Silently handle error - could add user-facing error handling here
     } finally {
       setIsSubmitting(false)
     }
   }
-
-  const handleRoleChange = useCallback((selectedRole: UserRole) => {
-    setRole(selectedRole)
-    setValidation(prev => ({ ...prev, isRoleValid: true }))
-    // Clear role error when user makes a selection
-    if (errors.role) {
-      setErrors(prev => ({ ...prev, role: undefined }))
-    }
-  }, [errors.role])
 
   const handleNameChange = useCallback((name: string) => {
     setFullName(name)
@@ -131,17 +109,6 @@ export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6" role="form" aria-labelledby="welcome-heading">
-            <fieldset>
-              <legend className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                What is your primary role at ClearTriage?
-              </legend>
-              <RoleSelector
-                selectedRole={role}
-                onRoleChange={handleRoleChange}
-                error={errors.role}
-              />
-            </fieldset>
-
             <div>
               <TeamMemberSelector
                 value={fullName}

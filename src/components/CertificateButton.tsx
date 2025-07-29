@@ -6,11 +6,15 @@ import { useTrainingStore } from '@/stores/trainingStore'
 interface CertificateButtonProps {
   className?: string
   onGenerateCertificate?: () => void
+  overallProgress?: number
 }
 
-export function CertificateButton({ className, onGenerateCertificate }: CertificateButtonProps) {
-  const { overallProgress } = useTrainingStore()
+export function CertificateButton({ className, onGenerateCertificate, overallProgress: overallProgressProp }: CertificateButtonProps) {
+  const storeProgress = useTrainingStore((state) => state.overallProgress)
   const { isGenerating, setShowModal } = useCertificateStore()
+  
+  // Use prop if provided, otherwise fall back to store value
+  const overallProgress = overallProgressProp ?? storeProgress
   
   // Only show button when all training is completed
   const isTrainingComplete = overallProgress >= 100

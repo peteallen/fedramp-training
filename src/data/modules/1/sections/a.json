@@ -1,0 +1,142 @@
+{
+  "id": "1.A",
+  "title": "ClearTriage Security Overview",
+  "content": [
+    {
+      "type": "text",
+      "text": "Welcome to ClearTriage's security training. Before we dive into specific security practices, let's understand why security is critical to our company's survival and each of our jobs."
+    },
+    {
+      "type": "subsection",
+      "title": "What is FedRAMP and Why It Matters",
+      "content": [
+        {
+          "type": "text",
+          "text": "FedRAMP (Federal Risk and Authorization Management Program) is the government's standardized approach to security for cloud services. Think of it as a security seal of approval that says \"this company can be trusted with federal data.\""
+        },
+        {
+          "type": "text",
+          "text": "For ClearTriage, FedRAMP authorization means we've proven to the VA that we can protect veterans' healthcare information. Without it, we simply cannot provide our nurse triage tool to the VA."
+        },
+        {
+          "type": "callout",
+          "style": "info",
+          "title": "The Bottom Line",
+          "text": "No FedRAMP = No VA contract = No ClearTriage"
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Why the VA Requires FedRAMP",
+      "content": [
+        {
+          "type": "text",
+          "text": "The VA handles sensitive healthcare data for millions of veterans. They're required by federal law to ensure any technology vendor they work with meets strict security standards. FedRAMP provides that assurance through:"
+        },
+        {
+          "type": "list",
+          "style": "unordered",
+          "items": [
+            "Independent security assessments by certified third parties",
+            "Over 400 security controls that must be implemented and verified",
+            "Continuous monitoring to catch issues before they become incidents",
+            "Annual assessments to maintain authorization"
+          ]
+        },
+        {
+          "type": "text",
+          "text": "The VA can't make exceptions - every cloud service they use must be FedRAMP authorized. This isn't bureaucracy for its own sake; it's about protecting veterans' personal health information."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "The Real Impact of Security Incidents",
+      "content": [
+        {
+          "type": "text",
+          "text": "Let's be clear about what's at stake if we have a security incident:"
+        },
+        {
+          "type": "list",
+          "style": "unordered",
+          "items": [
+            "**Immediate incident reporting**: We have just 1 hour to report certain incidents to federal authorities",
+            "**Authorization suspension**: A serious incident could suspend our FedRAMP authorization",
+            "**Contract termination**: The VA has broad authority to terminate contracts after security incidents",
+            "**Company closure**: Without the VA contract, ClearTriage cannot operate"
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "warning",
+          "title": "This Affects All 6 of Us",
+          "text": "A security incident doesn't just affect \"the company\" - it directly threatens all six of our jobs. There's no ClearTriage without the VA contract, and there's no VA contract without maintaining our security posture."
+        },
+        {
+          "type": "example",
+          "title": "Real-World Scenario",
+          "description": "Imagine someone clicks a phishing link and gives away their AWS credentials. Within hours, an attacker could access our systems, potentially exposing veteran data. We'd have to report this immediately, face a federal investigation, and likely lose our authorization. The VA would terminate our contract, and all six of us would be looking for new jobs."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Small Team = Everyone is Critical",
+      "content": [
+        {
+          "type": "text",
+          "text": "In a 6-person company, there's no \"someone else\" to handle security. We don't have a dedicated security team watching everything 24/7. Instead:"
+        },
+        {
+          "type": "list",
+          "style": "unordered",
+          "items": [
+            "**Every person** is a potential target for attackers",
+            "**Every account** is a possible entry point",
+            "**Every decision** can impact our security posture",
+            "**Everyone's vigilance** keeps us secure"
+          ]
+        },
+        {
+          "type": "text",
+          "text": "This isn't meant to scare you - it's meant to empower you. Each of us plays a direct role in protecting ClearTriage and our jobs. When you follow security practices, you're not just checking boxes for compliance; you're actively protecting our ability to serve veterans and keep our company running."
+        },
+        {
+          "type": "tip",
+          "text": "Remember: Pete handles most security tasks with Savvy's help, but security is everyone's responsibility. If you see something suspicious or have questions, speak up immediately. In our small team, your voice matters."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Our Security Reality",
+      "content": [
+        {
+          "type": "text",
+          "text": "Here's what makes our security situation unique:"
+        },
+        {
+          "type": "list",
+          "style": "unordered",
+          "items": [
+            "**Limited PII exposure**: We only handle login credentials, not full medical records",
+            "**Focused boundary**: Our FedRAMP boundary is just AWS and Google Drive",
+            "**Clear procedures**: Pete has documented exactly what to do in various scenarios",
+            "**Quick communication**: With 6 people, we can respond to issues immediately"
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Our small size is actually an advantage for security - we can communicate quickly, make decisions fast, and everyone knows exactly who to contact when something seems wrong."
+        },
+        {
+          "type": "callout",
+          "style": "tip",
+          "text": "Throughout this training, we'll focus on practical security measures that make sense for our team and our specific FedRAMP boundary. You won't need to become a security expert - just understand your role in keeping ClearTriage secure."
+        }
+      ]
+    }
+  ]
+}

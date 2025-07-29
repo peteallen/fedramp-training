@@ -30,7 +30,6 @@ export const ROLE_METADATA: Record<UserRole, RoleMetadata> = {
 }
 
 export interface UserOnboardingData {
-  role: UserRole
   fullName: string
 }
 
@@ -51,4 +50,5 @@ export interface UserState extends UserProfile {
   // Getters
   getUserData: () => UserOnboardingData | null
   isRoleRelevant: (contentRoles: string[]) => boolean
+  isContentRelevantForUser: (requiredForMembers: string[]) => boolean
 }

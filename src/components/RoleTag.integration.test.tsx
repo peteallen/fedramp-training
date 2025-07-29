@@ -26,6 +26,7 @@ describe('RoleTag - Integration Tests', () => {
         resetOnboarding: vi.fn(),
         getUserData: vi.fn(() => null),
         isRoleRelevant: vi.fn(() => true), // Show all content when no role
+        isContentRelevantForUser: vi.fn(() => true),
       })
 
       render(<RoleTag roles={['Development']} />)
@@ -44,8 +45,9 @@ describe('RoleTag - Integration Tests', () => {
         updateRole: vi.fn(),
         updateName: vi.fn(),
         resetOnboarding: vi.fn(),
-        getUserData: vi.fn(() => ({ role: 'Development', fullName: 'John Doe' })),
+        getUserData: vi.fn(() => ({ fullName: 'John Doe' })),
         isRoleRelevant: vi.fn((roles) => roles.includes('Development')),
+        isContentRelevantForUser: vi.fn(() => true),
       })
 
       render(<RoleTag roles={['Development']} />)
@@ -65,8 +67,9 @@ describe('RoleTag - Integration Tests', () => {
         updateRole: vi.fn(),
         updateName: vi.fn(),
         resetOnboarding: vi.fn(),
-        getUserData: vi.fn(() => ({ role: 'Non-Development', fullName: 'Jane Smith' })),
+        getUserData: vi.fn(() => ({ fullName: 'Jane Smith' })),
         isRoleRelevant: vi.fn((roles) => roles.includes('Non-Development')),
+        isContentRelevantForUser: vi.fn(() => true),
       })
 
       render(<RoleTag roles={['Non-Development']} />)
@@ -86,8 +89,9 @@ describe('RoleTag - Integration Tests', () => {
         updateRole: vi.fn(),
         updateName: vi.fn(),
         resetOnboarding: vi.fn(),
-        getUserData: vi.fn(() => ({ role: 'Development', fullName: 'John Doe' })),
+        getUserData: vi.fn(() => ({ fullName: 'John Doe' })),
         isRoleRelevant: vi.fn(() => true),
+        isContentRelevantForUser: vi.fn(() => true),
       })
 
       render(<RoleTag roles={['Development', 'Non-Development']} />)
@@ -108,8 +112,9 @@ describe('RoleTag - Integration Tests', () => {
         updateRole: vi.fn(),
         updateName: vi.fn(),
         resetOnboarding: vi.fn(),
-        getUserData: vi.fn(() => ({ role: 'Development', fullName: 'John Doe' })),
+        getUserData: vi.fn(() => ({ fullName: 'John Doe' })),
         isRoleRelevant: vi.fn(() => true),
+        isContentRelevantForUser: vi.fn(() => true),
       })
     })
 
@@ -161,8 +166,9 @@ describe('RoleTag - Integration Tests', () => {
         updateRole: vi.fn(),
         updateName: vi.fn(),
         resetOnboarding: vi.fn(),
-        getUserData: vi.fn(() => ({ role: 'Development', fullName: 'John Doe' })),
+        getUserData: vi.fn(() => ({ fullName: 'John Doe' })),
         isRoleRelevant: vi.fn(() => true),
+        isContentRelevantForUser: vi.fn(() => true),
       })
     })
 
@@ -203,8 +209,9 @@ describe('RoleTag - Integration Tests', () => {
         updateRole: vi.fn(),
         updateName: vi.fn(),
         resetOnboarding: vi.fn(),
-        getUserData: vi.fn(() => ({ role: 'Development', fullName: 'John Doe' })),
+        getUserData: vi.fn(() => ({ fullName: 'John Doe' })),
         isRoleRelevant: vi.fn(() => true),
+        isContentRelevantForUser: vi.fn(() => true),
       })
     })
 
@@ -244,8 +251,9 @@ describe('RoleTag - Integration Tests', () => {
         updateRole: vi.fn(),
         updateName: vi.fn(),
         resetOnboarding: vi.fn(),
-        getUserData: vi.fn(() => ({ role: 'Development', fullName: 'John Doe' })),
+        getUserData: vi.fn(() => ({ fullName: 'John Doe' })),
         isRoleRelevant: vi.fn(() => true),
+        isContentRelevantForUser: vi.fn(() => true),
       })
     })
 

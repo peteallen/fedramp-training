@@ -43,6 +43,7 @@ describe('CertificateModal', () => {
       resetOnboarding: vi.fn(),
       getUserData: vi.fn().mockReturnValue(null),
       isRoleRelevant: vi.fn(),
+      isContentRelevantForUser: vi.fn().mockReturnValue(true),
     })
 
     mockExtractCompletionData.mockReturnValue({

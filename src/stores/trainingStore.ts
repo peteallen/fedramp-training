@@ -79,8 +79,8 @@ const loadModuleSection = async (moduleId: number, sectionId: string) => {
 const loadAllModules = async (): Promise<TrainingModule[]> => {
   const modules: TrainingModule[] = []
   
-  // For now, we'll check for known module IDs (we know module 4 exists)
-  const moduleIds = [4] // Can be expanded as more modules are added
+  // Load all available modules
+  const moduleIds = [1, 4] // Module 1: Foundation Security Training, Module 4: Detection Infrastructure
   
   for (const moduleId of moduleIds) {
     const metadata = await loadModuleMetadata(moduleId)

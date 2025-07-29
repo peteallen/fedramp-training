@@ -15,7 +15,7 @@ const useUserStore = create<UserState>()(
       completeOnboarding: (userData: UserOnboardingData) => {
         set({
           isOnboarded: true,
-          role: userData.role,
+          role: null, // Role is no longer used
           fullName: userData.fullName,
           onboardingCompletedAt: new Date(),
         })
@@ -41,21 +41,29 @@ const useUserStore = create<UserState>()(
       // Getters
       getUserData: (): UserOnboardingData | null => {
         const state = get()
-        if (!state.isOnboarded || !state.role || !state.fullName) {
+        if (!state.isOnboarded || !state.fullName) {
           return null
         }
         return {
-          role: state.role,
           fullName: state.fullName,
         }
       },
 
-      isRoleRelevant: (contentRoles: string[]): boolean => {
+      isRoleRelevant: (_contentRoles: string[]): boolean => {
+        // This method is deprecated - use isContentRelevantForUser instead
+        return true
+      },
+      
+      isContentRelevantForUser: (requiredForMembers: string[]): boolean => {
         const state = get()
-        if (!state.role || contentRoles.length === 0) {
-          return true // Show content if no role specified or no role restrictions
+        if (!state.fullName || requiredForMembers.length === 0) {
+          return true // Show content if no name specified or no restrictions
         }
-        return contentRoles.includes(state.role)
+        // Extract first name from full name for matching
+        const firstName = state.fullName.split(' ')[0]
+        return requiredForMembers.some(member => 
+          member.toLowerCase() === firstName.toLowerCase()
+        )
       },
     }),
     {

@@ -2,7 +2,7 @@
   "id": 4,
   "title": "Detection Infrastructure",
   "description": "Learn how ClearTriage's AWS-based security monitoring protects our FedRAMP boundary, including Security Hub alerts, log analysis, and incident response procedures.",
-  "requiredForMembers": ["Pete", "Dave", "Shelly", "Savvy", "Krista", "Braden"],
+  "requiredForMembers": ["Pete", "Savvy", "Braden"],
   "objectives": [
     "Navigate AWS Security Hub and understand security findings",
     "Interpret security alerts and their severity levels",

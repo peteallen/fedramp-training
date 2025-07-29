@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-FedRAMP Training LMS - A React-based Learning Management System for ClearTriage's internal FedRAMP compliance training. Built with TypeScript, Vite, and Tailwind CSS.
+FedRAMP Training LMS - A React-based Learning Management System for ClearTriage's internal FedRAMP compliance training. Built for a 6-person team to meet FedRAMP AT-1, AT-2, and AT-3 controls.
 
 ## Key Commands
 
@@ -12,12 +12,13 @@ FedRAMP Training LMS - A React-based Learning Management System for ClearTriage'
 - `pnpm dev` - Start development server with hot reload at http://localhost:5173
 - `pnpm build` - Build for production (runs TypeScript compiler then Vite build)
 - `pnpm preview` - Preview production build locally
+- `pnpm start` - Start production server with basic auth (for Railway deployment)
 
 ### Testing
 - `pnpm test` - Run all tests once
 - `pnpm test:ui` - Run tests with interactive UI (development mode)
 - `pnpm test:coverage` - Run tests with coverage report
-- Run a specific test file: `pnpm test src/components/ModuleCard.test.tsx`
+- `pnpm test src/components/ModuleCard.test.tsx` - Run a specific test file
 
 ### Code Quality
 - `pnpm lint` - Check code for linting errors
@@ -29,37 +30,45 @@ FedRAMP Training LMS - A React-based Learning Management System for ClearTriage'
 
 ### State Management
 Uses Zustand stores with localStorage persistence:
-- `trainingStore.ts` - Module progress, completion status, and quiz scores
-- `userStore.ts` - User profile and onboarding state
+- `trainingStore.ts` - Module progress, completion status, dynamic module loading from JSON files
+- `userStore.ts` - User profile, onboarding state, name-based content filtering 
 - `certificateStore.ts` - Certificate generation and history
 - `themeStore.ts` - Theme preferences (light/dark mode)
 
-### Core Components
-- `App.tsx` - Main entry point, handles routing between modules and welcome screen
-- `ModuleViewer.tsx` - Displays module content with role-based filtering
-- `WelcomeScreen.tsx` - User onboarding flow (name and role selection)
-- `CertificateTemplate.tsx` - PDF certificate generation for completed training
+### Core User Flow
+1. **WelcomeScreen** - User selects their name from dropdown (Pete, Dave, Shelly, Savvy, Braden, Krista, or ScaleSec)
+2. **App** - Filters modules based on `requiredForMembers` field to show only relevant content
+3. **ModuleViewer** - Displays module sections with pagination and progress tracking
+4. **CertificateButton** - Appears when user completes all their required modules (100% progress)
 
 ### Module System
-- Training content stored in `/src/data/modules/*.json`
-- Hot-reload support in development for JSON content changes
-- Role-based content filtering (CSO, Developer, General User)
-- Progress tracked per module with quiz scoring
+- Module content stored in `/src/data/modules/{id}/module.json` and `/src/data/modules/{id}/sections/*.json`
+- Dynamic loading via fetch() in `loadModuleMetadata` and `loadModuleSection` functions
+- Modules filtered by `requiredForMembers` array matching user's name
+- Progress calculated based on filtered modules only (users see 100% when they complete their required modules)
+- Module IDs are hardcoded in `trainingStore.ts` (currently: [4], expand as needed)
 
-### Testing Strategy
-- Component tests using Vitest and React Testing Library
-- Integration tests for user workflows
-- Accessibility testing included
-- Test files colocated with components (e.g., `Component.test.tsx`)
+### Testing Approach
+- Component tests use mocked Zustand stores with selector support
+- Integration tests mock the fetch-based module loading
+- Key test utilities in `/src/test-utils/mockStores.ts`
+- Tests expect TeamMemberSelector dropdown instead of text input for name
+- When mocking `useTrainingStore`, must support selector pattern: `(selector) => selector ? selector(state) : state`
 
-### Key Patterns
-- TypeScript with strict mode for type safety
-- Tailwind CSS v4 for styling with dark mode support
-- shadcn/ui components for consistent UI
+### UI Components
+- Uses shadcn/ui components with Tailwind CSS v4
+- Dark mode support with theme persistence
 - Responsive design with mobile-first approach
-- WCAG accessibility compliance
+- TeamMemberSelector replaces traditional name input with dropdown
 
-## Important Rules from .cursor/rules/test-rules.mdc
+## Important Testing Notes
+
+When updating tests that interact with the WelcomeScreen:
+- Name selection uses dropdown (`screen.getByRole('button', { name: /select your name/i })`)
+- Must click dropdown first, then select name from list
+- No longer uses `getByLabelText(/full name/i)` pattern
+
+## Rules from .cursor/rules/test-rules.mdc
 
 1. Always update existing tests and/or create new tests when implementing or changing functionality
 2. Run tests before and after performing work to ensure no new test failures are introduced

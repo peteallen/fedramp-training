@@ -38,7 +38,6 @@ describe('userStore', () => {
   describe('completeOnboarding', () => {
     it('should complete onboarding with user data', () => {
       const userData: UserOnboardingData = {
-        role: 'Development',
         fullName: 'John Doe',
       }
 
@@ -48,7 +47,7 @@ describe('userStore', () => {
 
       const state = useUserStore.getState()
       expect(state.isOnboarded).toBe(true)
-      expect(state.role).toBe('Development')
+      expect(state.role).toBe(null) // Role is no longer used
       expect(state.fullName).toBe('John Doe')
       expect(state.onboardingCompletedAt).toBeInstanceOf(Date)
       if (state.onboardingCompletedAt) {
@@ -57,9 +56,8 @@ describe('userStore', () => {
       }
     })
 
-    it('should complete onboarding with Non-Development role', () => {
+    it('should complete onboarding with different name', () => {
       const userData: UserOnboardingData = {
-        role: 'Non-Development',
         fullName: 'Jane Smith',
       }
 
@@ -67,7 +65,7 @@ describe('userStore', () => {
 
       const state = useUserStore.getState()
       expect(state.isOnboarded).toBe(true)
-      expect(state.role).toBe('Non-Development')
+      expect(state.role).toBe(null) // Role is no longer used
       expect(state.fullName).toBe('Jane Smith')
     })
   })
@@ -77,7 +75,7 @@ describe('userStore', () => {
       useUserStore.getState().updateRole('Development')
       
       const state = useUserStore.getState()
-      expect(state.role).toBe('Development')
+      expect(state.role).toBe(null) // Role is no longer used
     })
 
     it('should update role from Development to Non-Development', () => {
@@ -151,77 +149,81 @@ describe('userStore', () => {
 
     it('should return user data when fully onboarded', () => {
       const onboardingData: UserOnboardingData = {
-        role: 'Development',
         fullName: 'John Doe',
       }
       useUserStore.getState().completeOnboarding(onboardingData)
 
       const userData = useUserStore.getState().getUserData()
       expect(userData).toEqual({
-        role: 'Development',
         fullName: 'John Doe',
       })
     })
 
-    it('should return user data for Non-Development role', () => {
+    it('should return user data for different name', () => {
       const onboardingData: UserOnboardingData = {
-        role: 'Non-Development',
         fullName: 'Jane Smith',
       }
       useUserStore.getState().completeOnboarding(onboardingData)
 
       const userData = useUserStore.getState().getUserData()
       expect(userData).toEqual({
-        role: 'Non-Development',
         fullName: 'Jane Smith',
       })
     })
   })
 
-  describe('isRoleRelevant', () => {
+  describe('isContentRelevantForUser', () => {
     beforeEach(() => {
-      // Set up a user with Development role for most tests
+      // Set up a user for most tests
       useUserStore.getState().completeOnboarding({
-        role: 'Development',
-        fullName: 'John Doe',
+        fullName: 'Pete Allen',
       })
     })
 
-    it('should return true for empty content roles array', () => {
-      const isRelevant = useUserStore.getState().isRoleRelevant([])
+    it('should return true for empty required members array', () => {
+      const isRelevant = useUserStore.getState().isContentRelevantForUser([])
       expect(isRelevant).toBe(true)
     })
 
-    it('should return true when user role matches content role', () => {
-      const isRelevant = useUserStore.getState().isRoleRelevant(['Development'])
+    it('should return true when user name matches required member', () => {
+      const isRelevant = useUserStore.getState().isContentRelevantForUser(['Pete', 'Dave'])
       expect(isRelevant).toBe(true)
     })
 
-    it('should return false when user role does not match content role', () => {
-      const isRelevant = useUserStore.getState().isRoleRelevant(['Non-Development'])
+    it('should return false when user name does not match required members', () => {
+      const isRelevant = useUserStore.getState().isContentRelevantForUser(['Dave', 'Shelly'])
       expect(isRelevant).toBe(false)
     })
 
-    it('should return true when user role is in multiple content roles', () => {
-      const isRelevant = useUserStore.getState().isRoleRelevant(['Development', 'Non-Development'])
+    it('should return true when user name is in multiple required members', () => {
+      const isRelevant = useUserStore.getState().isContentRelevantForUser(['Pete', 'Dave', 'Shelly'])
       expect(isRelevant).toBe(true)
     })
 
-    it('should return true when no user role is set', () => {
+    it('should return true when no user name is set', () => {
       useUserStore.getState().resetOnboarding()
-      const isRelevant = useUserStore.getState().isRoleRelevant(['Development'])
+      const isRelevant = useUserStore.getState().isContentRelevantForUser(['Pete'])
       expect(isRelevant).toBe(true)
     })
 
-    it('should work correctly for Non-Development role', () => {
+    it('should work correctly for different user', () => {
       useUserStore.getState().completeOnboarding({
-        role: 'Non-Development',
-        fullName: 'Jane Smith',
+        fullName: 'Dave Schmitt',
       })
 
-      expect(useUserStore.getState().isRoleRelevant(['Non-Development'])).toBe(true)
-      expect(useUserStore.getState().isRoleRelevant(['Development'])).toBe(false)
-      expect(useUserStore.getState().isRoleRelevant(['Development', 'Non-Development'])).toBe(true)
+      expect(useUserStore.getState().isContentRelevantForUser(['Dave'])).toBe(true)
+      expect(useUserStore.getState().isContentRelevantForUser(['Pete'])).toBe(false)
+      expect(useUserStore.getState().isContentRelevantForUser(['Pete', 'Dave'])).toBe(true)
+    })
+
+    it('should handle case-insensitive name matching', () => {
+      useUserStore.getState().completeOnboarding({
+        fullName: 'Pete Allen',
+      })
+
+      expect(useUserStore.getState().isContentRelevantForUser(['pete'])).toBe(true)
+      expect(useUserStore.getState().isContentRelevantForUser(['PETE'])).toBe(true)
+      expect(useUserStore.getState().isContentRelevantForUser(['Pete'])).toBe(true)
     })
   })
 
@@ -240,7 +242,7 @@ describe('userStore', () => {
       // Verify state is maintained
       const state = useUserStore.getState()
       expect(state.isOnboarded).toBe(true)
-      expect(state.role).toBe('Development')
+      expect(state.role).toBe(null) // Role is no longer used
       expect(state.fullName).toBe('John Doe')
       expect(state.onboardingCompletedAt).toBeInstanceOf(Date)
     })

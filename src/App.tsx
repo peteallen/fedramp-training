@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { CertificateButton } from '@/components/CertificateButton'
 import { CertificateModal } from '@/components/CertificateModal'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
@@ -16,9 +16,6 @@ import type { UserOnboardingData } from '@/types/user'
 
 function App() {
   const modules = useTrainingStore((state) => state.modules)
-  const completedCount = useTrainingStore((state) => state.completedCount)
-  const totalCount = useTrainingStore((state) => state.totalCount)
-  const overallProgress = useTrainingStore((state) => state.overallProgress)
   const clearAllData = useTrainingStore((state) => state.clearAllData)
   
   const showModal = useCertificateStore((state) => state.showModal)
@@ -29,9 +26,29 @@ function App() {
   
   const isOnboarded = useUserStore((state) => state.isOnboarded)
   const completeOnboarding = useUserStore((state) => state.completeOnboarding)
+  const isContentRelevantForUser = useUserStore((state) => state.isContentRelevantForUser)
   const { initialized } = useTrainingInit()
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [currentModuleId, setCurrentModuleId] = useState<number | null>(null)
+  
+  // Filter modules based on user's name
+  const filteredModules = useMemo(() => {
+    return modules.filter((module) => 
+      isContentRelevantForUser(module.requiredForMembers || [])
+    )
+  }, [modules, isContentRelevantForUser])
+  
+  // Calculate progress for filtered modules only
+  const filteredCompletedCount = useMemo(() => {
+    return filteredModules.filter((module) => module.completed).length
+  }, [filteredModules])
+  
+  const filteredTotalCount = filteredModules.length
+  
+  const filteredOverallProgress = useMemo(() => {
+    if (filteredTotalCount === 0) return 0
+    return Math.round((filteredCompletedCount / filteredTotalCount) * 100)
+  }, [filteredCompletedCount, filteredTotalCount])
 
   const handleResetClick = () => {
     setShowConfirmDialog(true)
@@ -191,8 +208,7 @@ function App() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          {modules.map((module: any) => (
+          {filteredModules.map((module) => (
             <ModuleCard 
               key={module.id} 
               moduleId={module.id} 
@@ -208,7 +224,7 @@ function App() {
               variant="outline"
               size="sm"
               onClick={handleResetClick}
-              disabled={overallProgress === 0}
+              disabled={filteredOverallProgress === 0}
               className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 border-red-300 hover:border-red-400 dark:border-red-600 dark:hover:border-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Reset All Progress
@@ -218,19 +234,19 @@ function App() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4">
               <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                {completedCount}
+                {filteredCompletedCount}
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Modules Completed</div>
             </div>
             <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-4">
               <div className="text-2xl font-bold text-green-600 dark:text-green-400 mb-2">
-                {totalCount}
+                {filteredTotalCount}
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Total Modules</div>
             </div>
             <div className="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-4">
               <div className="text-2xl font-bold text-purple-600 dark:text-purple-400 mb-2">
-                {overallProgress}%
+                {filteredOverallProgress}%
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Overall Progress</div>
             </div>
@@ -239,16 +255,16 @@ function App() {
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 mb-2">
             <div 
               className="bg-blue-600 dark:bg-blue-500 h-4 rounded-full transition-all duration-300"
-              style={{ width: `${overallProgress}%` }}
+              style={{ width: `${filteredOverallProgress}%` }}
             ></div>
           </div>
           <p className="text-center text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
-            {overallProgress === 100 ? 'All training completed! 🎉' : `${overallProgress}% Complete`}
+            {filteredOverallProgress === 100 ? 'All training completed! 🎉' : `${filteredOverallProgress}% Complete`}
           </p>
           
           {/* Certificate Button - only shown when training is complete */}
           <div className="flex justify-center">
-            <CertificateButton />
+            <CertificateButton overallProgress={filteredOverallProgress} />
           </div>
         </div>
 
