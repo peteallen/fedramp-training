@@ -1,126 +1,92 @@
 {
-  "id": "3.A",
-  "title": "What is Information Spillage?",
+  "id": "2.A",
+  "title": "Recognizing Security Incidents",
   "content": [
     {
       "type": "text",
-      "text": "Information spillage is what happens when sensitive data ends up on systems that aren't authorized to handle it. Think of it like accidentally forwarding a confidential email to your personal Gmail account – the information has 'spilled' outside of its authorized boundary."
-    },
-    {
-      "type": "callout",
-      "style": "important",
-      "title": "Our FedRAMP Boundary",
-      "text": "At ClearTriage, our FedRAMP boundary includes only AWS and Google Drive. Any sensitive information stored outside these systems constitutes a spillage event."
+      "text": "Security incidents aren't just dramatic cyber attacks you see in movies. In our day-to-day work at ClearTriage, an incident could be as simple as accidentally emailing credentials or noticing your AWS console showing unfamiliar activity. Since we're a small team handling sensitive government data, everyone plays a critical role in spotting and reporting potential security issues."
     },
     {
       "type": "subsection",
-      "title": "Why This Matters to You",
+      "title": "What Constitutes an Incident at ClearTriage",
       "content": [
         {
           "type": "text",
-          "text": "You might think, 'We only handle login credentials, not medical records or social security numbers – what's the big deal?' Here's why spillage matters even with minimal PII:"
+          "text": "A security incident is any event that could compromise the confidentiality, integrity, or availability of our systems or data. Here's what to watch for in our environment:"
         },
         {
           "type": "list",
           "style": "bullet",
           "items": [
-            "Login credentials are gateway information – they provide access to other systems",
-            "FedRAMP compliance requires us to control where ANY sensitive data goes",
-            "A single spillage event can trigger reporting requirements and potential audits",
-            "Even 'minimal' PII can be combined with other data sources for malicious purposes"
+            "**Unauthorized AWS Access**: Someone accessing our AWS resources without permission, unfamiliar IP addresses in CloudTrail logs, or unexpected changes to our infrastructure",
+            "**Malware or Suspicious Software**: Any malware detection on devices that access our systems, suspicious pop-ups, or unexpected system behavior",
+            "**Data Spillage**: Government data appearing where it shouldn't - like CUI in personal email, unencrypted devices, or outside our FedRAMP boundary",
+            "**Service Disruptions**: Our application becoming unavailable, database connectivity issues, or any outage affecting government users",
+            "**Suspicious Activities**: Repeated failed login attempts, unusual data access patterns, or employees accessing systems they don't normally use",
+            "**Lost or Stolen Devices**: Any device with access to our AWS console or Google Drive going missing - laptops, phones, or even written passwords"
           ]
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "title": "Remember Our Scope",
+          "text": "Our FedRAMP boundary includes only AWS and Google Drive. Incidents involving other systems (like Slack or GitHub) may still need reporting if they could affect our FedRAMP systems."
         }
       ]
     },
     {
       "type": "subsection",
-      "title": "Common Ways Spillage Happens",
+      "title": "Incident Categories and Response Times",
       "content": [
         {
           "type": "text",
-          "text": "Information spillage isn't usually dramatic or intentional. It often happens through everyday actions:"
+          "text": "FedRAMP requires us to categorize incidents based on severity and respond within specific timeframes. Here's how we classify incidents:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**CAT 1 (Critical)**: Root-level compromise, data exfiltration, or complete system unavailability. **Response: Immediate - within 1 hour**",
+            "**CAT 2 (High)**: User-level compromise, malware that's contained, or partial system disruption. **Response: Within 2 hours**",
+            "**CAT 3 (Medium)**: Attempted intrusions that failed, policy violations with security impact. **Response: Within 4 hours**",
+            "**CAT 4 (Low)**: Unsuccessful scans or probes, minor policy violations. **Response: Within 8 hours**",
+            "**CAT 5 (Baseline)**: Attempted access to non-existent resources, routine suspicious activity. **Response: Within 24 business hours**"
+          ]
         },
         {
           "type": "example",
-          "title": "The Helpful Screenshot",
-          "content": "You're troubleshooting an issue and take a screenshot that includes a user's email address. You save it to your desktop instead of Google Drive. That's spillage – the PII is now on an unauthorized system."
-        },
-        {
-          "type": "example",
-          "title": "The Quick Note",
-          "content": "During a support call, you jot down a user's temporary password in your personal note-taking app. Even though you delete it later, the data has already spilled outside our boundary."
-        },
-        {
-          "type": "example",
-          "title": "The Team Chat",
-          "content": "A colleague asks in Slack about a specific user issue. You paste their login email to clarify who you're discussing. Slack isn't part of our FedRAMP boundary – that's spillage."
+          "title": "Real-World Examples",
+          "content": "**CAT 1**: Dave discovers our production database is being accessed by an unknown IP address and data is being exported.\n\n**CAT 2**: Shelly's laptop (with AWS access) gets infected with malware but she disconnects it immediately.\n\n**CAT 3**: Braden notices failed login attempts to his AWS account from various IP addresses.\n\n**CAT 4**: Automated security scans hitting our application's public endpoints.\n\n**CAT 5**: 404 errors in our logs from bots trying non-existent URLs."
         }
       ]
     },
     {
       "type": "subsection",
-      "title": "The Technical Definition",
+      "title": "Your Role in Incident Response",
       "content": [
         {
           "type": "text",
-          "text": "In formal security terms, information spillage occurs when:"
+          "text": "You're not expected to fix security incidents - that's Pete's job (with Savvy's help). But you are our first line of defense in spotting them. Here's what you need to do:"
         },
         {
           "type": "list",
           "style": "numbered",
           "items": [
-            "Data classified at a certain level (in our case, any PII or sensitive information)",
-            "Is transferred, stored, or processed on a system not authorized for that classification level",
-            "Regardless of whether the transfer was intentional or accidental"
+            "**Report Immediately**: Contact Pete the moment you suspect an incident (Slack first, then phone if urgent). Don't wait to gather more information or try to fix it yourself.",
+            "**Preserve Evidence**: Don't delete logs, close windows, or 'clean up' anything. Take screenshots if possible. The messier it looks, the more information we have.",
+            "**Document Your Observations**: Write down what you saw, when you saw it, and what you were doing at the time. Even small details can be crucial.",
+            "**Follow IRT Instructions**: Once you've reported it, Pete or Savvy will guide you. This might mean disconnecting from the network, preserving a device, or simply staying available for questions."
           ]
         },
         {
-          "type": "text",
-          "text": "For ClearTriage, this means any PII or sensitive data that ends up outside of AWS or Google Drive is considered spillage."
-        }
-      ]
-    },
-    {
-      "type": "callout",
-      "style": "warning",
-      "title": "Remember",
-      "text": "Spillage isn't about the amount of data or how sensitive you think it is. It's about maintaining control over where our data lives. Even a single email address in the wrong place counts."
-    },
-    {
-      "type": "subsection",
-      "title": "Not All Data Movement is Spillage",
-      "content": [
-        {
-          "type": "text",
-          "text": "It's important to understand what ISN'T spillage:"
+          "type": "callout",
+          "style": "warning",
+          "title": "Never Try to 'Fix' It Yourself",
+          "text": "Well-meaning attempts to resolve incidents often destroy evidence or make things worse. Your job is to report and preserve, not repair."
         },
         {
-          "type": "list",
-          "style": "bullet",
-          "items": [
-            "Moving files between AWS and Google Drive (both are within our boundary)",
-            "Discussing technical issues without mentioning specific user data",
-            "Sharing sanitized or anonymized examples",
-            "Using test data that doesn't represent real users"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "tip",
-      "text": "When in doubt, ask yourself: 'Could this information be used to identify or access a real user account?' If yes, it needs to stay within our FedRAMP boundary."
-    },
-    {
-      "type": "subsection",
-      "title": "The Bottom Line",
-      "content": [
-        {
-          "type": "text",
-          "text": "Information spillage is simply putting sensitive data where it doesn't belong. Since we're a small team, we all handle various aspects of the system, which means we all have the potential to cause spillage. The good news? Once you understand what spillage is and where our boundaries are, preventing it becomes second nature."
-        },
-        {
-          "type": "text",
-          "text": "In the next sections, we'll cover how to prevent spillage and what to do if it happens. For now, just remember: AWS and Google Drive are our safe zones. Everything else is off-limits for sensitive data."
+          "type": "tip",
+          "text": "When in doubt, report it. Pete would rather investigate a false alarm than miss a real incident. There's no penalty for being cautious."
         }
       ]
     }

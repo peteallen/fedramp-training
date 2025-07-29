@@ -14,6 +14,8 @@ FedRAMP Training LMS - A React-based Learning Management System for ClearTriage'
 - `pnpm preview` - Preview production build locally
 - `pnpm start` - Start production server with basic auth (for Railway deployment)
 
+**Important**: Never try to start the development server. Always assume it's already running at http://localhost:5173. Only ask the user to start it if you encounter connection issues.
+
 ### Testing
 - `pnpm test` - Run all tests once
 - `pnpm test:ui` - Run tests with interactive UI (development mode)

@@ -18,6 +18,5 @@
     "Classify and handle different types of data according to FedRAMP requirements",
     "Apply essential security practices for remote work and daily operations"
   ],
-  "sections": ["a", "b", "c", "d", "e", "f", "g"],
-  "estimatedDuration": 45
+  "sections": ["a", "b", "c", "d", "e", "f", "g"]
 }

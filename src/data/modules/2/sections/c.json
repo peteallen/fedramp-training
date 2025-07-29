@@ -1,0 +1,100 @@
+{
+  "id": "2.C",
+  "title": "Information Spillage Awareness",
+  "content": [
+    {
+      "type": "text",
+      "text": "Information spillage might sound dramatic, but it's really about keeping our data where it belongs. Even with minimal PII, spillage matters for FedRAMP compliance."
+    },
+    {
+      "type": "subsection",
+      "title": "What is Information Spillage?",
+      "content": [
+        {
+          "type": "text",
+          "text": "Information spillage occurs when ClearTriage data ends up on unauthorized systems or becomes accessible to unauthorized people. Since our FedRAMP boundary is AWS and Google Drive only, any data outside these systems is considered spillage."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Common Spillage Scenarios",
+      "content": [
+        {
+          "type": "text",
+          "text": "Here's how spillage typically happens:"
+        },
+        {
+          "type": "example",
+          "title": "Email to Personal Account",
+          "content": "Pete forwards AWS configs to his personal Gmail because he's 'working from home' (we all know he's at the coffee shop)."
+        },
+        {
+          "type": "example",
+          "title": "Wrong Slack Channel",
+          "content": "Someone posts an AWS error message with infrastructure details in a public developer Slack instead of our internal channel."
+        },
+        {
+          "type": "example",
+          "title": "Screen Sharing Accident",
+          "content": "Dave shares his screen during a vendor call with AWS console open in another tab, exposing our entire infrastructure to a sales rep."
+        },
+        {
+          "type": "callout",
+          "style": "tip",
+          "text": "If you're unsure whether something is spillage, report it. Pete won't bite (usually)."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "If Spillage Happens",
+      "content": [
+        {
+          "type": "text",
+          "text": "Don't panic, don't delete anything. Here's what to do:"
+        },
+        {
+          "type": "list",
+          "style": "numbered",
+          "items": [
+            "**Tell Pete immediately** - Include: what spilled, where it went, who has access",
+            "**Don't delete anything** - Pete needs to assess the situation first",
+            "**Take screenshots** if the data might disappear (like chat messages)",
+            "**Stay available** - Pete will handle cleanup and FedRAMP reporting"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Good Report",
+          "content": "\"Pete - I accidentally put our architecture diagram in a public Google Drive folder at 2:15 PM. Changed it back to private at 3:30 PM. It was public for 75 minutes. Checking who accessed it now.\""
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Prevention",
+      "content": [
+        {
+          "type": "text",
+          "text": "A few seconds of checking prevents hours of cleanup:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Double-check email recipients before sending",
+            "Verify Google Drive permissions before sharing",
+            "Close sensitive tabs before screen sharing",
+            "Use only approved channels: internal Slack, ClearTriage email, approved Google Drive folders"
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "info",
+          "text": "Remember: Pete handles all the technical cleanup and FedRAMP reporting. Your job is just to report quickly and preserve evidence."
+        }
+      ]
+    }
+  ]
+}

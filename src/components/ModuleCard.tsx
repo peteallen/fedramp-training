@@ -1,4 +1,4 @@
-import { FaBookOpen, FaClock, FaUsers } from 'react-icons/fa'
+import { FaBookOpen, FaUsers } from 'react-icons/fa'
 import { Button } from '@/components/ui/button'
 import { useTrainingStore } from '@/stores/trainingStore'
 
@@ -28,12 +28,6 @@ export const ModuleCard = ({ moduleId, onStartModule }: ModuleCardProps) => {
               {module.title}
             </h3>
             <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 mb-3">
-              {module.estimatedDuration && (
-                <div className="flex items-center">
-                  <FaClock className="mr-1" />
-                  {module.estimatedDuration} min
-                </div>
-              )}
               <div className="flex items-center">
                 <FaUsers className="mr-1" />
                 {module.sections?.length || 0} sections

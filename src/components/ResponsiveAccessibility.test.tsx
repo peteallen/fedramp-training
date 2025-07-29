@@ -1,14 +1,20 @@
 import { render, screen } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
 import { describe, it, expect, vi } from 'vitest'
 import { RoleTag } from './RoleTag'
 import { WelcomeScreen } from './WelcomeScreen'
+
+// Helper function to render with Router
+const renderWithRouter = (component: React.ReactElement) => {
+  return render(<BrowserRouter>{component}</BrowserRouter>)
+}
 
 describe('Responsive Design and Accessibility Improvements', () => {
   const mockOnComplete = vi.fn()
 
   describe('WelcomeScreen Responsive Design', () => {
     it('should have responsive padding and spacing', () => {
-      render(<WelcomeScreen onComplete={mockOnComplete} />)
+      renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
       
       const mainContainer = screen.getByRole('main')
       expect(mainContainer).toHaveClass('p-4') // Mobile padding
@@ -21,7 +27,7 @@ describe('Responsive Design and Accessibility Improvements', () => {
     })
 
     it('should have responsive text sizes', () => {
-      render(<WelcomeScreen onComplete={mockOnComplete} />)
+      renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
       
       const heading = screen.getByRole('heading', { level: 1 })
       expect(heading).toHaveClass('text-2xl', 'sm:text-3xl') // Responsive heading
@@ -31,7 +37,7 @@ describe('Responsive Design and Accessibility Improvements', () => {
     })
 
     it('should have responsive grid layout for role selector', () => {
-      render(<WelcomeScreen onComplete={mockOnComplete} />)
+      renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
       
       const roleGrid = document.querySelector('.grid')
       expect(roleGrid).toHaveClass('grid-cols-1', 'sm:grid-cols-2') // Responsive grid
@@ -41,7 +47,7 @@ describe('Responsive Design and Accessibility Improvements', () => {
 
   describe('WelcomeScreen Accessibility', () => {
     it('should have proper semantic HTML structure', () => {
-      render(<WelcomeScreen onComplete={mockOnComplete} />)
+      renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
       
       // Main landmark
       const main = screen.getByRole('main')
@@ -60,7 +66,7 @@ describe('Responsive Design and Accessibility Improvements', () => {
     })
 
     it('should have proper ARIA attributes for interactive elements', () => {
-      render(<WelcomeScreen onComplete={mockOnComplete} />)
+      renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
       
       // Role buttons
       const developmentButton = screen.getByText('Development').closest('[role="button"]')
@@ -75,7 +81,7 @@ describe('Responsive Design and Accessibility Improvements', () => {
     })
 
     it('should have minimum touch target sizes', () => {
-      render(<WelcomeScreen onComplete={mockOnComplete} />)
+      renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
       
       // Role buttons
       const developmentButton = screen.getByText('Development').closest('[role="button"]')
@@ -91,7 +97,7 @@ describe('Responsive Design and Accessibility Improvements', () => {
     })
 
     it('should have proper focus management', () => {
-      render(<WelcomeScreen onComplete={mockOnComplete} />)
+      renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
       
       // Focus indicators
       const developmentButton = screen.getByText('Development').closest('[role="button"]')
@@ -102,14 +108,14 @@ describe('Responsive Design and Accessibility Improvements', () => {
     })
 
     it('should support touch manipulation', () => {
-      render(<WelcomeScreen onComplete={mockOnComplete} />)
+      renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
       
       const developmentButton = screen.getByText('Development').closest('[role="button"]')
       expect(developmentButton).toHaveClass('touch-manipulation')
     })
 
     it('should have proper icon accessibility', () => {
-      render(<WelcomeScreen onComplete={mockOnComplete} />)
+      renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
       
       // Shield emoji should have proper role and label
       const shieldIcon = document.querySelector('[role="img"]')
@@ -121,7 +127,7 @@ describe('Responsive Design and Accessibility Improvements', () => {
     })
 
     it('should have proper privacy notice', () => {
-      render(<WelcomeScreen onComplete={mockOnComplete} />)
+      renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
       
       const privacyNote = document.querySelector('[role="note"]')
       expect(privacyNote).toBeInTheDocument()
@@ -165,7 +171,7 @@ describe('Responsive Design and Accessibility Improvements', () => {
 
   describe('High Contrast and Reduced Motion Support', () => {
     it('should have proper border styles for high contrast', () => {
-      render(<WelcomeScreen onComplete={mockOnComplete} />)
+      renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
       
       const developmentButton = screen.getByText('Development').closest('[role="button"]')
       expect(developmentButton).toHaveClass('border-2') // Visible borders
@@ -174,7 +180,7 @@ describe('Responsive Design and Accessibility Improvements', () => {
     it('should support reduced motion preferences', () => {
       // This would typically be tested with CSS media queries
       // For now, we verify that transition classes are applied
-      render(<WelcomeScreen onComplete={mockOnComplete} />)
+      renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
       
       const mainContainer = screen.getByRole('main')
       expect(mainContainer).toHaveClass('transition-colors')

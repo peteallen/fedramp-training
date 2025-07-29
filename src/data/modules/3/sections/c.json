@@ -1,0 +1,160 @@
+{
+  "id": "3.3",
+  "title": "Insider Threat Awareness",
+  "content": [
+    {
+      "type": "text",
+      "text": "Insider threat awareness in our team isn't about suspicion or paranoia. It's about helping each other stay secure and catching accidents before they become incidents."
+    },
+    {
+      "type": "callout",
+      "style": "info",
+      "title": "What Are Insider Threats?",
+      "text": "An insider threat is when someone with legitimate access to our systems accidentally or intentionally causes a security incident. At ClearTriage, we're focused on the \"accidentally\" part - because that's what actually happens 99% of the time."
+    },
+    {
+      "type": "subsection",
+      "title": "The Reality: Most Incidents Are Accidents",
+      "content": [
+        {
+          "type": "text",
+          "text": "Most data breaches involve human error rather than malicious intent. Common accidents include:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Sending a document to the wrong email address",
+            "Clicking on a phishing link when you're tired or distracted",
+            "Forgetting to log out of AWS when working from a coffee shop",
+            "Accidentally deleting important files in Google Drive",
+            "Sharing credentials to \"help out\" when someone's locked out"
+          ]
+        },
+        {
+          "type": "text",
+          "text": "We've all been there. The key is creating an environment where we can catch these mistakes quickly and fix them without judgment."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "What Should You Report?",
+      "content": [
+        {
+          "type": "text",
+          "text": "If you notice something unusual - whether it's your own mistake or something that seems off - report it to Pete or Dave. Here's what to watch for:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Your own mistakes**: \"Oops, I think I clicked a phishing link\" or \"I may have sent that file to the wrong person\"",
+            "**Technical oddities**: Unexpected system behavior, files appearing or disappearing, unusual login notifications",
+            "**Access concerns**: Someone asking for access they shouldn't need, or you accidentally gaining access to something you shouldn't see",
+            "**Behavioral changes**: This is rare in our team, but if someone's acting very differently and it's affecting security practices"
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "tip",
+          "text": "Remember: Reporting your own mistake immediately can turn a potential incident into a non-issue. Quick action is always better than hoping no one notices."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Our Open Door Policy",
+      "content": [
+        {
+          "type": "text",
+          "text": "ClearTriage has a strict no-retaliation policy for security reporting. This means:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**No punishment for honest mistakes** - We all make them",
+            "**No blame culture** - We focus on fixing the issue, not finding fault",
+            "**Confidential handling** - Reports are handled discreetly",
+            "**Learning opportunities** - Incidents help us improve our processes"
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Pete and Dave are your primary contacts for any security concerns. They're here to help, not to judge."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "How to Report",
+      "content": [
+        {
+          "type": "text",
+          "text": "Keep it simple:"
+        },
+        {
+          "type": "list",
+          "style": "numbered",
+          "items": [
+            "**Immediate concerns**: Call or Slack Pete/Dave right away",
+            "**Non-urgent observations**: Send an email or bring it up in your next check-in",
+            "**Not sure if it matters?**: Report it anyway - better safe than sorry"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Real Example",
+          "content": "\"Hey Pete, I got a weird email that looked like it was from AWS but something seemed off. I didn't click anything, but wanted to let you know in case others got it too.\""
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Supporting Each Other",
+      "content": [
+        {
+          "type": "text",
+          "text": "Here's how we can help each other stay secure:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Double-check before sending**: \"Hey, is this the right email for that document?\"",
+            "**Speak up about phishing**: \"Did anyone else get this weird email?\"",
+            "**Remind about best practices**: \"Don't forget to log out of AWS!\"",
+            "**Share close calls**: \"I almost clicked on that link - watch out for emails from...\""
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "title": "Remember",
+          "text": "We're not looking for insider threats - we're looking out for each other. The goal is preventing accidents and catching them quickly when they happen."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Key Takeaways",
+      "content": [
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Most security incidents are accidents, not malicious acts",
+            "Report anything unusual to Pete or Dave - no judgment",
+            "Quick reporting turns big problems into small ones",
+            "We have an open door policy with zero retaliation"
+          ]
+        },
+        {
+          "type": "text",
+          "text": "This isn't about creating a culture of suspicion - it's about creating a culture where we're comfortable admitting mistakes and looking out for each other."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "id": "3.1",
+  "title": "Basic Response Procedures",
+  "content": [
+    {
+      "type": "text",
+      "text": "As a small team using cloud services, our contingency procedures are straightforward. Most of the heavy lifting is handled by AWS and Google, but you still need to know when to raise the alarm and who to contact."
+    },
+    {
+      "type": "subsection",
+      "title": "When to Contact Leadership",
+      "content": [
+        {
+          "type": "text",
+          "text": "You should immediately contact leadership if you experience any of these situations:"
+        },
+        {
+          "type": "list",
+          "listType": "bullet",
+          "items": [
+            "**Service Outages**: Can't access ClearTriage application, AWS services are down, or Google Drive is unavailable",
+            "**Access Issues**: Unable to log into AWS Console or Google Drive when you need to perform your duties",
+            "**Security Incidents**: Suspicious activity, potential breach, or any security concern",
+            "**Lost or Stolen Devices**: Any company device or personal device with ClearTriage access goes missing"
+          ]
+        },
+        {
+          "type": "callout",
+          "calloutType": "important",
+          "title": "Time is Critical",
+          "text": "Don't wait to see if the problem resolves itself. If something seems wrong with our core services or security, report it immediately. False alarms are better than delayed responses."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Contact Order",
+      "content": [
+        {
+          "type": "text",
+          "text": "When you need to report an issue, follow this contact order:"
+        },
+        {
+          "type": "list",
+          "listType": "numbered",
+          "items": [
+            "**Pete** (CTO) - First point of contact for all technical and security issues",
+            "**Dave** (President) - Contact if Pete is unavailable",
+            "**Savvy** (Senior Engineer/DevOps) - Contact if both Pete and Dave are unavailable"
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Use whatever communication method gets the fastest response - Slack, phone call, or text. For urgent security issues, don't hesitate to call directly."
+        },
+        {
+          "type": "tip",
+          "text": "Keep everyone's contact info saved in your phone. During an incident is not the time to be searching for phone numbers."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "The Beauty of Li-SaaS",
+      "content": [
+        {
+          "type": "text",
+          "text": "Here's the good news: because we use FedRAMP-authorized services (Li-SaaS), we don't need complex contingency plans. AWS and Google handle the heavy infrastructure work for us."
+        },
+        {
+          "type": "list",
+          "listType": "bullet",
+          "items": [
+            "**AWS handles**: Server redundancy, automatic backups, disaster recovery, infrastructure monitoring",
+            "**Google handles**: Drive backups, version history, availability across regions",
+            "**We handle**: Monitoring our application, responding to incidents, maintaining access controls"
+          ]
+        },
+        {
+          "type": "callout",
+          "calloutType": "info",
+          "title": "Reduced Contingency Planning with Li-SaaS",
+          "text": "Li-SaaS significantly reduces our contingency planning burden. While AWS and Google handle infrastructure recovery, we still maintain simple procedures for application-level recovery and communication."
+        },
+        {
+          "type": "text",
+          "text": "This doesn't mean we're off the hook entirely. We still need to:"
+        },
+        {
+          "type": "list",
+          "listType": "bullet",
+          "items": [
+            "Monitor service status pages for AWS and Google",
+            "Have a communication plan (which you just learned above)",
+            "Know how to restore data from backups if needed",
+            "Keep customer contact information accessible outside our main systems"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "What This Means for You",
+      "content": [
+        {
+          "type": "text",
+          "text": "Your role in contingency response is simple but important:"
+        },
+        {
+          "type": "list",
+          "listType": "numbered",
+          "items": [
+            "Recognize when something is wrong",
+            "Report immediately using the contact order above",
+            "Follow any instructions from leadership during an incident",
+            "Resume normal operations once the all-clear is given"
+          ]
+        },
+        {
+          "type": "text",
+          "text": "You don't need to troubleshoot AWS infrastructure or figure out complex recovery procedures. Just alert the right people quickly so they can coordinate the response."
+        }
+      ]
+    }
+  ]
+}

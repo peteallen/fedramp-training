@@ -1,5 +1,6 @@
 import { LogOut } from 'lucide-react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { Button } from '@/components/ui/button'
 import { useCertificateStore } from '@/stores/certificateStore'
@@ -7,6 +8,7 @@ import { useTrainingStore } from '@/stores/trainingStore'
 import useUserStore from '@/stores/userStore'
 
 export function LogoutButton() {
+  const navigate = useNavigate()
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const clearTrainingData = useTrainingStore((state) => state.clearAllData)
   const clearCertificateData = useCertificateStore((state) => state.clearData)
@@ -22,7 +24,8 @@ export function LogoutButton() {
     clearCertificateData()
     clearUserData()
     setShowConfirmDialog(false)
-    // The app will automatically redirect to welcome screen since isOnboarded will be false
+    // Navigate to the home page
+    navigate('/')
   }
 
   const handleCancelLogout = () => {

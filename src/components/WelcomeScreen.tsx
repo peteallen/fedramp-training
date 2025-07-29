@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { TeamMemberSelector } from '@/components/TeamMemberSelector'
 import { Button } from '@/components/ui/button'
 import type { UserOnboardingData } from '@/types/user'
@@ -16,6 +17,7 @@ interface FormValidation {
 }
 
 export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
+  const navigate = useNavigate()
   const [fullName, setFullName] = useState('')
   const [errors, setErrors] = useState<FormErrors>({})
   const [, setValidation] = useState<FormValidation>({
@@ -54,6 +56,7 @@ export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
       onComplete({
         fullName: fullName.trim()
       })
+      navigate('/modules')
     } catch (_error) {
       // Silently handle error - could add user-facing error handling here
     } finally {

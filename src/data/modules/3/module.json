@@ -1,0 +1,21 @@
+{
+  "id": 3,
+  "title": "Basic Response Procedures",
+  "description": "Essential response procedures for ClearTriage team members. Learn when to contact leadership, how to prepare for incidents, and awareness of insider threats in our small team context.",
+  "requiredForMembers": [
+    "Pete",
+    "Dave",
+    "Savvy",
+    "Braden",
+    "Shelly",
+    "Krista"
+  ],
+  "objectives": [
+    "Know when and how to contact leadership for various situations",
+    "Understand ClearTriage's simple contact hierarchy",
+    "Maintain personal preparedness for security incidents",
+    "Recognize the benefits of our Li-SaaS architecture",
+    "Understand insider threat awareness in a small team context"
+  ],
+  "sections": ["a", "b", "c"]
+}

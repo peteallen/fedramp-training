@@ -1,7 +1,13 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import type { UserOnboardingData } from '@/types/user'
 import { WelcomeScreen } from './WelcomeScreen'
+
+// Helper function to render with Router
+const renderWithRouter = (component: React.ReactElement) => {
+  return render(<BrowserRouter>{component}</BrowserRouter>)
+}
 
 describe('WelcomeScreen', () => {
   const mockOnComplete = vi.fn()
@@ -11,7 +17,7 @@ describe('WelcomeScreen', () => {
   })
 
   it('renders welcome screen with introduction content', () => {
-    render(<WelcomeScreen onComplete={mockOnComplete} />)
+    renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
     
     expect(screen.getByText('Welcome to ClearTriage Security Training')).toBeInTheDocument()
     expect(screen.getByText(/FedRAMP Low Impact SaaS Awareness Training/)).toBeInTheDocument()
@@ -20,14 +26,14 @@ describe('WelcomeScreen', () => {
   })
 
   it('displays name dropdown field', () => {
-    render(<WelcomeScreen onComplete={mockOnComplete} />)
+    renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
     
     expect(screen.getByText('Your name')).toBeInTheDocument()
     expect(screen.getByText('Select your name')).toBeInTheDocument()
   })
 
   it('shows validation error when submitting without name', async () => {
-    render(<WelcomeScreen onComplete={mockOnComplete} />)
+    renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
     
     const submitButton = screen.getByRole('button', { name: 'Begin Training' })
     fireEvent.click(submitButton)
@@ -41,7 +47,7 @@ describe('WelcomeScreen', () => {
 
 
   it('clears name error when user selects a name', async () => {
-    render(<WelcomeScreen onComplete={mockOnComplete} />)
+    renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
     
     // Submit to trigger validation errors
     const submitButton = screen.getByRole('button', { name: 'Begin Training' })
@@ -67,7 +73,7 @@ describe('WelcomeScreen', () => {
   })
 
   it('calls onComplete with correct data when form is valid', async () => {
-    render(<WelcomeScreen onComplete={mockOnComplete} />)
+    renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
     
     // Select name from dropdown
     const nameDropdown = screen.getByRole('button', { name: /select your name/i })
@@ -91,7 +97,7 @@ describe('WelcomeScreen', () => {
   })
 
   it('submits form correctly with different name', async () => {
-    render(<WelcomeScreen onComplete={mockOnComplete} />)
+    renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
     
     // Select name from dropdown
     const nameDropdown = screen.getByRole('button', { name: /select your name/i })
@@ -115,7 +121,7 @@ describe('WelcomeScreen', () => {
   })
 
   it('shows loading state during form submission', async () => {
-    render(<WelcomeScreen onComplete={mockOnComplete} />)
+    renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
     
     // Fill out form
     const nameDropdown = screen.getByRole('button', { name: /select your name/i })
@@ -141,7 +147,7 @@ describe('WelcomeScreen', () => {
   })
 
   it('prevents form submission when already submitting', async () => {
-    render(<WelcomeScreen onComplete={mockOnComplete} />)
+    renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
     
     // Fill out form
     const nameDropdown = screen.getByRole('button', { name: /select your name/i })
@@ -165,7 +171,7 @@ describe('WelcomeScreen', () => {
   })
 
   it('has proper accessibility attributes', () => {
-    render(<WelcomeScreen onComplete={mockOnComplete} />)
+    renderWithRouter(<WelcomeScreen onComplete={mockOnComplete} />)
     
     // Check that form element exists
     const form = document.querySelector('form')

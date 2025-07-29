@@ -1,36 +1,40 @@
-import { useState, useEffect, useMemo } from 'react'
-import { FaArrowLeft, FaArrowRight, FaCheck, FaLightbulb, FaBookOpen, FaClock } from 'react-icons/fa'
+import { useState, useEffect, useMemo, useRef } from 'react'
+import { FaArrowLeft, FaCheck, FaLightbulb, FaBookOpen, FaClock } from 'react-icons/fa'
+import { useParams, useNavigate } from 'react-router-dom'
 import { ContentRenderer } from '@/components/ContentRenderer'
 import { Button } from '@/components/ui/button'
 import { ProgressBar } from '@/components/ui/ProgressBar'
+import { UnifiedNavigation } from '@/components/UnifiedNavigation'
 import { useTrainingStore } from '@/stores/trainingStore'
 
 // Constants
 const COMPLETE_PROGRESS = 100
 
-interface ModuleViewerProps {
-  moduleId: number
-  onBack: () => void
-}
-
-export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
+export const ModuleViewer = () => {
+  const { moduleId } = useParams<{ moduleId: string }>()
+  const navigate = useNavigate()
+  const moduleIdNum = parseInt(moduleId ?? '0', 10)
   const module = useTrainingStore((state) => 
-    state.modules.find(m => m.id === moduleId)
+    state.modules.find(m => m.id === moduleIdNum)
   )
   const updateProgress = useTrainingStore((state) => state.updateProgress)
   const completeModule = useTrainingStore((state) => state.completeModule)
   const updateModuleAccess = useTrainingStore((state) => state.updateModuleAccess)
   
   const [currentSection, setCurrentSection] = useState(0)
+  const [currentSectionPage, setCurrentSectionPage] = useState(1)
   const [isOnLastPage, setIsOnLastPage] = useState(false)
-  const [isPaginated, setIsPaginated] = useState(false)
+  const [isOnFirstPage, setIsOnFirstPage] = useState(true)
+  const [_isPaginated, setIsPaginated] = useState(false)
+  const [totalPages, setTotalPages] = useState(1)
+  const pageNavHandlers = useRef<{ next: () => void; prev: () => void } | null>(null)
 
   useEffect(() => {
     if (module) {
-      updateModuleAccess(moduleId)
+      updateModuleAccess(moduleIdNum)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moduleId])
+  }, [moduleIdNum])
 
   const totalSections = module?.sections?.length ?? 0;
 
@@ -50,9 +54,9 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
               Module Not Found
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-              The requested module (ID: {moduleId}) could not be found.
+              The requested module (ID: {moduleIdNum}) could not be found.
             </p>
-            <Button onClick={onBack} className="bg-blue-600 hover:bg-blue-700 text-white">
+            <Button onClick={() => navigate('/modules')} className="bg-blue-600 hover:bg-blue-700 text-white">
               <FaArrowLeft className="mr-2" />
               Back to Modules
             </Button>
@@ -65,8 +69,10 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
   const handleNextSection = () => {
     if (currentSection < totalSections - 1) {
       setCurrentSection(currentSection + 1)
-      setIsOnLastPage(false) // Reset when moving to new section
-      updateProgress(moduleId, Math.round(((currentSection + 2) / totalSections) * COMPLETE_PROGRESS))
+      setCurrentSectionPage(1)
+      setIsOnLastPage(false)
+      setIsOnFirstPage(true)
+      updateProgress(moduleIdNum, Math.round(((currentSection + 2) / totalSections) * COMPLETE_PROGRESS))
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
@@ -74,9 +80,21 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
   const handlePrevSection = () => {
     if (currentSection > 0) {
       setCurrentSection(currentSection - 1)
-      setIsOnLastPage(false) // Reset when moving sections
+      setCurrentSectionPage(1)
+      setIsOnLastPage(false)
+      setIsOnFirstPage(true)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
+  }
+
+  const handlePageChange = (page: number) => {
+    setCurrentSectionPage(page)
+  }
+
+  const handleCompleteModule = () => {
+    completeModule(moduleIdNum)
+    updateProgress(moduleIdNum, COMPLETE_PROGRESS)
+    navigate('/modules')
   }
 
   const currentSection_data = module.sections[currentSection]
@@ -89,7 +107,7 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
         {/* Header */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
-            <Button onClick={onBack} variant="outline" size="sm">
+            <Button onClick={() => navigate('/modules')} variant="outline" size="sm">
               <FaArrowLeft className="mr-2" />
               Back to Modules
             </Button>
@@ -172,56 +190,43 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
           <ContentRenderer 
             content={currentSection_data.content} 
             isLastSection={isLastSection}
-            onLastPageReached={() => setIsOnLastPage(true)}
+            onLastPageReached={() => {
+              setIsOnLastPage(true)
+              setIsOnFirstPage(false)
+            }}
+            onFirstPageReached={() => {
+              setIsOnLastPage(false)
+              setIsOnFirstPage(true)
+            }}
             onPaginationStatus={setIsPaginated}
+            currentPage={currentSectionPage}
+            onPageChange={(page) => {
+              handlePageChange(page)
+              // Update first/last page status based on page number
+              setIsOnFirstPage(page === 1)
+              setIsOnLastPage(page === totalPages)
+            }}
+            provideTotalPages={setTotalPages}
+            provideNavHandlers={(handlers) => { pageNavHandlers.current = handlers }}
           />
         </div>
 
-        {/* Module completion box - show above navigation/pagination */}
-        {isLastSection && isOnLastPage && (
-          <div className="mt-6 bg-green-50 dark:bg-green-900/30 rounded-lg p-6 border border-green-200 dark:border-green-800 shadow-lg">
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center">
-              <FaCheck className="text-green-600 dark:text-green-400 mr-2" />
-              Module Complete!
-            </h3>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-              Congratulations! You have completed this training module. Click the button below to mark it as complete and return to the main page.
-            </p>
-            <Button
-              onClick={() => {
-                completeModule(moduleId)
-                updateProgress(moduleId, COMPLETE_PROGRESS)
-                onBack()
-              }}
-              className="w-full bg-green-600 hover:bg-green-700 text-white"
-            >
-              <FaCheck className="mr-2" />
-              Complete Module & Return
-            </Button>
-          </div>
-        )}
-
-        {/* Navigation - only show when not using pagination and not on completion screen */}
-        {!isPaginated && !(isLastSection && isOnLastPage) && (
-          <div className="flex justify-between mt-6">
-          <Button
-            onClick={handlePrevSection}
-            disabled={currentSection === 0}
-            variant="outline"
-          >
-            <FaArrowLeft className="mr-2" />
-            Previous Section
-          </Button>
-          
-          <Button
-            onClick={handleNextSection}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
-          >
-            {isLastSection ? 'Next Page' : 'Next Section'}
-            <FaArrowRight className="ml-2" />
-          </Button>
-          </div>
-        )}
+        {/* Unified Navigation */}
+        <UnifiedNavigation
+          currentSection={currentSection}
+          totalSections={totalSections}
+          onPrevSection={handlePrevSection}
+          onNextSection={handleNextSection}
+          currentPage={currentSectionPage}
+          totalPages={totalPages}
+          onPrevPage={pageNavHandlers.current?.prev}
+          onNextPage={pageNavHandlers.current?.next}
+          onPageChange={handlePageChange}
+          isLastSection={isLastSection}
+          isOnLastPage={isOnLastPage}
+          isOnFirstPage={isOnFirstPage}
+          onCompleteModule={handleCompleteModule}
+        />
       </div>
     </div>
   )

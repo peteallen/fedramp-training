@@ -27,48 +27,8 @@
           "text": "ALL AWS access requires a FIPS-enabled YubiKey. No exceptions. This includes console access, CLI access, and programmatic access."
         },
         {
-          "type": "subsection",
-          "title": "Getting Your YubiKey",
-          "content": [
-            {
-              "type": "text",
-              "text": "When you join ClearTriage or need AWS access:"
-            },
-            {
-              "type": "list",
-              "style": "numbered",
-              "items": [
-                "Pete will order a FIPS-enabled YubiKey 5 Series for you",
-                "You'll receive it within 3-5 business days",
-                "Schedule a 15-minute setup session with Pete",
-                "Keep your YubiKey with you at all times when working"
-              ]
-            }
-          ]
-        },
-        {
-          "type": "subsection",
-          "title": "Using Your YubiKey",
-          "content": [
-            {
-              "type": "text",
-              "text": "YubiKey authentication is straightforward once set up:"
-            },
-            {
-              "type": "list",
-              "style": "numbered",
-              "items": [
-                "Navigate to AWS Console and enter your username/password",
-                "When prompted for MFA, insert your YubiKey into a USB port",
-                "Touch the gold sensor on the YubiKey when it lights up",
-                "You're now authenticated for that session"
-              ]
-            },
-            {
-              "type": "tip",
-              "text": "The YubiKey light will blink when it needs your touch. No codes to type or apps to open!"
-            }
-          ]
+          "type": "text",
+          "text": "To get AWS access, Pete will provide you with a FIPS-enabled YubiKey and help you set it up. Keep your YubiKey with you whenever working."
         },
         {
           "type": "subsection",
@@ -93,7 +53,7 @@
               "type": "callout",
               "style": "warning",
               "title": "Security Note",
-              "text": "Report lost YubiKeys immediately. Don't wait until you need AWS access. A lost YubiKey is a security incident that requires prompt action."
+              "text": "Report lost YubiKeys immediately. A lost YubiKey is a security incident that requires prompt action."
             }
           ]
         }
@@ -139,51 +99,8 @@
           ]
         },
         {
-          "type": "subsection",
-          "title": "Setting Up MFA for Google",
-          "content": [
-            {
-              "type": "list",
-              "style": "numbered",
-              "items": [
-                "Go to myaccount.google.com/security",
-                "Click on \"2-Step Verification\"",
-                "Choose \"Authenticator app\" (not phone/SMS)",
-                "Scan the QR code with your chosen app",
-                "Enter the 6-digit code to verify",
-                "Save the backup codes somewhere secure (like Keeper)"
-              ]
-            },
-            {
-              "type": "example",
-              "title": "Pro Tip from Experience",
-              "content": "When you set up MFA, immediately test it by logging out and back in. Better to catch issues during setup than when you urgently need access to documentation."
-            }
-          ]
-        },
-        {
-          "type": "subsection",
-          "title": "Using MFA Daily",
-          "content": [
-            {
-              "type": "text",
-              "text": "Once MFA is set up, logging in is simple:"
-            },
-            {
-              "type": "list",
-              "style": "numbered",
-              "items": [
-                "Enter your Google email and password",
-                "Open your authenticator app",
-                "Enter the 6-digit code shown for your Google account",
-                "Check \"Don't ask again on this computer\" if it's your work machine"
-              ]
-            },
-            {
-              "type": "tip",
-              "text": "The codes refresh every 30 seconds. If a code isn't working, wait for the next one rather than trying multiple times."
-            }
-          ]
+          "type": "text",
+          "text": "Set up MFA through myaccount.google.com/security using your chosen authenticator app. Save backup codes securely."
         }
       ]
     },
@@ -196,52 +113,16 @@
           "text": "Beyond just authentication, following these practices helps maintain our security posture:"
         },
         {
-          "type": "subsection",
-          "title": "Never Share Credentials",
-          "content": [
-            {
-              "type": "text",
-              "text": "This might seem obvious, but it bears repeating:"
-            },
-            {
-              "type": "list",
-              "style": "bullet",
-              "items": [
-                "Never share your password, even with Pete or Dave",
-                "Never let someone \"borrow\" your YubiKey, even for a minute",
-                "Never enter credentials on someone else's computer",
-                "If someone needs access, they should request their own credentials"
-              ]
-            },
-            {
-              "type": "example",
-              "title": "Real Scenario",
-              "content": "\"Hey, can I use your login real quick to check something?\" The answer is always no. Direct them to Pete for proper access."
-            }
-          ]
+          "type": "text",
+          "text": "Never share credentials with anyone, including passwords or YubiKeys. If someone needs access, direct them to Pete."
         },
         {
           "type": "subsection",
-          "title": "Lock Your Screen",
+          "title": "Screen Locking",
           "content": [
             {
               "type": "text",
-              "text": "Since we're a small team in a shared space, it's easy to get comfortable. But screen locking is non-negotiable:"
-            },
-            {
-              "type": "list",
-              "style": "bullet",
-              "items": [
-                "**Windows**: Windows Key + L",
-                "**Mac**: Control + Command + Q",
-                "**Linux**: Ctrl + Alt + L (usually)"
-              ]
-            },
-            {
-              "type": "callout",
-              "style": "tip",
-              "title": "Make it a Habit",
-              "text": "Every time you stand up, lock your screen. Coffee break? Lock it. Bathroom? Lock it. Quick question from a colleague? You get the idea."
+              "text": "Lock your screen whenever you step away from your computer. Configure automatic lock after 10 minutes of inactivity."
             }
           ]
         },
@@ -270,11 +151,6 @@
               "title": "How to Report",
               "text": "1. Take a screenshot if possible\n2. Note the exact time and what you were doing\n3. Immediately message Pete on Slack\n4. If Pete isn't available, message Dave\n5. Don't try to \"investigate\" yourself - let Pete handle it"
             },
-            {
-              "type": "example",
-              "title": "What This Looks Like",
-              "content": "\"@Pete - Just got an MFA prompt on my phone but I'm not logging into anything. Screenshot attached. It's 2:47 PM.\""
-            }
           ]
         }
       ]
@@ -289,10 +165,6 @@
           "title": "Authentication Summary",
           "text": "**AWS**: FIPS YubiKey required (hardware token)\n**Google Drive**: MFA with approved app (soft token)\n**Both**: Never share credentials, always lock screens, report suspicious activity immediately"
         },
-        {
-          "type": "text",
-          "text": "Remember: authentication isn't just about compliance - it's about protecting our customers' trust and our company's reputation. Every time you properly authenticate, you're contributing to ClearTriage's security."
-        }
       ]
     }
   ]

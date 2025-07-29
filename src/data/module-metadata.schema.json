@@ -37,10 +37,6 @@
         "pattern": "^[a-z]$",
         "description": "Section letter (a, b, c, etc.)"
       }
-    },
-    "estimatedDuration": {
-      "type": "integer",
-      "description": "Estimated time to complete module in minutes"
     }
   },
   "required": ["id", "title", "description", "requiredForMembers", "objectives", "sections"]

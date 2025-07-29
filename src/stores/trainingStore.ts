@@ -24,7 +24,6 @@ interface TrainingModule {
   requiredForMembers: string[]
   objectives: string[]
   sections: ModuleSection[]
-  estimatedDuration?: number
   completed: boolean
   progress: number
   lastAccessed?: Date
@@ -80,7 +79,7 @@ const loadAllModules = async (): Promise<TrainingModule[]> => {
   const modules: TrainingModule[] = []
   
   // Load all available modules
-  const moduleIds = [1, 4] // Module 1: Foundation Security Training, Module 4: Detection Infrastructure
+  const moduleIds = [1, 2, 3, 4] // Module 1: Foundation Security Training, Module 2: Incident Recognition and Reporting, Module 3: Basic Response Procedures, Module 4: Detection Infrastructure
   
   for (const moduleId of moduleIds) {
     const metadata = await loadModuleMetadata(moduleId)
@@ -104,7 +103,6 @@ const loadAllModules = async (): Promise<TrainingModule[]> => {
       requiredForMembers: metadata.requiredForMembers || [],
       objectives: metadata.objectives || [],
       sections,
-      estimatedDuration: metadata.estimatedDuration,
       completed: false,
       progress: 0
     })

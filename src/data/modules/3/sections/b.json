@@ -1,0 +1,35 @@
+{
+  "id": "3.2",
+  "title": "Personal Preparedness",
+  "content": [
+    {
+      "type": "text",
+      "text": "Personal preparedness is about having a few simple things ready so you're not scrambling when something happens."
+    },
+    {
+      "type": "subsection",
+      "title": "Essential Preparations",
+      "content": [
+        {
+          "type": "text",
+          "text": "Save Pete and Dave's phone numbers where you can access them even if systems are down. Consider labeling them as \"ClearTriage Pete\" and \"ClearTriage Dave\" for quick access during incidents."
+        },
+        {
+          "type": "callout",
+          "style": "tip",
+          "title": "Authentication Backup",
+          "text": "If you use a YubiKey, keep your backup somewhere accessible but secure. Test it occasionally. For other MFA methods, ensure your backup codes are saved securely."
+        },
+        {
+          "type": "text",
+          "text": "Know how to report incidents when digital channels are down - Pete's phone is your best bet for urgent security issues. Document what happened (even on paper) so you can provide details later."
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "text": "When in doubt, overcommunicate. Better to call Pete about something that turns out to be nothing than to sit on a potential incident."
+        }
+      ]
+    }
+  ]
+}

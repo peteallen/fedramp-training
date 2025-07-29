@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { FaInfoCircle, FaExclamationTriangle, FaExclamationCircle, FaLightbulb } from 'react-icons/fa'
 import { SectionPagination } from './SectionPagination'
 
@@ -8,6 +9,7 @@ interface ContentItem {
   content?: string | ContentItem[]
   style?: string
   items?: string[]
+  description?: string
 }
 
 interface ContentRendererProps {
@@ -15,11 +17,16 @@ interface ContentRendererProps {
   className?: string
   isLastSection?: boolean
   onLastPageReached?: () => void
+  onFirstPageReached?: () => void
   onPaginationStatus?: (isPaginated: boolean) => void
   disablePagination?: boolean
+  currentPage?: number
+  onPageChange?: (page: number) => void
+  provideTotalPages?: (pages: number) => void
+  provideNavHandlers?: (handlers: { next: () => void; prev: () => void }) => void
 }
 
-export const ContentRenderer = ({ content, className = '', isLastSection, onLastPageReached, onPaginationStatus, disablePagination = false }: ContentRendererProps) => {
+export const ContentRenderer = ({ content, className = '', isLastSection, onLastPageReached, onFirstPageReached, onPaginationStatus, disablePagination = false, currentPage, onPageChange, provideTotalPages, provideNavHandlers }: ContentRendererProps) => {
   const renderContentItem = (item: ContentItem, index: number) => {
     switch (item.type) {
       case 'text':
@@ -58,7 +65,9 @@ export const ContentRenderer = ({ content, className = '', isLastSection, onLast
           <ListTag key={index} className={listClass}>
             {item.items?.map((listItem, listIndex) => (
               <li key={listIndex} className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                <span dangerouslySetInnerHTML={{ __html: listItem }} />
+                <span dangerouslySetInnerHTML={{ 
+                  __html: listItem.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                }} />
               </li>
             ))}
           </ListTag>
@@ -142,7 +151,7 @@ export const ContentRenderer = ({ content, className = '', isLastSection, onLast
             </h4>
             <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded p-3">
               <pre className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap font-mono leading-relaxed">
-                {typeof item.content === 'string' ? item.content : ''}
+                {item.description || (typeof item.content === 'string' ? item.content : '')}
               </pre>
             </div>
           </div>
@@ -191,9 +200,21 @@ export const ContentRenderer = ({ content, className = '', isLastSection, onLast
   const shouldPaginate = !disablePagination && contentScore > 15 && subsections.length > 2
   
   // Notify parent about pagination status
-  if (onPaginationStatus) {
-    onPaginationStatus(shouldPaginate)
-  }
+  useEffect(() => {
+    if (onPaginationStatus) {
+      onPaginationStatus(shouldPaginate)
+    }
+    // For non-paginated content, immediately notify that we're on the last page
+    if (!shouldPaginate && onLastPageReached && isLastSection) {
+      onLastPageReached()
+    }
+    if (!shouldPaginate && onFirstPageReached) {
+      onFirstPageReached()
+    }
+    if (!shouldPaginate && provideTotalPages) {
+      provideTotalPages(1)
+    }
+  }, [shouldPaginate, onPaginationStatus, onLastPageReached, onFirstPageReached, provideTotalPages, isLastSection])
   
   // Use pagination if content score is high (indicating long/complex content) and we have subsections
   if (shouldPaginate) {
@@ -209,6 +230,12 @@ export const ContentRenderer = ({ content, className = '', isLastSection, onLast
           renderItem={(item, index) => renderContentItem(item, index)}
           className="mt-4"
           onLastPageReached={isLastSection ? onLastPageReached : undefined}
+          onFirstPageReached={onFirstPageReached}
+          currentPage={currentPage}
+          onPageChange={onPageChange}
+          provideTotalPages={provideTotalPages}
+          provideNavHandlers={provideNavHandlers}
+          hideNavigation={false}
         />
       </div>
     )
