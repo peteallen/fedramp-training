@@ -15,22 +15,27 @@ import { useTrainingStore } from './trainingStore'
 // Helper functions to extract completion data from training store
 export const extractCompletionData = (): CompletionData | null => {
   const trainingState = useTrainingStore.getState()
+  console.log('[extractCompletionData] Training state:', trainingState)
   
   // Only return data if all modules are completed
   if (trainingState.overallProgress < 100) {
+    console.log('[extractCompletionData] Progress < 100%, returning null')
     return null
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const completedModules = trainingState.modules.filter((module: any) => module.completed)
+  console.log('[extractCompletionData] Completed modules:', completedModules)
   
   if (completedModules.length === 0) {
+    console.log('[extractCompletionData] No completed modules found')
     return null
   }
 
   // Transform training modules to completion data
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const modules: ModuleCompletion[] = completedModules.map((module: any) => {
+    console.log('[extractCompletionData] Processing module:', module)
     let completionDate = module.completionDate || module.lastAccessed || new Date();
     if (typeof completionDate === 'string') {
       completionDate = new Date(completionDate);
@@ -39,13 +44,15 @@ export const extractCompletionData = (): CompletionData | null => {
       completionDate = new Date();
     }
     
-    return {
+    const moduleCompletion = {
       id: module.id,
       title: module.title,
       completionDate,
       score: module.quizScore,
       timeSpent: module.timeSpent || 0
     }
+    console.log('[extractCompletionData] Module completion:', moduleCompletion)
+    return moduleCompletion
   })
 
   // Calculate overall completion date (latest module completion)
@@ -64,12 +71,14 @@ export const extractCompletionData = (): CompletionData | null => {
     ? Math.round(modulesWithScores.reduce((sum, module: ModuleCompletion) => sum + (module.score || 0), 0) / modulesWithScores.length)
     : 0
 
-  return {
+  const completionData = {
     modules,
     overallCompletionDate,
     totalTimeSpent,
     overallScore
   }
+  console.log('[extractCompletionData] Final completion data:', completionData)
+  return completionData
 }
 
 // Helper function to check if certificate generation is available

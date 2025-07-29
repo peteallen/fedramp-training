@@ -1,5 +1,5 @@
-import { FaArrowLeft, FaArrowRight, FaCheck } from 'react-icons/fa'
 import { Button } from '@/components/ui/button'
+import { FaArrowLeft, FaArrowRight, FaCheck } from 'react-icons/fa'
 
 interface UnifiedNavigationProps {
   // Section navigation
@@ -44,8 +44,8 @@ export const UnifiedNavigation = ({
   // Determine what navigation buttons to show
   const showPrevSection = !isFirstSection && isOnFirstPage && hasMultipleSections
   const showPrevPage = !isOnFirstPage && isPaginated
-  const showNextSection = !isLastSection && (isOnLastPage || !isPaginated) && hasMultipleSections
-  const showNextPage = !isOnLastPage && isPaginated
+  const showNextSection = !isLastSection && ((isOnLastPage || !isPaginated) || (isPaginated && currentPage === totalPages)) && hasMultipleSections
+  const showNextPage = !isOnLastPage && isPaginated && !(currentPage === totalPages && !isLastSection)
   const showCompleteModule = isLastSection && (isOnLastPage || !isPaginated)
   
   // Show nothing if we're in the middle of paginated content with no navigation needed

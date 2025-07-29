@@ -1,5 +1,5 @@
 import html2canvas from 'html2canvas'
-import jsPDF from 'jspdf'
+import { jsPDF } from 'jspdf'
 import type { CertificateUserData, ValidationResult } from '../types/certificate'
 
 export class CertificateService {
@@ -63,6 +63,14 @@ export class CertificateService {
    */
   static async generatePDF(templateElement: HTMLElement, filename: string): Promise<void> {
     try {
+      console.log('[CertificateService] Starting PDF generation')
+      console.log('[CertificateService] Template element dimensions:', {
+        scrollWidth: templateElement.scrollWidth,
+        scrollHeight: templateElement.scrollHeight,
+        offsetWidth: templateElement.offsetWidth,
+        offsetHeight: templateElement.offsetHeight
+      })
+      
       // Configure html2canvas options for better PDF quality
       const canvas = await html2canvas(templateElement, {
         scale: 2, // Higher resolution
@@ -70,8 +78,57 @@ export class CertificateService {
         allowTaint: true,
         backgroundColor: '#ffffff',
         width: templateElement.scrollWidth,
-        height: templateElement.scrollHeight
+        height: templateElement.scrollHeight,
+        ignoreElements: (element) => {
+          // Ignore elements that might have oklch colors
+          return false
+        },
+        onclone: (clonedDoc, element) => {
+          // Remove any problematic styles from the cloned document
+          const style = clonedDoc.createElement('style')
+          style.textContent = `
+            * {
+              transition: none !important;
+              animation: none !important;
+            }
+          `
+          clonedDoc.head.appendChild(style)
+          
+          // Convert oklch colors to fallback colors for html2canvas compatibility
+          const allElements = clonedDoc.querySelectorAll('*') as NodeListOf<HTMLElement>
+          allElements.forEach(el => {
+            const computedStyle = window.getComputedStyle(el)
+            
+            // Check and replace color properties that might use oklch
+            const colorProperties = [
+              'color', 
+              'backgroundColor', 
+              'borderColor',
+              'borderTopColor',
+              'borderRightColor', 
+              'borderBottomColor',
+              'borderLeftColor',
+              'outlineColor',
+              'textDecorationColor'
+            ]
+            
+            colorProperties.forEach(prop => {
+              const value = computedStyle.getPropertyValue(prop.replace(/([A-Z])/g, '-$1').toLowerCase())
+              if (value && value.includes('oklch')) {
+                // Set a fallback color based on the property
+                if (prop.includes('background')) {
+                  el.style[prop as any] = '#ffffff'
+                } else if (prop.includes('border')) {
+                  el.style[prop as any] = '#e5e7eb'
+                } else {
+                  el.style[prop as any] = '#000000'
+                }
+              }
+            })
+          })
+        }
       })
+      console.log('[CertificateService] Canvas created:', canvas.width, 'x', canvas.height)
 
       // Create PDF with standard letter size (8.5 x 11 inches)
       const pdf = new jsPDF({
@@ -79,18 +136,24 @@ export class CertificateService {
         unit: 'in',
         format: 'letter'
       })
+      console.log('[CertificateService] PDF instance created')
 
       // Calculate dimensions to fit the certificate properly
       const imgWidth = 11 // Letter width in landscape
       const imgHeight = (canvas.height * imgWidth) / canvas.width
+      console.log('[CertificateService] Image dimensions for PDF:', imgWidth, 'x', imgHeight)
       
       // Add the canvas as an image to the PDF
       const imgData = canvas.toDataURL('image/png')
+      console.log('[CertificateService] Image data URL created, length:', imgData.length)
       pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight)
+      console.log('[CertificateService] Image added to PDF')
 
       // Save the PDF
       pdf.save(filename)
-    } catch (_error) {
+      console.log('[CertificateService] PDF saved with filename:', filename)
+    } catch (error) {
+      console.error('[CertificateService] Error generating PDF:', error)
       throw new Error('Failed to generate certificate PDF. Please try again.')
     }
   }

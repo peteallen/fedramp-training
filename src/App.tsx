@@ -29,20 +29,24 @@ function App() {
 
   const handleGenerateCertificate = async (userData: { fullName: string }) => {
     try {
+      console.log('[Certificate] Starting certificate generation for:', userData)
       setGenerating(true)
       
       // Save user data for future use
       saveUserData(userData)
       
       // Import certificate service and template dynamically to reduce bundle size
+      console.log('[Certificate] Loading certificate dependencies...')
       const [{ CertificateService }, { CertificateTemplate }] = await Promise.all([
         import('@/services/certificateService'),
         import('@/components/CertificateTemplate')
       ])
+      console.log('[Certificate] Dependencies loaded successfully')
       
       // Extract completion data
       const { extractCompletionData } = await import('@/stores/certificateStore')
       const completionData = extractCompletionData()
+      console.log('[Certificate] Completion data:', completionData)
       
       if (!completionData) {
         throw new Error('Training not completed. Please complete all modules first.')
@@ -59,6 +63,7 @@ function App() {
       tempContainer.style.top = '-9999px'
       tempContainer.style.width = '11in'
       tempContainer.style.height = '8.5in'
+      tempContainer.style.backgroundColor = '#ffffff'
       document.body.appendChild(tempContainer)
       
       // Render the certificate template
@@ -80,7 +85,10 @@ function App() {
       
       // Generate filename and PDF
       const filename = CertificateService.generateFilename(userData.fullName, issueDate)
+      console.log('[Certificate] Generating PDF with filename:', filename)
+      console.log('[Certificate] Template element:', tempContainer.firstElementChild)
       await CertificateService.generatePDF(tempContainer.firstElementChild as HTMLElement, filename)
+      console.log('[Certificate] PDF generated successfully')
       
       // Save certificate to history
       addGeneratedCertificate({

@@ -22,7 +22,10 @@ export const CertificateTemplate: React.FC<CertificateTemplateProps> = ({
 
 
   return (
-    <div className="certificate-container">
+    <div className="certificate-container" style={{ 
+      backgroundColor: '#ffffff',
+      color: '#000000' 
+    }}>
       {/* Certificate Border */}
       <div className="certificate-border">
         {/* Header Section */}

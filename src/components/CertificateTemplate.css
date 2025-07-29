@@ -1,36 +1,44 @@
 /* Certificate Template Styles - Optimized for PDF Generation */
 
 .certificate-container {
-  width: 8.5in;
-  height: 11in;
+  width: 11in;
+  height: 8.5in;
   margin: 0;
   padding: 0;
   background: white;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: Georgia, 'Times New Roman', Times, serif;
   color: #1a1a1a;
   box-sizing: border-box;
   page-break-inside: avoid;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .certificate-border {
-  width: 100%;
-  height: 100%;
-  border: 8px solid #2563eb;
-  border-radius: 12px;
-  padding: 40px;
+  width: calc(100% - 60px);
+  height: calc(100% - 60px);
+  border: 3px solid #1e40af;
+  border-radius: 0;
+  padding: 50px 60px;
   box-sizing: border-box;
   position: relative;
-  background: linear-gradient(135deg, #fefefe 0%, #f8fafc 100%);
+  background: white;
+  box-shadow: inset 0 0 0 12px white, inset 0 0 0 15px #e5e7eb;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Header Section */
 .certificate-header {
   text-align: center;
-  margin-bottom: 40px;
-  border-bottom: 2px solid #e2e8f0;
-  padding-bottom: 30px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .certificate-logo {
@@ -38,73 +46,85 @@
 }
 
 .logo-placeholder {
-  font-size: 32px;
-  font-weight: bold;
-  color: #2563eb;
-  letter-spacing: 2px;
+  font-size: 28px;
+  font-weight: 900;
+  color: #1e40af;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  font-family: 'Arial', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin-bottom: 15px;
 }
 
 .certificate-title {
-  font-size: 36px;
-  font-weight: bold;
-  color: #1e293b;
-  margin: 20px 0 10px 0;
+  font-size: 42px;
+  font-weight: 700;
+  color: #111827;
+  margin: 15px 0 10px 0;
   text-transform: uppercase;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .certificate-subtitle {
-  font-size: 18px;
-  color: #64748b;
+  font-size: 20px;
+  color: #6b7280;
   font-style: italic;
   margin: 0;
+  font-weight: 400;
 }
 
 /* Main Content */
 .certificate-content {
-  margin-bottom: 40px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
 }
 
 .certificate-recipient {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
+  flex-shrink: 0;
 }
 
 .recipient-label {
-  font-size: 16px;
-  color: #64748b;
-  margin-bottom: 10px;
+  font-size: 18px;
+  color: #6b7280;
+  margin-bottom: 8px;
   font-style: italic;
+  font-weight: 400;
 }
 
 .recipient-name {
-  font-size: 42px;
-  font-weight: bold;
-  color: #2563eb;
-  margin: 15px 0;
+  font-size: 48px;
+  font-weight: 700;
+  color: #1e40af;
+  margin: 12px 0;
   text-decoration: underline;
-  text-decoration-color: #2563eb;
-  text-underline-offset: 8px;
+  text-decoration-color: #1e40af;
+  text-underline-offset: 10px;
   text-decoration-thickness: 3px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .completion-text {
-  font-size: 18px;
+  font-size: 20px;
   color: #374151;
-  line-height: 1.6;
-  max-width: 600px;
-  margin: 20px auto 0;
+  line-height: 1.5;
+  max-width: 700px;
+  margin: 15px auto 0;
+  font-weight: 400;
 }
 
 /* Completion Details */
 .completion-details {
-  background: #f1f5f9;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  padding: 25px;
-  margin-bottom: 30px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 15px 25px;
+  margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .completion-date {
@@ -129,34 +149,40 @@
 
 /* Modules Section */
 .modules-section {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .modules-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #1e293b;
-  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 15px;
   text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  text-transform: none;
+  letter-spacing: 0.5px;
 }
 
 .modules-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
+  flex: 1;
+  overflow: auto;
 }
 
 .module-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 10px 15px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  box-shadow: none;
 }
 
 .module-info {
@@ -166,16 +192,16 @@
 }
 
 .module-title {
-  font-size: 14px;
-  font-weight: bold;
-  color: #1e293b;
-  margin-bottom: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 2px;
 }
 
 .module-date {
-  font-size: 12px;
-  color: #64748b;
-  font-style: italic;
+  font-size: 14px;
+  color: #6b7280;
+  font-style: normal;
 }
 
 .module-stats {
@@ -194,8 +220,9 @@
 
 /* Footer Section */
 .certificate-footer {
-  border-top: 2px solid #e2e8f0;
-  padding-top: 30px;
+  border-top: 2px solid #e5e7eb;
+  padding-top: 20px;
+  flex-shrink: 0;
 }
 
 .footer-content {
@@ -209,11 +236,11 @@
 }
 
 .compliance-text {
-  font-size: 12px;
-  color: #64748b;
-  line-height: 1.5;
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.4;
   font-style: italic;
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
 }
 
@@ -231,8 +258,8 @@
 
 .issue-date,
 .certificate-id {
-  font-size: 12px;
-  color: #374151;
+  font-size: 13px;
+  color: #4b5563;
 }
 
 .signature-section {
@@ -248,15 +275,16 @@
 
 .signature-placeholder {
   width: 200px;
-  height: 1px;
-  background: #1e293b;
+  height: 2px;
+  background: #374151;
   margin-bottom: 5px;
 }
 
 .signature-label {
-  font-size: 12px;
-  color: #64748b;
+  font-size: 14px;
+  color: #6b7280;
   margin: 0;
+  font-weight: 500;
 }
 
 /* Print and PDF Optimizations */
@@ -278,6 +306,56 @@
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
+}
+
+/* Additional certificate styling */
+.certificate-container::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  border: 1px solid #ddd;
+  pointer-events: none;
+}
+
+/* Decorative corners */
+.certificate-border::before,
+.certificate-border::after {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 2px solid #1e40af;
+}
+
+.certificate-border::before {
+  top: 20px;
+  left: 20px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.certificate-border::after {
+  top: 20px;
+  right: 20px;
+  border-left: none;
+  border-bottom: none;
+}
+
+/* Certificate seal/watermark effect */
+.certificate-header::after {
+  content: '';
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(30, 64, 175, 0.05) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: -1;
 }
 
 /* Responsive adjustments for preview */
