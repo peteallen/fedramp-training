@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FedRAMP Training Section",
+  "description": "Schema for individual training section files",
+  "type": "object",
+  "properties": {
+    "id": { 
+      "type": "string",
+      "pattern": "^\\d+\\.[A-Z]$",
+      "description": "Section identifier (e.g., '2.A')"
+    },
+    "title": { 
+      "type": "string",
+      "description": "Section title"
+    },
+    "content": {
+      "type": "array",
+      "description": "Array of content items",
+      "items": { "$ref": "#/definitions/contentItem" }
+    }
+  },
+  "required": ["id", "title", "content"],
+  "definitions": {
+    "contentItem": {
+      "type": "object",
+      "oneOf": [
+        {
+          "properties": {
+            "type": { "const": "text" },
+            "text": { "type": "string" }
+          },
+          "required": ["type", "text"]
+        },
+        {
+          "properties": {
+            "type": { "const": "subsection" },
+            "title": { "type": "string" },
+            "content": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/contentItem" }
+            }
+          },
+          "required": ["type", "title", "content"]
+        },
+        {
+          "properties": {
+            "type": { "const": "list" },
+            "style": { "enum": ["bullet", "numbered"] },
+            "items": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          },
+          "required": ["type", "style", "items"]
+        },
+        {
+          "properties": {
+            "type": { "const": "callout" },
+            "style": { "enum": ["info", "warning", "important", "tip"] },
+            "title": { "type": "string" },
+            "text": { "type": "string" }
+          },
+          "required": ["type", "style", "text"]
+        },
+        {
+          "properties": {
+            "type": { "const": "tip" },
+            "text": { "type": "string" }
+          },
+          "required": ["type", "text"]
+        },
+        {
+          "properties": {
+            "type": { "const": "example" },
+            "title": { "type": "string" },
+            "content": { "type": "string" }
+          },
+          "required": ["type", "title", "content"]
+        }
+      ]
+    }
+  }
+}

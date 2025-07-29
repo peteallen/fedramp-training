@@ -30,7 +30,7 @@ export const useQuiz = ({ questions, passingScore = 70, onComplete }: UseQuizPro
     } else {
       submitQuiz()
     }
-  }, [currentQuestion, questions.length])
+  }, [currentQuestion, questions.length, submitQuiz])
 
   const goToPrevious = useCallback(() => {
     if (currentQuestion > 0) {

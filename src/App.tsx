@@ -2,11 +2,12 @@ import { useState } from 'react'
 import { CertificateButton } from '@/components/CertificateButton'
 import { CertificateModal } from '@/components/CertificateModal'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
+import { LogoutButton } from '@/components/LogoutButton'
 import { ModuleCard } from '@/components/ModuleCard'
 import { ModuleViewer } from '@/components/ModuleViewer'
 import { ThemeToggle } from '@/components/ThemeToggle'
-import { WelcomeScreen } from '@/components/WelcomeScreen'
 import { Button } from '@/components/ui/button'
+import { WelcomeScreen } from '@/components/WelcomeScreen'
 import { useTrainingInit } from '@/hooks/useTrainingInit'
 import { useCertificateStore } from '@/stores/certificateStore'
 import { useTrainingStore } from '@/stores/trainingStore'
@@ -172,7 +173,8 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-8 transition-colors duration-300">
       <div className="max-w-6xl mx-auto">
         <header className="text-center mb-12 relative">
-          <div className="absolute top-0 right-0">
+          <div className="absolute top-0 right-0 flex gap-2">
+            <LogoutButton />
             <ThemeToggle />
           </div>
           <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-4">

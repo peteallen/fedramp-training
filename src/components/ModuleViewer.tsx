@@ -1,14 +1,11 @@
 import { useState, useEffect, useMemo } from 'react'
-import { FaArrowLeft, FaArrowRight, FaCheck, FaTimes, FaLightbulb, FaQuestionCircle, FaBookOpen, FaClock, FaGraduationCap, FaUserShield } from 'react-icons/fa'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import { FaArrowLeft, FaArrowRight, FaCheck, FaLightbulb, FaBookOpen, FaClock } from 'react-icons/fa'
+import { ContentRenderer } from '@/components/ContentRenderer'
 import { Button } from '@/components/ui/button'
 import { ProgressBar } from '@/components/ui/ProgressBar'
 import { useTrainingStore } from '@/stores/trainingStore'
 
 // Constants
-const PASSING_SCORE = 70
-const QUIZ_PROGRESS_THRESHOLD = 90
 const COMPLETE_PROGRESS = 100
 
 interface ModuleViewerProps {
@@ -23,15 +20,10 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
   const updateProgress = useTrainingStore((state) => state.updateProgress)
   const completeModule = useTrainingStore((state) => state.completeModule)
   const updateModuleAccess = useTrainingStore((state) => state.updateModuleAccess)
-  const updateQuizScore = useTrainingStore((state) => state.updateQuizScore)
   
   const [currentSection, setCurrentSection] = useState(0)
-  const [showQuiz, setShowQuiz] = useState(false)
-  const [currentQuizQuestion, setCurrentQuizQuestion] = useState(0)
-  const [selectedAnswers, setSelectedAnswers] = useState<number[]>([])
-  const [quizSubmitted, setQuizSubmitted] = useState(false)
-  const [quizScore, setQuizScore] = useState(0)
-  const [startTime] = useState(Date.now())
+  const [isOnLastPage, setIsOnLastPage] = useState(false)
+  const [isPaginated, setIsPaginated] = useState(false)
 
   useEffect(() => {
     if (module) {
@@ -40,23 +32,13 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moduleId])
 
-  const totalSections = module?.content?.length ?? 0;
+  const totalSections = module?.sections?.length ?? 0;
 
   const progressPercent = useMemo(() => {
-    if (showQuiz) return COMPLETE_PROGRESS;
     if (totalSections === 0) return 0;
-    return Math.round(((currentSection + 1) / totalSections) * QUIZ_PROGRESS_THRESHOLD);
-  }, [currentSection, totalSections, showQuiz]);
+    return Math.round(((currentSection + 1) / totalSections) * COMPLETE_PROGRESS);
+  }, [currentSection, totalSections]);
 
-  const getContentIcon = useMemo(() => {
-    const iconMap = {
-      introduction: FaLightbulb,
-      section: FaBookOpen,
-      conclusion: FaCheck,
-    } as const
-    
-    return (type: string) => iconMap[type as keyof typeof iconMap] || FaBookOpen
-  }, [])
 
   if (!module) {
     return (
@@ -83,217 +65,23 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
   const handleNextSection = () => {
     if (currentSection < totalSections - 1) {
       setCurrentSection(currentSection + 1)
-      updateProgress(moduleId, Math.round(((currentSection + 2) / totalSections) * QUIZ_PROGRESS_THRESHOLD))
-    } else {
-      setShowQuiz(true)
-      updateProgress(moduleId, QUIZ_PROGRESS_THRESHOLD)
+      setIsOnLastPage(false) // Reset when moving to new section
+      updateProgress(moduleId, Math.round(((currentSection + 2) / totalSections) * COMPLETE_PROGRESS))
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
 
   const handlePrevSection = () => {
     if (currentSection > 0) {
       setCurrentSection(currentSection - 1)
+      setIsOnLastPage(false) // Reset when moving sections
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
 
-  const handleQuizAnswer = (answerIndex: number) => {
-    const newAnswers = [...selectedAnswers]
-    newAnswers[currentQuizQuestion] = answerIndex
-    setSelectedAnswers(newAnswers)
-  }
-
-  const handleQuizNext = () => {
-    if (currentQuizQuestion < module.quiz.length - 1) {
-      setCurrentQuizQuestion(currentQuizQuestion + 1)
-    } else {
-      submitQuiz()
-    }
-  }
-
-  const handleQuizPrev = () => {
-    if (currentQuizQuestion > 0) {
-      setCurrentQuizQuestion(currentQuizQuestion - 1)
-    }
-  }
-
-  const submitQuiz = () => {
-    let correct = 0
-    module.quiz.forEach((question, index) => {
-      if (selectedAnswers[index] === question.correctAnswer) {
-        correct++
-      }
-    })
-    
-    const score = Math.round((correct / module.quiz.length) * 100)
-    setQuizScore(score)
-    setQuizSubmitted(true)
-    updateQuizScore(moduleId, score)
-    
-    if (score >= PASSING_SCORE) {
-      completeModule(moduleId)
-      updateProgress(moduleId, COMPLETE_PROGRESS)
-    }
-  }
-
-  if (showQuiz && !quizSubmitted) {
-    const currentQuestion = module.quiz[currentQuizQuestion]
-    
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center">
-                <FaQuestionCircle className="text-2xl text-blue-600 dark:text-blue-400 mr-3" />
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-                  Quiz: {module.title}
-                </h1>
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Question {currentQuizQuestion + 1} of {module.quiz.length}
-              </div>
-            </div>
-
-            <div className="mb-6">
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                <div 
-                  className="bg-green-600 dark:bg-green-500 h-2 rounded-full transition-all duration-300"
-                  style={{ width: `${((currentQuizQuestion + 1) / module.quiz.length) * 100}%` }}
-                ></div>
-              </div>
-            </div>
-
-            <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6 mb-6">
-              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
-                {currentQuestion.question}
-              </h2>
-              
-              <div className="space-y-3">
-                {currentQuestion.options.map((option, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleQuizAnswer(index)}
-                    className={`w-full p-4 text-left rounded-lg border-2 transition-all duration-200 ${
-                      selectedAnswers[currentQuizQuestion] === index
-                        ? 'border-blue-500 bg-blue-100 dark:bg-blue-800 text-blue-900 dark:text-blue-100'
-                        : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-                    }`}
-                  >
-                    <div className="flex items-center">
-                      <span className="w-8 h-8 rounded-full border-2 border-gray-400 dark:border-gray-500 mr-3 flex items-center justify-center text-sm font-medium">
-                        {String.fromCharCode(65 + index)}
-                      </span>
-                      {option}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex justify-between">
-              <Button
-                onClick={handleQuizPrev}
-                disabled={currentQuizQuestion === 0}
-                variant="outline"
-              >
-                <FaArrowLeft className="mr-2" />
-                Previous
-              </Button>
-              
-              <Button
-                onClick={handleQuizNext}
-                disabled={selectedAnswers[currentQuizQuestion] === undefined}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                {currentQuizQuestion === module.quiz.length - 1 ? 'Submit Quiz' : 'Next'}
-                {currentQuizQuestion < module.quiz.length - 1 && <FaArrowRight className="ml-2" />}
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  if (quizSubmitted) {
-    const timeSpent = Math.round((Date.now() - startTime) / 1000 / 60)
-    const passed = quizScore >= PASSING_SCORE
-    
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
-            <div className={`w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center ${
-              passed ? 'bg-green-100 dark:bg-green-900' : 'bg-red-100 dark:bg-red-900'
-            }`}>
-              {passed ? (
-                <FaCheck className="text-4xl text-green-600 dark:text-green-400" />
-              ) : (
-                <FaTimes className="text-4xl text-red-600 dark:text-red-400" />
-              )}
-            </div>
-            
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-4">
-              {passed ? 'Congratulations!' : 'Keep Learning!'}
-            </h1>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4">
-                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-2">
-                  {quizScore}%
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Quiz Score</div>
-              </div>
-              <div className="bg-purple-50 dark:bg-purple-900/30 rounded-lg p-4">
-                <div className="text-2xl font-bold text-purple-600 dark:text-purple-400 mb-2">
-                  {timeSpent}m
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Time Spent</div>
-              </div>
-              <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-4">
-                <div className="text-2xl font-bold text-green-600 dark:text-green-400 mb-2">
-                  {selectedAnswers.filter((answer, index) => answer === module.quiz[index].correctAnswer).length}/{module.quiz.length}
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Correct Answers</div>
-              </div>
-            </div>
-
-            <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">
-              {passed 
-                ? 'You have successfully completed this training module!'
-                : `You need at least ${PASSING_SCORE}% to pass. Review the material and try again.`
-              }
-            </p>
-
-            <div className="flex justify-center space-x-4">
-              <Button onClick={onBack} className="bg-blue-600 hover:bg-blue-700 text-white">
-                <FaArrowLeft className="mr-2" />
-                Back to Modules
-              </Button>
-              {!passed && (
-                <Button 
-                  onClick={() => {
-                    setShowQuiz(false)
-                    setCurrentSection(0)
-                    setCurrentQuizQuestion(0)
-                    setSelectedAnswers([])
-                    setQuizSubmitted(false)
-                    setQuizScore(0)
-                  }}
-                  variant="outline"
-                >
-                  Review Material
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  const currentContent = module.content[currentSection]
-  const IconComponent = getContentIcon(currentContent.type)
+  const currentSection_data = module.sections[currentSection]
+  const IconComponent = FaBookOpen // Use book icon for all sections
+  const isLastSection = currentSection === totalSections - 1
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-8">
@@ -305,29 +93,39 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
               <FaArrowLeft className="mr-2" />
               Back to Modules
             </Button>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
-              Section {currentSection + 1} of {totalSections}
+            <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+              {module.estimatedDuration && (
+                <div className="flex items-center">
+                  <FaClock className="mr-1" />
+                  {module.estimatedDuration} min
+                </div>
+              )}
+              <div>
+                Section {currentSection + 1} of {totalSections}
+              </div>
             </div>
           </div>
           
-          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">
             {module.title}
           </h1>
           
-          <div className="flex items-center space-x-6 text-sm text-gray-600 dark:text-gray-400">
-            <div className="flex items-center">
-              <FaClock className="mr-2" />
-              {module.estimatedTime}
+          <p className="text-gray-600 dark:text-gray-400 mb-4">
+            {module.description}
+          </p>
+          
+          {module.requiredForMembers && module.requiredForMembers.length > 0 && (
+            <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400 mb-4">
+              <span>Required for:</span>
+              <div className="flex flex-wrap gap-1">
+                {module.requiredForMembers.map((member, index) => (
+                  <span key={index} className="text-xs font-medium px-2 py-1 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                    {member}
+                  </span>
+                ))}
+              </div>
             </div>
-            <div className="flex items-center">
-              <FaGraduationCap className="mr-2" />
-              {module.difficulty}
-            </div>
-            <div className="flex items-center">
-              <FaUserShield className="mr-2" />
-              {module.category}
-            </div>
-          </div>
+          )}
           
           <div className="mt-4">
             <ProgressBar 
@@ -340,67 +138,90 @@ export const ModuleViewer = ({ moduleId, onBack }: ModuleViewerProps) => {
 
         {/* Content */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-          <div className="flex items-center mb-6">
-            <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mr-4">
-              <IconComponent className="text-xl text-blue-600 dark:text-blue-400" />
+          <div className="flex items-center mb-8">
+            <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center mr-4">
+              <IconComponent className="text-2xl text-blue-600 dark:text-blue-400" />
             </div>
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-              {currentContent.title}
-            </h2>
-          </div>
-
-          <div className="prose prose-lg prose-gray dark:prose-invert max-w-none 
-                         prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-gray-100 
-                         prose-h1:text-2xl prose-h1:mb-6 prose-h1:mt-8 prose-h1:leading-tight
-                         prose-h2:text-xl prose-h2:mb-4 prose-h2:mt-6 prose-h2:leading-tight
-                         prose-h3:text-lg prose-h3:mb-3 prose-h3:mt-5 prose-h3:leading-tight
-                         prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-4
-                         prose-strong:text-gray-900 dark:prose-strong:text-gray-100 prose-strong:font-semibold
-                         prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:font-medium prose-a:no-underline hover:prose-a:underline
-                         prose-ul:my-4 prose-ul:list-disc prose-ul:pl-6 prose-li:my-1 prose-li:leading-relaxed prose-li:marker:text-gray-500
-                         prose-ol:my-4 prose-ol:list-decimal prose-ol:pl-6
-                         prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-4 prose-blockquote:italic
-                         prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm">
-
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{currentContent.content}</ReactMarkdown>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                {currentSection_data.title}
+              </h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Section {currentSection_data.id}
+              </p>
+            </div>
           </div>
 
           {currentSection === 0 && (
-            <div className="mt-8 bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">
+            <div className="mb-8 bg-blue-50 dark:bg-blue-900/30 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center">
+                <FaLightbulb className="text-blue-600 dark:text-blue-400 mr-2" />
                 Learning Objectives
               </h3>
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 {module.objectives.map((objective: string, index: number) => (
                   <li key={index} className="flex items-start">
                     <FaCheck className="text-blue-600 dark:text-blue-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300">{objective}</span>
+                    <span className="text-gray-700 dark:text-gray-300 leading-relaxed">{objective}</span>
                   </li>
                 ))}
               </ul>
             </div>
           )}
+
+          <ContentRenderer 
+            content={currentSection_data.content} 
+            isLastSection={isLastSection}
+            onLastPageReached={() => setIsOnLastPage(true)}
+            onPaginationStatus={setIsPaginated}
+          />
         </div>
 
-        {/* Navigation */}
-        <div className="flex justify-between mt-6">
+        {/* Module completion box - show above navigation/pagination */}
+        {isLastSection && isOnLastPage && (
+          <div className="mt-6 bg-green-50 dark:bg-green-900/30 rounded-lg p-6 border border-green-200 dark:border-green-800 shadow-lg">
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center">
+              <FaCheck className="text-green-600 dark:text-green-400 mr-2" />
+              Module Complete!
+            </h3>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+              Congratulations! You have completed this training module. Click the button below to mark it as complete and return to the main page.
+            </p>
+            <Button
+              onClick={() => {
+                completeModule(moduleId)
+                updateProgress(moduleId, COMPLETE_PROGRESS)
+                onBack()
+              }}
+              className="w-full bg-green-600 hover:bg-green-700 text-white"
+            >
+              <FaCheck className="mr-2" />
+              Complete Module & Return
+            </Button>
+          </div>
+        )}
+
+        {/* Navigation - only show when not using pagination and not on completion screen */}
+        {!isPaginated && !(isLastSection && isOnLastPage) && (
+          <div className="flex justify-between mt-6">
           <Button
             onClick={handlePrevSection}
             disabled={currentSection === 0}
             variant="outline"
           >
             <FaArrowLeft className="mr-2" />
-            Previous
+            Previous Section
           </Button>
           
           <Button
             onClick={handleNextSection}
             className="bg-blue-600 hover:bg-blue-700 text-white"
           >
-            {currentSection === totalSections - 1 ? 'Take Quiz' : 'Next'}
+            {isLastSection ? 'Next Page' : 'Next Section'}
             <FaArrowRight className="ml-2" />
           </Button>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   )

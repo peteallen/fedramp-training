@@ -32,7 +32,9 @@ describe('RoleSelector', () => {
     )
     
     const developmentRole = screen.getByText('Development').closest('[role="button"]')
-    fireEvent.click(developmentRole!)
+    if (developmentRole) {
+      fireEvent.click(developmentRole)
+    }
     
     expect(mockOnRoleChange).toHaveBeenCalledWith('Development')
   })
@@ -46,7 +48,9 @@ describe('RoleSelector', () => {
     )
     
     const nonDevRole = screen.getByText('Non-Development').closest('[role="button"]')
-    fireEvent.keyDown(nonDevRole!, { key: 'Enter' })
+    if (nonDevRole) {
+      fireEvent.keyDown(nonDevRole, { key: 'Enter' })
+    }
     
     expect(mockOnRoleChange).toHaveBeenCalledWith('Non-Development')
   })
@@ -60,7 +64,9 @@ describe('RoleSelector', () => {
     )
     
     const developmentRole = screen.getByText('Development').closest('[role="button"]')
-    fireEvent.keyDown(developmentRole!, { key: ' ' })
+    if (developmentRole) {
+      fireEvent.keyDown(developmentRole, { key: ' ' })
+    }
     
     expect(mockOnRoleChange).toHaveBeenCalledWith('Development')
   })
@@ -74,7 +80,9 @@ describe('RoleSelector', () => {
     )
     
     const developmentRole = screen.getByText('Development').closest('[role="button"]')
-    fireEvent.keyDown(developmentRole!, { key: 'Tab' })
+    if (developmentRole) {
+      fireEvent.keyDown(developmentRole, { key: 'Tab' })
+    }
     
     expect(mockOnRoleChange).not.toHaveBeenCalled()
   })
@@ -94,8 +102,10 @@ describe('RoleSelector', () => {
     expect(nonDevRole).toHaveAttribute('aria-pressed', 'false')
     
     // Check for checkmark icon in selected role
-    const checkmark = developmentRole!.querySelector('svg')
-    expect(checkmark).toBeInTheDocument()
+    if (developmentRole) {
+      const checkmark = developmentRole.querySelector('svg')
+      expect(checkmark).toBeInTheDocument()
+    }
   })
 
   it('displays error message when provided', () => {

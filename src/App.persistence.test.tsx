@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import App from './App'
 import useUserStore from './stores/userStore'
 
@@ -15,30 +15,46 @@ Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
 })
 
+// Create a mock training store data
+const mockTrainingStore = {
+  modules: [
+    { id: 1, title: 'Test Module 1', description: 'Test description', objectives: ['Test objective 1', 'Test objective 2'] },
+    { id: 2, title: 'Test Module 2', description: 'Test description', objectives: ['Test objective 1', 'Test objective 2'] }
+  ],
+  completedCount: 0,
+  totalCount: 2,
+  overallProgress: 0,
+  initialized: true,
+  clearAllData: vi.fn(),
+  initializeModules: vi.fn(),
+  getModuleById: vi.fn((id: number) => ({
+    id,
+    title: `Test Module ${id}`,
+    description: 'Test description',
+    objectives: ['Test objective 1', 'Test objective 2'],
+    completed: false,
+    progress: 0,
+    lastAccessed: undefined,
+    timeSpent: 0,
+    quizScore: undefined,
+    completionDate: undefined
+  })),
+  updateProgress: vi.fn(),
+  completeModule: vi.fn(),
+  updateModuleAccess: vi.fn(),
+  updateTimeSpent: vi.fn(),
+  updateQuizScore: vi.fn(),
+  resetProgress: vi.fn(),
+  resetModule: vi.fn(),
+}
+
 // Mock the training store to avoid TypeScript issues
 vi.mock('./stores/trainingStore', () => ({
-  useTrainingStore: () => ({
-    modules: [
-      { id: 1, title: 'Test Module 1', description: 'Test description', objectives: ['Test objective 1', 'Test objective 2'] },
-      { id: 2, title: 'Test Module 2', description: 'Test description', objectives: ['Test objective 1', 'Test objective 2'] }
-    ],
-    completedCount: 0,
-    totalCount: 2,
-    overallProgress: 0,
-    clearAllData: vi.fn(),
-    getModuleById: vi.fn((id: number) => ({
-      id,
-      title: `Test Module ${id}`,
-      description: 'Test description',
-      objectives: ['Test objective 1', 'Test objective 2'],
-      completed: false,
-      progress: 0,
-      lastAccessed: undefined,
-      timeSpent: 0,
-      quizScore: undefined,
-      completionDate: undefined
-    })),
-    updateProgress: vi.fn(),
+  useTrainingStore: vi.fn((selector) => {
+    if (typeof selector === 'function') {
+      return selector(mockTrainingStore)
+    }
+    return mockTrainingStore
   })
 }))
 

@@ -1,31 +1,30 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import modulesIndex from '../data/modules.json'
-import type { UserRole } from '@/types/user'
 
-interface ModuleContent {
+interface ContentItem {
   type: string
-  title: string
-  content: string
-  roles?: UserRole[]
+  title?: string
+  text?: string
+  content?: string | ContentItem[]
+  style?: string
+  items?: string[]
 }
 
-interface QuizQuestion {
-  question: string
-  options: string[]
-  correctAnswer: number
+interface ModuleSection {
+  id: string
+  title: string
+  content: ContentItem[]
 }
+
 
 interface TrainingModule {
   id: number
   title: string
   description: string
-  category: string
-  estimatedTime: string
-  difficulty: string
+  requiredForMembers: string[]
   objectives: string[]
-  content: ModuleContent[]
-  quiz: QuizQuestion[]
+  sections: ModuleSection[]
+  estimatedDuration?: number
   completed: boolean
   progress: number
   lastAccessed?: Date
@@ -51,42 +50,67 @@ export interface TrainingState {
   resetProgress: () => void
   resetModule: (moduleId: number) => void
   getModuleById: (moduleId: number) => TrainingModule | undefined
-  getModulesByCategory: (category: string) => TrainingModule[]
-  getModulesByDifficulty: (difficulty: string) => TrainingModule[]
   clearAllData: () => void
 }
 
-
-// Helper function to load a single module from its file
-const loadModule = async (moduleInfo: { id: number; file: string }): Promise<TrainingModule> => {
-  // Import the module with explicit file extension for Vite compatibility
-  let moduleData;
-  switch (moduleInfo.file) {
-    case '1.json':
-      moduleData = await import('../data/modules/1.json');
-      break;
-    case '2.json':
-      moduleData = await import('../data/modules/2.json');
-      break;
-    default:
-      throw new Error(`Unknown module file: ${moduleInfo.file}`);
-  }
-  
-  return {
-    ...moduleData.default,
-    completed: false,
-    progress: 0,
-    lastAccessed: undefined,
-    timeSpent: 0,
-    quizScore: undefined,
-    completionDate: undefined
+// Helper function to load module metadata
+const loadModuleMetadata = async (moduleId: number) => {
+  try {
+    const response = await fetch(`/src/data/modules/${moduleId}/module.json`)
+    if (!response.ok) return null
+    return await response.json()
+  } catch {
+    return null
   }
 }
 
-// Helper function to load all modules
+// Helper function to load a module section
+const loadModuleSection = async (moduleId: number, sectionId: string) => {
+  try {
+    const response = await fetch(`/src/data/modules/${moduleId}/sections/${sectionId}.json`)
+    if (!response.ok) return null
+    return await response.json()
+  } catch {
+    return null
+  }
+}
+
+// Helper function to load all modules with their sections
 const loadAllModules = async (): Promise<TrainingModule[]> => {
-  const modulePromises = modulesIndex.modules.map(moduleInfo => loadModule(moduleInfo))
-  return Promise.all(modulePromises)
+  const modules: TrainingModule[] = []
+  
+  // For now, we'll check for known module IDs (we know module 4 exists)
+  const moduleIds = [4] // Can be expanded as more modules are added
+  
+  for (const moduleId of moduleIds) {
+    const metadata = await loadModuleMetadata(moduleId)
+    if (!metadata) continue
+    
+    const sections: ModuleSection[] = []
+    
+    // Load each section defined in metadata
+    for (const sectionId of metadata.sections || []) {
+      const sectionData = await loadModuleSection(moduleId, sectionId)
+      if (sectionData) {
+        sections.push(sectionData)
+      }
+    }
+    
+    // Create the module with default progress values
+    modules.push({
+      id: moduleId,
+      title: metadata.title,
+      description: metadata.description,
+      requiredForMembers: metadata.requiredForMembers || [],
+      objectives: metadata.objectives || [],
+      sections,
+      estimatedDuration: metadata.estimatedDuration,
+      completed: false,
+      progress: 0
+    })
+  }
+  
+  return modules
 }
 
 export const useTrainingStore = create<TrainingState>()(
@@ -262,14 +286,6 @@ export const useTrainingStore = create<TrainingState>()(
         return get().modules.find(module => module.id === moduleId)
       },
 
-      getModulesByCategory: (category: string) => {
-        return get().modules.filter(module => module.category === category)
-      },
-
-      getModulesByDifficulty: (difficulty: string) => {
-        return get().modules.filter(module => module.difficulty === difficulty)
-      },
-
       clearAllData: async () => {
         // Clear localStorage
         localStorage.removeItem('training-storage')
@@ -319,28 +335,4 @@ export const useTrainingStore = create<TrainingState>()(
       }),
     }
   )
-)
-
-// --- Hot-reload support for module JSON files (dev only) ---
-if (import.meta.hot) {
-  // Helper to register an HMR accept handler for a single JSON file
-  const acceptUpdate = (path: string, moduleId: number) => {
-    // Vite will re-import the updated JSON and pass it to the callback
-    import.meta.hot!.accept(path, (mod) => {
-      const moduleData = mod as { default?: Partial<TrainingModule> } | undefined
-      if (!moduleData?.default) return
-      // Merge the fresh JSON content into the existing module while
-      // preserving runtime fields like progress, completed, etc.
-      useTrainingStore.setState((state) => ({
-        modules: state.modules.map((m) =>
-          m.id === moduleId ? { ...m, ...moduleData.default } : m
-        ),
-      }))
-    })
-  }
-
-  // Register handlers for each known module file
-  acceptUpdate('../data/modules/1.json', 1)
-  acceptUpdate('../data/modules/2.json', 2)
-  acceptUpdate('../data/modules/3.json', 3)
-} 
+) 

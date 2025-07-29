@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { WelcomeScreen } from './WelcomeScreen'
+import { describe, it, expect, vi } from 'vitest'
 import { RoleTag } from './RoleTag'
+import { WelcomeScreen } from './WelcomeScreen'
 
 describe('Responsive Design and Accessibility Improvements', () => {
   const mockOnComplete = vi.fn()
@@ -68,11 +68,10 @@ describe('Responsive Design and Accessibility Improvements', () => {
       expect(developmentButton).toHaveAttribute('tabIndex', '0')
       expect(developmentButton).toHaveAttribute('aria-label')
       
-      // Name input
-      const nameInput = screen.getByLabelText(/full name/i)
-      expect(nameInput).toHaveAttribute('aria-required', 'true')
-      expect(nameInput).toHaveAttribute('aria-describedby', 'name-help')
-      expect(nameInput).toHaveAttribute('aria-invalid', 'false')
+      // Name dropdown
+      const nameDropdown = screen.getByRole('button', { name: /select your name/i })
+      expect(nameDropdown).toHaveAttribute('aria-haspopup', 'listbox')
+      expect(nameDropdown).toHaveAttribute('aria-expanded', 'false')
     })
 
     it('should have minimum touch target sizes', () => {
@@ -82,9 +81,9 @@ describe('Responsive Design and Accessibility Improvements', () => {
       const developmentButton = screen.getByText('Development').closest('[role="button"]')
       expect(developmentButton).toHaveClass('min-h-[44px]')
       
-      // Name input
-      const nameInput = screen.getByLabelText(/full name/i)
-      expect(nameInput).toHaveClass('min-h-[44px]')
+      // Name dropdown
+      const nameDropdown = screen.getByRole('button', { name: /select your name/i })
+      expect(nameDropdown).toHaveClass('py-2')
       
       // Submit button
       const submitButton = screen.getByRole('button', { name: /begin training/i })
@@ -98,8 +97,8 @@ describe('Responsive Design and Accessibility Improvements', () => {
       const developmentButton = screen.getByText('Development').closest('[role="button"]')
       expect(developmentButton).toHaveClass('focus:ring-2', 'focus:ring-blue-500')
       
-      const nameInput = screen.getByLabelText(/full name/i)
-      expect(nameInput).toHaveClass('focus:ring-2', 'focus:ring-blue-500')
+      const nameDropdown = screen.getByRole('button', { name: /select your name/i })
+      expect(nameDropdown).toHaveClass('focus:ring-2', 'focus:ring-blue-500')
     })
 
     it('should support touch manipulation', () => {

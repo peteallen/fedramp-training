@@ -65,4 +65,4 @@ function RoleTag({
   )
 }
 
-export { RoleTag, roleTagVariants }
+export { RoleTag }

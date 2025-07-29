@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FedRAMP Training Module Metadata",
+  "description": "Schema for module metadata files (module.json)",
+  "type": "object",
+  "properties": {
+    "id": { 
+      "type": "integer",
+      "description": "Module number"
+    },
+    "title": { 
+      "type": "string",
+      "description": "Module title"
+    },
+    "description": { 
+      "type": "string",
+      "description": "Brief description of the module"
+    },
+    "requiredForMembers": {
+      "type": "array",
+      "description": "Team members who must complete this module",
+      "items": {
+        "type": "string",
+        "enum": ["Pete", "Dave", "Shelly", "Savvy", "Krista", "Braden", "ScaleSec"]
+      }
+    },
+    "objectives": {
+      "type": "array",
+      "description": "Learning objectives for the module",
+      "items": { "type": "string" }
+    },
+    "sections": {
+      "type": "array",
+      "description": "List of section files in order (without .json extension)",
+      "items": { 
+        "type": "string",
+        "pattern": "^[a-z]$",
+        "description": "Section letter (a, b, c, etc.)"
+      }
+    },
+    "estimatedDuration": {
+      "type": "integer",
+      "description": "Estimated time to complete module in minutes"
+    }
+  },
+  "required": ["id", "title", "description", "requiredForMembers", "objectives", "sections"]
+}

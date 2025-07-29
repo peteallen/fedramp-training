@@ -28,3 +28,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude AI conversation logs
+2025-07-27-*.txt

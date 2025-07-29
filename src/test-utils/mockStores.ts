@@ -1,17 +1,30 @@
 import { vi } from 'vitest'
 import type { TrainingState } from '@/stores/trainingStore'
 
+interface TrainingModule {
+  id: number
+  title: string
+  description: string
+  requiredForMembers: string[]
+  objectives: string[]
+  sections: unknown[]
+  estimatedDuration?: number
+  completed: boolean
+  progress: number
+  lastAccessed?: Date
+  timeSpent?: number
+  quizScore?: number
+  completionDate?: Date
+}
+
 // Helper to create a mock training module
-export const createMockModule = (overrides?: Partial<any>) => ({
+export const createMockModule = (overrides?: Partial<TrainingModule>) => ({
   id: 1,
   title: 'Module 1',
   description: 'Test module',
-  category: 'Test',
-  estimatedTime: '10 minutes',
-  difficulty: 'Beginner',
+  requiredForMembers: ['Pete', 'Dave'],
   objectives: [],
-  content: [],
-  quiz: [],
+  sections: [],
   completed: false,
   progress: 0,
   ...overrides
@@ -34,13 +47,11 @@ export const createMockTrainingStore = (initialState?: Partial<TrainingState>) =
     resetProgress: vi.fn(),
     resetModule: vi.fn(),
     getModuleById: vi.fn(),
-    getModulesByCategory: vi.fn(),
-    getModulesByDifficulty: vi.fn(),
     clearAllData: vi.fn(),
     ...initialState
   }
 
-  return vi.fn((selector?: (state: TrainingState) => any) => {
+  return vi.fn(<T>(selector?: (state: TrainingState) => T) => {
     return selector ? selector(defaultState) : defaultState
   })
 }

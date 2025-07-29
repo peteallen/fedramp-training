@@ -7,18 +7,16 @@ This document describes the implementation of localStorage persistence in Zustan
 
 ### 1. localStorage Persistence in Zustand
 - **Enhanced Training Store**: Updated `src/stores/trainingStore.ts` to use Zustand's `persist` middleware
-- **Persistent Data**: User progress, module completion status, quiz scores, and time tracking are all saved to localStorage
+- **Persistent Data**: User progress, module completion status, and time tracking are all saved to localStorage
 - **Automatic Restoration**: When the app loads, all training progress is automatically restored from localStorage
 
 ### 2. Module System with JSON Configuration
-- **Module Definitions**: Created `src/data/modules.json` with comprehensive module definitions
-- **Dynamic Loading**: Modules are loaded from the JSON file when the app initializes
+- **Module Definitions**: Modules are defined using a JSON schema-based structure
+- **Dynamic Loading**: Modules can be loaded dynamically when the app initializes
 - **Rich Module Data**: Each module includes:
-  - Basic information (title, description, category, difficulty)
+  - Basic information (title, description, required team members)
   - Learning objectives
-  - Estimated time to complete
   - Content sections
-  - Quiz questions with multiple choice answers
   - Progress tracking
 
 ### 3. Enhanced Store Features
@@ -26,18 +24,10 @@ The training store now includes:
 - **Progress Tracking**: Individual module progress and overall completion percentage
 - **Time Tracking**: Records time spent on each module
 - **Access History**: Tracks when modules were last accessed
-- **Quiz Scoring**: Stores quiz results for each module
-- **Filtering Methods**: Get modules by category or difficulty level
 - **Reset Functionality**: Reset individual modules or all progress
 
 ### 4. Sample Module Content
-Created 6 comprehensive FedRAMP training modules:
-1. **FedRAMP Basics** (Beginner, Fundamentals)
-2. **Security Controls** (Intermediate, Security)
-3. **Assessment Process** (Intermediate, Process)
-4. **Compliance Management** (Advanced, Compliance)
-5. **Risk Management Framework** (Advanced, Risk)
-6. **Cloud Security Fundamentals** (Beginner, Cloud)
+Modules can be created for different team members and training requirements.
 
 ### 5. Enhanced UI Components
 - **ModuleCard Component**: New component displaying rich module information
@@ -129,22 +119,13 @@ pnpm run dev
       "id": 1,
       "title": "Module Title",
       "description": "Module description",
-      "category": "fundamentals",
-      "estimatedTime": "30 minutes",
-      "difficulty": "beginner",
+      "requiredForMembers": ["Pete", "Dave", "Shelly", "Savvy", "Krista", "Braden", "ScaleSec"],
       "objectives": ["Learning objective 1", "Learning objective 2"],
       "content": [
         {
           "type": "introduction",
           "title": "Section Title",
           "content": "Section content"
-        }
-      ],
-      "quiz": [
-        {
-          "question": "Quiz question?",
-          "options": ["Option 1", "Option 2", "Option 3", "Option 4"],
-          "correctAnswer": 0
         }
       ]
     }
@@ -156,12 +137,11 @@ pnpm run dev
 
 ### Potential Improvements
 1. **Module Content Viewer**: Full module content display with navigation
-2. **Quiz Interface**: Interactive quiz taking with scoring
-3. **Progress Analytics**: Detailed progress tracking and reporting
-4. **Search and Filter**: Module search and category filtering
-5. **Export/Import**: Backup and restore functionality
-6. **User Profiles**: Multiple user support with separate progress
-7. **Offline Support**: Service worker for offline functionality
+2. **Progress Analytics**: Detailed progress tracking and reporting
+3. **Search and Filter**: Module search and team member filtering
+4. **Export/Import**: Backup and restore functionality
+5. **User Profiles**: Multiple user support with separate progress
+6. **Offline Support**: Service worker for offline functionality
 
 ### Additional Features
 - **Certificate Generation**: Generate completion certificates

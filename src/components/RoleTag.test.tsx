@@ -88,7 +88,7 @@ describe('RoleTag', () => {
   it('maintains consistent styling across different role combinations', () => {
     const { rerender } = render(<RoleTag roles={['Development']} />)
     
-    let devTag = screen.getByText('Development')
+    const devTag = screen.getByText('Development')
     expect(devTag).toHaveClass('rounded-full', 'text-xs', 'font-medium')
     
     rerender(<RoleTag roles={['Non-Development']} />)

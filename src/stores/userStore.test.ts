@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import useUserStore from './userStore'
 import type { UserOnboardingData } from '@/types/user'
+import useUserStore from './userStore'
 
 // Mock localStorage
 const localStorageMock = {
@@ -51,8 +51,10 @@ describe('userStore', () => {
       expect(state.role).toBe('Development')
       expect(state.fullName).toBe('John Doe')
       expect(state.onboardingCompletedAt).toBeInstanceOf(Date)
-      expect(state.onboardingCompletedAt!.getTime()).toBeGreaterThanOrEqual(beforeDate.getTime())
-      expect(state.onboardingCompletedAt!.getTime()).toBeLessThanOrEqual(afterDate.getTime())
+      if (state.onboardingCompletedAt) {
+        expect(state.onboardingCompletedAt.getTime()).toBeGreaterThanOrEqual(beforeDate.getTime())
+        expect(state.onboardingCompletedAt.getTime()).toBeLessThanOrEqual(afterDate.getTime())
+      }
     })
 
     it('should complete onboarding with Non-Development role', () => {
@@ -254,7 +256,9 @@ describe('userStore', () => {
       
       // Verify the date is properly stored as a Date object
       expect(state.onboardingCompletedAt).toBeInstanceOf(Date)
-      expect(state.onboardingCompletedAt!.toISOString()).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)
+      if (state.onboardingCompletedAt) {
+        expect(state.onboardingCompletedAt.toISOString()).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)
+      }
     })
   })
 })

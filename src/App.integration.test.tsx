@@ -1,33 +1,49 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import App from './App'
 import useUserStore from './stores/userStore'
 
+// Create a mock for trainingStore that can be used in multiple places
+const mockTrainingStore = {
+  modules: [
+    { id: 1, title: 'Test Module 1', description: 'Test description', objectives: ['Test objective 1', 'Test objective 2'] },
+    { id: 2, title: 'Test Module 2', description: 'Test description', objectives: ['Test objective 1', 'Test objective 2'] }
+  ],
+  completedCount: 0,
+  totalCount: 2,
+  overallProgress: 0,
+  initialized: true,
+  clearAllData: vi.fn(),
+  initializeModules: vi.fn(),
+  getModuleById: vi.fn((id: number) => ({
+    id,
+    title: `Test Module ${id}`,
+    description: 'Test description',
+    objectives: ['Test objective 1', 'Test objective 2'],
+    completed: false,
+    progress: 0,
+    lastAccessed: undefined,
+    timeSpent: 0,
+    quizScore: undefined,
+    completionDate: undefined
+  })),
+  updateProgress: vi.fn(),
+  completeModule: vi.fn(),
+  updateModuleAccess: vi.fn(),
+  updateTimeSpent: vi.fn(),
+  updateQuizScore: vi.fn(),
+  resetProgress: vi.fn(),
+  resetModule: vi.fn(),
+}
+
 // Mock the training store to avoid TypeScript issues
 vi.mock('./stores/trainingStore', () => ({
-  useTrainingStore: () => ({
-    modules: [
-      { id: 1, title: 'Test Module 1', description: 'Test description', objectives: ['Test objective 1', 'Test objective 2'] },
-      { id: 2, title: 'Test Module 2', description: 'Test description', objectives: ['Test objective 1', 'Test objective 2'] }
-    ],
-    completedCount: 0,
-    totalCount: 2,
-    overallProgress: 0,
-    clearAllData: vi.fn(),
-    getModuleById: vi.fn((id: number) => ({
-      id,
-      title: `Test Module ${id}`,
-      description: 'Test description',
-      objectives: ['Test objective 1', 'Test objective 2'],
-      completed: false,
-      progress: 0,
-      lastAccessed: undefined,
-      timeSpent: 0,
-      quizScore: undefined,
-      completionDate: undefined
-    })),
-    updateProgress: vi.fn(),
+  useTrainingStore: vi.fn((selector) => {
+    if (typeof selector === 'function') {
+      return selector(mockTrainingStore)
+    }
+    return mockTrainingStore
   })
 }))
 
@@ -69,8 +85,14 @@ describe('App Integration - Welcome Screen Flow', () => {
     const developmentButton = screen.getByText('Development')
     fireEvent.click(developmentButton)
     
-    const nameInput = screen.getByLabelText(/full name/i)
-    fireEvent.change(nameInput, { target: { value: 'John Doe' } })
+    const nameDropdown = screen.getByRole('button', { name: /select your name/i })
+    fireEvent.click(nameDropdown)
+    
+    await waitFor(() => {
+      expect(screen.getByText('Pete Allen')).toBeInTheDocument()
+    })
+    
+    fireEvent.click(screen.getByText('Pete Allen'))
     
     const beginButton = screen.getByRole('button', { name: /begin training/i })
     fireEvent.click(beginButton)
@@ -105,8 +127,14 @@ describe('App Integration - Welcome Screen Flow', () => {
     const developmentButton = screen.getByText('Development')
     fireEvent.click(developmentButton)
     
-    const nameInput = screen.getByLabelText(/full name/i)
-    fireEvent.change(nameInput, { target: { value: 'Test User' } })
+    const nameDropdown = screen.getByRole('button', { name: /select your name/i })
+    fireEvent.click(nameDropdown)
+    
+    await waitFor(() => {
+      expect(screen.getByText('Pete Allen')).toBeInTheDocument()
+    })
+    
+    fireEvent.click(screen.getByText('Pete Allen'))
     
     const beginButton = screen.getByRole('button', { name: /begin training/i })
     fireEvent.click(beginButton)
@@ -147,8 +175,14 @@ describe('App Integration - Form Validation and Error Handling', () => {
   it('should show role validation error when only name is provided', async () => {
     render(<App />)
     
-    const nameInput = screen.getByLabelText(/full name/i)
-    fireEvent.change(nameInput, { target: { value: 'John Doe' } })
+    const nameDropdown = screen.getByRole('button', { name: /select your name/i })
+    fireEvent.click(nameDropdown)
+    
+    await waitFor(() => {
+      expect(screen.getByText('Pete Allen')).toBeInTheDocument()
+    })
+    
+    fireEvent.click(screen.getByText('Pete Allen'))
     
     const beginButton = screen.getByRole('button', { name: /begin training/i })
     fireEvent.click(beginButton)
@@ -197,8 +231,14 @@ describe('App Integration - Form Validation and Error Handling', () => {
     })
     
     // Fix name error
-    const nameInput = screen.getByLabelText(/full name/i)
-    fireEvent.change(nameInput, { target: { value: 'John Doe' } })
+    const nameDropdown = screen.getByRole('button', { name: /select your name/i })
+    fireEvent.click(nameDropdown)
+    
+    await waitFor(() => {
+      expect(screen.getByText('Pete Allen')).toBeInTheDocument()
+    })
+    
+    fireEvent.click(screen.getByText('Pete Allen'))
     
     await waitFor(() => {
       expect(screen.queryByText('Please enter your full name')).not.toBeInTheDocument()
@@ -267,12 +307,17 @@ describe('App Integration - Accessibility and Keyboard Navigation', () => {
     // Select role with Enter key
     await user.keyboard('{Enter}')
     
+    // Tab to Non-Development role
+    await user.tab()
+    expect(screen.getByText('Non-Development').closest('[role="button"]')).toHaveFocus()
+    
     // Tab to name input
     await user.tab()
-    expect(screen.getByLabelText(/full name/i)).toHaveFocus()
+    expect(screen.getByRole('button', { name: /select your name/i })).toBeInTheDocument()
     
-    // Type name
-    await user.type(screen.getByLabelText(/full name/i), 'John Doe')
+    // Select name from dropdown
+    await user.click(screen.getByRole('button', { name: /select your name/i }))
+    await user.click(screen.getByText('Pete Allen'))
     
     // Tab to submit button
     await user.tab()
@@ -334,8 +379,14 @@ describe('App Integration - Accessibility and Keyboard Navigation', () => {
     const developmentButton = screen.getByText('Development')
     fireEvent.click(developmentButton)
     
-    const nameInput = screen.getByLabelText(/full name/i)
-    fireEvent.change(nameInput, { target: { value: 'John Doe' } })
+    const nameDropdown = screen.getByRole('button', { name: /select your name/i })
+    fireEvent.click(nameDropdown)
+    
+    await waitFor(() => {
+      expect(screen.getByText('Pete Allen')).toBeInTheDocument()
+    })
+    
+    fireEvent.click(screen.getByText('Pete Allen'))
     
     const beginButton = screen.getByRole('button', { name: /begin training/i })
     fireEvent.click(beginButton)

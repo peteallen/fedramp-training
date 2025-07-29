@@ -133,7 +133,7 @@ export function CertificateModal({ isOpen, onClose, onGenerate }: CertificateMod
     return null
   }, [])
 
-  const validateForm = (): boolean => {
+  const validateForm = useCallback((): boolean => {
     const newErrors: FormErrors = {}
 
     // Only validate if name input is shown (no stored name available)
@@ -146,7 +146,7 @@ export function CertificateModal({ isOpen, onClose, onGenerate }: CertificateMod
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
-  }
+  }, [shouldShowNameInput, fullName, validateFullName])
 
   const handleNameChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -167,7 +167,7 @@ export function CertificateModal({ isOpen, onClose, onGenerate }: CertificateMod
 
     const userData = { fullName: fullName.trim() }
     onGenerate(userData)
-  }, [fullName, shouldShowNameInput, onGenerate])
+  }, [fullName, onGenerate, validateForm])
 
 
 

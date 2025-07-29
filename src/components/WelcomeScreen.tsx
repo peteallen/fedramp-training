@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
-import { Button } from '@/components/ui/button'
 import { RoleSelector } from '@/components/RoleSelector'
-import { NameInput } from '@/components/NameInput'
+import { TeamMemberSelector } from '@/components/TeamMemberSelector'
+import { Button } from '@/components/ui/button'
 import type { UserOnboardingData, UserRole } from '@/types/user'
 
 interface WelcomeScreenProps {
@@ -61,12 +61,14 @@ export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
       // Simulate a brief delay for better UX
       await new Promise(resolve => setTimeout(resolve, 300))
       
-      onComplete({
-        role: role!,
-        fullName: fullName.trim()
-      })
-    } catch (error) {
-      console.error('Error completing onboarding:', error)
+      if (role) {
+        onComplete({
+          role: role,
+          fullName: fullName.trim()
+        })
+      }
+    } catch (_error) {
+      // Silently handle error - could add user-facing error handling here
     } finally {
       setIsSubmitting(false)
     }
@@ -90,14 +92,6 @@ export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
     }
   }, [errors.fullName])
 
-  const handleNameValidationChange = useCallback((isValid: boolean, error?: string) => {
-    setValidation(prev => ({ ...prev, isNameValid: isValid }))
-    if (error) {
-      setErrors(prev => ({ ...prev, fullName: error }))
-    } else if (errors.fullName) {
-      setErrors(prev => ({ ...prev, fullName: undefined }))
-    }
-  }, [errors.fullName])
 
   return (
     <main 
@@ -149,11 +143,10 @@ export function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
             </fieldset>
 
             <div>
-              <NameInput
+              <TeamMemberSelector
                 value={fullName}
                 onChange={handleNameChange}
                 error={errors.fullName}
-                onValidationChange={handleNameValidationChange}
               />
             </div>
 

@@ -1,0 +1,128 @@
+{
+  "id": "3.A",
+  "title": "What is Information Spillage?",
+  "content": [
+    {
+      "type": "text",
+      "text": "Information spillage is what happens when sensitive data ends up on systems that aren't authorized to handle it. Think of it like accidentally forwarding a confidential email to your personal Gmail account – the information has 'spilled' outside of its authorized boundary."
+    },
+    {
+      "type": "callout",
+      "style": "important",
+      "title": "Our FedRAMP Boundary",
+      "text": "At ClearTriage, our FedRAMP boundary includes only AWS and Google Drive. Any sensitive information stored outside these systems constitutes a spillage event."
+    },
+    {
+      "type": "subsection",
+      "title": "Why This Matters to You",
+      "content": [
+        {
+          "type": "text",
+          "text": "You might think, 'We only handle login credentials, not medical records or social security numbers – what's the big deal?' Here's why spillage matters even with minimal PII:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Login credentials are gateway information – they provide access to other systems",
+            "FedRAMP compliance requires us to control where ANY sensitive data goes",
+            "A single spillage event can trigger reporting requirements and potential audits",
+            "Even 'minimal' PII can be combined with other data sources for malicious purposes"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Common Ways Spillage Happens",
+      "content": [
+        {
+          "type": "text",
+          "text": "Information spillage isn't usually dramatic or intentional. It often happens through everyday actions:"
+        },
+        {
+          "type": "example",
+          "title": "The Helpful Screenshot",
+          "content": "You're troubleshooting an issue and take a screenshot that includes a user's email address. You save it to your desktop instead of Google Drive. That's spillage – the PII is now on an unauthorized system."
+        },
+        {
+          "type": "example",
+          "title": "The Quick Note",
+          "content": "During a support call, you jot down a user's temporary password in your personal note-taking app. Even though you delete it later, the data has already spilled outside our boundary."
+        },
+        {
+          "type": "example",
+          "title": "The Team Chat",
+          "content": "A colleague asks in Slack about a specific user issue. You paste their login email to clarify who you're discussing. Slack isn't part of our FedRAMP boundary – that's spillage."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "The Technical Definition",
+      "content": [
+        {
+          "type": "text",
+          "text": "In formal security terms, information spillage occurs when:"
+        },
+        {
+          "type": "list",
+          "style": "numbered",
+          "items": [
+            "Data classified at a certain level (in our case, any PII or sensitive information)",
+            "Is transferred, stored, or processed on a system not authorized for that classification level",
+            "Regardless of whether the transfer was intentional or accidental"
+          ]
+        },
+        {
+          "type": "text",
+          "text": "For ClearTriage, this means any PII or sensitive data that ends up outside of AWS or Google Drive is considered spillage."
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "style": "warning",
+      "title": "Remember",
+      "text": "Spillage isn't about the amount of data or how sensitive you think it is. It's about maintaining control over where our data lives. Even a single email address in the wrong place counts."
+    },
+    {
+      "type": "subsection",
+      "title": "Not All Data Movement is Spillage",
+      "content": [
+        {
+          "type": "text",
+          "text": "It's important to understand what ISN'T spillage:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Moving files between AWS and Google Drive (both are within our boundary)",
+            "Discussing technical issues without mentioning specific user data",
+            "Sharing sanitized or anonymized examples",
+            "Using test data that doesn't represent real users"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "tip",
+      "text": "When in doubt, ask yourself: 'Could this information be used to identify or access a real user account?' If yes, it needs to stay within our FedRAMP boundary."
+    },
+    {
+      "type": "subsection",
+      "title": "The Bottom Line",
+      "content": [
+        {
+          "type": "text",
+          "text": "Information spillage is simply putting sensitive data where it doesn't belong. Since we're a small team, we all handle various aspects of the system, which means we all have the potential to cause spillage. The good news? Once you understand what spillage is and where our boundaries are, preventing it becomes second nature."
+        },
+        {
+          "type": "text",
+          "text": "In the next sections, we'll cover how to prevent spillage and what to do if it happens. For now, just remember: AWS and Google Drive are our safe zones. Everything else is off-limits for sensitive data."
+        }
+      ]
+    }
+  ]
+}

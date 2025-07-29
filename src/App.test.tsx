@@ -7,9 +7,7 @@ import { createMockTrainingStore, createMockModule } from '@/test-utils/mockStor
 import App from './App'
 
 // Mock the training store
-vi.mock('@/stores/trainingStore', () => ({
-  useTrainingStore: vi.fn(),
-}))
+vi.mock('@/stores/trainingStore')
 
 // Mock the training init hook
 vi.mock('@/hooks/useTrainingInit', () => ({

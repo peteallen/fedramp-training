@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { RoleTag } from './RoleTag'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import useUserStore from '@/stores/userStore'
+import { RoleTag } from './RoleTag'
 
 // Mock the user store
 vi.mock('@/stores/userStore')

@@ -48,8 +48,6 @@ describe('CertificateButton', () => {
       resetProgress: vi.fn(),
       resetModule: vi.fn(),
       getModuleById: vi.fn(),
-      getModulesByCategory: vi.fn(),
-      getModulesByDifficulty: vi.fn(),
       clearAllData: vi.fn(),
     }))
 
@@ -74,8 +72,6 @@ describe('CertificateButton', () => {
       resetProgress: vi.fn(),
       resetModule: vi.fn(),
       getModuleById: vi.fn(),
-      getModulesByCategory: vi.fn(),
-      getModulesByDifficulty: vi.fn(),
       clearAllData: vi.fn(),
     }))
 
@@ -100,8 +96,6 @@ describe('CertificateButton', () => {
       resetProgress: vi.fn(),
       resetModule: vi.fn(),
       getModuleById: vi.fn(),
-      getModulesByCategory: vi.fn(),
-      getModulesByDifficulty: vi.fn(),
       clearAllData: vi.fn(),
     }))
 
@@ -139,8 +133,6 @@ describe('CertificateButton', () => {
       resetProgress: vi.fn(),
       resetModule: vi.fn(),
       getModuleById: vi.fn(),
-      getModulesByCategory: vi.fn(),
-      getModulesByDifficulty: vi.fn(),
       clearAllData: vi.fn(),
     }))
 
@@ -169,8 +161,6 @@ describe('CertificateButton', () => {
       resetProgress: vi.fn(),
       resetModule: vi.fn(),
       getModuleById: vi.fn(),
-      getModulesByCategory: vi.fn(),
-      getModulesByDifficulty: vi.fn(),
       clearAllData: vi.fn(),
     }))
 
@@ -198,8 +188,6 @@ describe('CertificateButton', () => {
       resetProgress: vi.fn(),
       resetModule: vi.fn(),
       getModuleById: vi.fn(),
-      getModulesByCategory: vi.fn(),
-      getModulesByDifficulty: vi.fn(),
       clearAllData: vi.fn(),
     }))
 

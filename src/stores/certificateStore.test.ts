@@ -180,12 +180,9 @@ describe('Certificate Integration Functions', () => {
           quizScore: 85,
           timeSpent: 60,
           description: 'Test module',
-          category: 'test',
-          estimatedTime: '1 hour',
-          difficulty: 'easy',
+          requiredForMembers: ['Pete'],
           objectives: [],
-          content: [],
-          quiz: [],
+          sections: [],
           progress: 100
         },
         {
@@ -196,12 +193,9 @@ describe('Certificate Integration Functions', () => {
           quizScore: 95,
           timeSpent: 90,
           description: 'Test module 2',
-          category: 'test',
-          estimatedTime: '1.5 hours',
-          difficulty: 'medium',
+          requiredForMembers: ['Dave'],
           objectives: [],
-          content: [],
-          quiz: [],
+          sections: [],
           progress: 100
         }
       ]
@@ -240,12 +234,9 @@ describe('Certificate Integration Functions', () => {
           lastAccessed: new Date('2024-01-01'),
           timeSpent: 60,
           description: 'Test module',
-          category: 'test',
-          estimatedTime: '1 hour',
-          difficulty: 'easy',
+          requiredForMembers: ['Pete'],
           objectives: [],
-          content: [],
-          quiz: [],
+          sections: [],
           progress: 100
         }
       ]

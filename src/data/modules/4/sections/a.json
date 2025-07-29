@@ -1,0 +1,369 @@
+{
+  "id": "4.A",
+  "title": "ClearTriage Detection Infrastructure",
+  "content": [
+    {
+      "type": "text",
+      "text": "Welcome to your guide on ClearTriage's detection infrastructure. Since we're a small team with Pete handling most security tasks (with Savvy's help), this section focuses on what you need to know about our AWS-based security monitoring - whether you're actively managing it or just need to understand how it protects our FedRAMP boundary."
+    },
+    {
+      "type": "subsection",
+      "title": "AWS Security Hub: Our Security Command Center",
+      "content": [
+        {
+          "type": "text",
+          "text": "AWS Security Hub is our centralized security dashboard that aggregates findings from multiple AWS security services. Think of it as your single pane of glass for understanding our security posture."
+        },
+        {
+          "type": "callout",
+          "style": "info",
+          "title": "Access Path",
+          "text": "AWS Console → Security Hub → Summary Dashboard"
+        },
+        {
+          "type": "subsection",
+          "title": "Dashboard Navigation Basics",
+          "content": [
+            {
+              "type": "text",
+              "text": "The Security Hub dashboard is organized into five main areas:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "**Summary Dashboard**: Your starting point - shows overall security posture",
+                "**Findings**: All security issues discovered across our AWS environment",
+                "**Insights**: Pre-built queries that highlight specific security concerns",
+                "**Standards**: Our FedRAMP compliance status and control checks",
+                "**Integrations**: Connected security services feeding data into Security Hub"
+              ]
+            },
+            {
+              "type": "tip",
+              "text": "Pete typically starts each morning by checking the Summary Dashboard for any critical or high severity findings that appeared overnight."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Key Dashboard Widgets",
+          "content": [
+            {
+              "type": "text",
+              "text": "The Summary Dashboard contains several widgets that help you quickly assess our security status:"
+            },
+            {
+              "type": "list",
+              "style": "numbered",
+              "items": [
+                "**Security Score**: Shows our overall compliance percentage",
+                "**Findings by Severity**: Breaks down issues by critical, high, medium, and low",
+                "**Failed Controls**: Lists which FedRAMP controls have failing checks",
+                "**Recent Findings**: Shows the latest security issues discovered"
+              ]
+            },
+            {
+              "type": "example",
+              "title": "Reading the Security Score Widget",
+              "content": "If you see \"Security Score: 85%\", this means 85% of our security checks are passing. Click on the widget to see which specific checks are failing - often it's something simple like an S3 bucket missing encryption settings."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Understanding Security Alerts",
+      "content": [
+        {
+          "type": "text",
+          "text": "Security Hub findings (alerts) come from various sources and have different severity levels. Understanding these helps you prioritize response efforts."
+        },
+        {
+          "type": "subsection",
+          "title": "Severity Levels Explained",
+          "content": [
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "**Critical**: Immediate action required - active compromise or data exposure",
+                "**High**: Address within 24 hours - significant security weakness",
+                "**Medium**: Address within 7 days - moderate risk that should be fixed",
+                "**Low**: Address within 30 days - minor issues or best practice violations",
+                "**Informational**: No action required - just awareness"
+              ]
+            },
+            {
+              "type": "callout",
+              "style": "warning",
+              "title": "Response Time Requirements",
+              "text": "FedRAMP requires us to respond to Critical findings within 4 hours and High findings within 24 hours. Pete gets paged automatically for Critical findings."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Common Alert Types You'll See",
+          "content": [
+            {
+              "type": "text",
+              "text": "In our environment, these are the most frequent finding types:"
+            },
+            {
+              "type": "list",
+              "style": "numbered",
+              "items": [
+                "**Exposed credentials**: API keys or passwords found in code/logs",
+                "**Unencrypted data**: S3 buckets or databases missing encryption",
+                "**Public access**: Resources accidentally exposed to the internet",
+                "**Outdated software**: EC2 instances missing security patches",
+                "**Suspicious API calls**: Unusual activity detected by GuardDuty"
+              ]
+            },
+            {
+              "type": "example",
+              "title": "Real Alert Example",
+              "content": "Finding: \"S3 Bucket allows public read access\"\nSeverity: High\nWhat it means: Someone could read files in this bucket without authentication\nTypical cause: Developer forgot to remove public access after testing\nFix: Remove public access policy from the bucket"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Log Analysis Basics",
+      "content": [
+        {
+          "type": "text",
+          "text": "While Security Hub aggregates findings, sometimes you need to dig into the raw logs to understand what happened. Here's what you need to know about our logging setup."
+        },
+        {
+          "type": "subsection",
+          "title": "Where Our Logs Live",
+          "content": [
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "**CloudTrail logs**: API calls and user activity (S3 bucket: cleartriage-cloudtrail-logs)",
+                "**VPC Flow logs**: Network traffic patterns (CloudWatch Logs)",
+                "**Application logs**: ClearTriage app activity (CloudWatch Logs)",
+                "**WAF logs**: Web application firewall blocks (S3 bucket: cleartriage-waf-logs)"
+              ]
+            },
+            {
+              "type": "tip",
+              "text": "You don't need to be a log analysis expert - Security Hub and GuardDuty do the heavy lifting by automatically analyzing these logs and creating findings."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Basic Log Analysis Steps",
+          "content": [
+            {
+              "type": "text",
+              "text": "When investigating an alert, follow this simple process:"
+            },
+            {
+              "type": "list",
+              "style": "numbered",
+              "items": [
+                "Start with the Security Hub finding - it tells you what happened",
+                "Note the timestamp and affected resource",
+                "Check CloudTrail for who did what around that time",
+                "Look for patterns - is this a one-time event or repeated?",
+                "Document what you find for the incident report"
+              ]
+            },
+            {
+              "type": "callout",
+              "style": "tip",
+              "title": "CloudWatch Insights",
+              "text": "Use CloudWatch Insights for quick log searches. Pete has saved queries for common investigations like 'Failed login attempts' and 'API calls from unknown IPs'."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Alert Response Procedures",
+      "content": [
+        {
+          "type": "text",
+          "text": "When Security Hub generates an alert, we follow specific procedures based on severity. Here's what you need to know about our response process."
+        },
+        {
+          "type": "subsection",
+          "title": "Critical Alert Response",
+          "content": [
+            {
+              "type": "list",
+              "style": "numbered",
+              "items": [
+                "Pete gets paged immediately via PagerDuty",
+                "If Pete doesn't respond in 15 minutes, Savvy gets paged",
+                "Responder logs into AWS and reviews the finding",
+                "Take immediate containment action (e.g., disable compromised credentials)",
+                "Create incident in Systems Manager Incident Manager",
+                "Notify the team via Slack #security-alerts channel"
+              ]
+            },
+            {
+              "type": "callout",
+              "style": "important",
+              "title": "After Hours",
+              "text": "For Critical alerts outside business hours, Pete or Savvy will handle the immediate response. Other team members should check Slack in the morning for any overnight incidents."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "High/Medium Alert Response",
+          "content": [
+            {
+              "type": "text",
+              "text": "These are handled during business hours:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "Review the finding in Security Hub",
+                "Determine if it's a false positive or real issue",
+                "For real issues, create a Jira ticket with the remediation plan",
+                "Fix the issue within the required timeframe",
+                "Update the Security Hub finding status to 'Resolved'",
+                "Document the fix in the Jira ticket"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "example",
+          "title": "False Positive Example",
+          "content": "Finding: \"Unusual API calls detected from IP 192.168.1.100\"\nInvestigation: This IP belongs to our automated testing system\nAction: Suppress this finding and add the IP to our known-good list\nLesson: Not every alert is a real security issue - context matters!"
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "AWS Systems Manager Incident Manager",
+      "content": [
+        {
+          "type": "text",
+          "text": "For significant security incidents, we use AWS Systems Manager Incident Manager to coordinate our response. This tool helps us follow a consistent process and maintain proper documentation for FedRAMP."
+        },
+        {
+          "type": "subsection",
+          "title": "When to Create an Incident",
+          "content": [
+            {
+              "type": "text",
+              "text": "Create an incident in Incident Manager when:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "Any Critical severity finding is confirmed as a real issue",
+                "Multiple High severity findings indicate a pattern",
+                "There's evidence of unauthorized access or data exposure",
+                "A security control failure affects production systems",
+                "FedRAMP requires formal incident documentation"
+              ]
+            },
+            {
+              "type": "callout",
+              "style": "info",
+              "title": "Automatic Incident Creation",
+              "text": "Critical CloudWatch alarms automatically create incidents. You'll see them appear in the Incident Manager console with a pre-populated response plan."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Using Incident Manager",
+          "content": [
+            {
+              "type": "text",
+              "text": "Here's the basic workflow:"
+            },
+            {
+              "type": "list",
+              "style": "numbered",
+              "items": [
+                "**Incident Creation**: Automatic via alarm or manual via console",
+                "**Response Plan Activation**: Engages contacts and creates Slack channel",
+                "**Investigation**: Use the incident timeline to track findings",
+                "**Mitigation**: Execute runbooks to fix the issue",
+                "**Resolution**: Mark incident as resolved and start post-incident analysis"
+              ]
+            },
+            {
+              "type": "tip",
+              "text": "We have pre-built response plans for common scenarios like 'Compromised Credentials' and 'Data Exposure'. These include step-by-step runbooks that even non-security folks can follow."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Post-Incident Requirements",
+          "content": [
+            {
+              "type": "text",
+              "text": "After resolving an incident, FedRAMP requires:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "Complete the post-incident analysis within 5 business days",
+                "Document root cause and lessons learned",
+                "Create action items to prevent recurrence",
+                "Update our incident response procedures if needed",
+                "File the incident report in our FedRAMP documentation"
+              ]
+            },
+            {
+              "type": "callout",
+              "style": "important",
+              "title": "ScaleSec Review",
+              "text": "For any incident affecting FedRAMP controls, ScaleSec must review our incident report before we close it. Send the draft to them via our shared Google Drive folder."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Key Takeaways",
+      "content": [
+        {
+          "type": "text",
+          "text": "Let's summarize what you need to remember about our detection infrastructure:"
+        },
+        {
+          "type": "list",
+          "style": "numbered",
+          "items": [
+            "Security Hub is your starting point - check the Summary Dashboard for overall status",
+            "Pay attention to finding severity - Critical and High require quick action",
+            "Most 'alerts' are actually just compliance checks that need fixing",
+            "Use Incident Manager for serious security events that need documentation",
+            "When in doubt, ask Pete or check the #security-alerts Slack channel"
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "tip",
+          "title": "Remember",
+          "text": "You're not expected to be a security expert. The tools do most of the detection work. Your job is to understand the basics so you can help when needed and know when to escalate to Pete or Savvy."
+        }
+      ]
+    }
+  ]
+}

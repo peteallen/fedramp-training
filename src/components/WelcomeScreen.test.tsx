@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { WelcomeScreen } from './WelcomeScreen'
 import type { UserOnboardingData } from '@/types/user'
+import { WelcomeScreen } from './WelcomeScreen'
 
 describe('WelcomeScreen', () => {
   const mockOnComplete = vi.fn()
@@ -19,13 +19,14 @@ describe('WelcomeScreen', () => {
     expect(screen.getByText(/Department of Veterans Affairs/)).toBeInTheDocument()
   })
 
-  it('displays role selection and name input fields', () => {
+  it('displays role selection and name dropdown fields', () => {
     render(<WelcomeScreen onComplete={mockOnComplete} />)
     
     expect(screen.getByText('What is your primary role at ClearTriage?')).toBeInTheDocument()
     expect(screen.getByText('Development')).toBeInTheDocument()
     expect(screen.getByText('Non-Development')).toBeInTheDocument()
-    expect(screen.getByLabelText(/full name/i)).toBeInTheDocument()
+    expect(screen.getByText('Your name')).toBeInTheDocument()
+    expect(screen.getByText('Select your name')).toBeInTheDocument()
   })
 
   it('shows validation errors when submitting without required fields', async () => {
@@ -55,14 +56,16 @@ describe('WelcomeScreen', () => {
     
     // Select a role
     const developmentRole = screen.getByText('Development').closest('[role="button"]')
-    fireEvent.click(developmentRole!)
+    if (developmentRole) {
+      fireEvent.click(developmentRole)
+    }
     
     await waitFor(() => {
       expect(screen.queryByText('Please select your role')).not.toBeInTheDocument()
     })
   })
 
-  it('clears name error when user starts typing', async () => {
+  it('clears name error when user selects a name', async () => {
     render(<WelcomeScreen onComplete={mockOnComplete} />)
     
     // Submit to trigger validation errors
@@ -73,9 +76,15 @@ describe('WelcomeScreen', () => {
       expect(screen.getByText('Please enter your full name')).toBeInTheDocument()
     })
     
-    // Start typing in name field
-    const nameInput = screen.getByLabelText(/full name/i)
-    fireEvent.change(nameInput, { target: { value: 'John' } })
+    // Open dropdown and select a name
+    const nameDropdown = screen.getByRole('button', { name: /select your name/i })
+    fireEvent.click(nameDropdown)
+    
+    await waitFor(() => {
+      expect(screen.getByText('Pete Allen')).toBeInTheDocument()
+    })
+    
+    fireEvent.click(screen.getByText('Pete Allen'))
     
     await waitFor(() => {
       expect(screen.queryByText('Please enter your full name')).not.toBeInTheDocument()
@@ -87,11 +96,19 @@ describe('WelcomeScreen', () => {
     
     // Select role
     const developmentRole = screen.getByText('Development').closest('[role="button"]')
-    fireEvent.click(developmentRole!)
+    if (developmentRole) {
+      fireEvent.click(developmentRole)
+    }
     
-    // Enter name
-    const nameInput = screen.getByLabelText(/full name/i)
-    fireEvent.change(nameInput, { target: { value: 'John Doe' } })
+    // Select name from dropdown
+    const nameDropdown = screen.getByRole('button', { name: /select your name/i })
+    fireEvent.click(nameDropdown)
+    
+    await waitFor(() => {
+      expect(screen.getByText('Pete Allen')).toBeInTheDocument()
+    })
+    
+    fireEvent.click(screen.getByText('Pete Allen'))
     
     // Submit form
     const submitButton = screen.getByRole('button', { name: 'Begin Training' })
@@ -100,21 +117,29 @@ describe('WelcomeScreen', () => {
     await waitFor(() => {
       expect(mockOnComplete).toHaveBeenCalledWith({
         role: 'Development',
-        fullName: 'John Doe'
+        fullName: 'Pete Allen'
       } as UserOnboardingData)
     })
   })
 
-  it('trims whitespace from name before submitting', async () => {
+  it('submits form correctly with non-development role', async () => {
     render(<WelcomeScreen onComplete={mockOnComplete} />)
     
     // Select role
     const nonDevRole = screen.getByText('Non-Development').closest('[role="button"]')
-    fireEvent.click(nonDevRole!)
+    if (nonDevRole) {
+      fireEvent.click(nonDevRole)
+    }
     
-    // Enter name with whitespace
-    const nameInput = screen.getByLabelText(/full name/i)
-    fireEvent.change(nameInput, { target: { value: '  Jane Smith  ' } })
+    // Select name from dropdown
+    const nameDropdown = screen.getByRole('button', { name: /select your name/i })
+    fireEvent.click(nameDropdown)
+    
+    await waitFor(() => {
+      expect(screen.getByText('Dave Schmitt')).toBeInTheDocument()
+    })
+    
+    fireEvent.click(screen.getByText('Dave Schmitt'))
     
     // Submit form
     const submitButton = screen.getByRole('button', { name: 'Begin Training' })
@@ -123,7 +148,7 @@ describe('WelcomeScreen', () => {
     await waitFor(() => {
       expect(mockOnComplete).toHaveBeenCalledWith({
         role: 'Non-Development',
-        fullName: 'Jane Smith'
+        fullName: 'Dave Schmitt'
       } as UserOnboardingData)
     })
   })
@@ -133,10 +158,18 @@ describe('WelcomeScreen', () => {
     
     // Fill out form
     const developmentRole = screen.getByText('Development').closest('[role="button"]')
-    fireEvent.click(developmentRole!)
+    if (developmentRole) {
+      fireEvent.click(developmentRole)
+    }
     
-    const nameInput = screen.getByLabelText(/full name/i)
-    fireEvent.change(nameInput, { target: { value: 'John Doe' } })
+    const nameDropdown = screen.getByRole('button', { name: /select your name/i })
+    fireEvent.click(nameDropdown)
+    
+    await waitFor(() => {
+      expect(screen.getByText('Pete Allen')).toBeInTheDocument()
+    })
+    
+    fireEvent.click(screen.getByText('Pete Allen'))
     
     // Submit form
     const submitButton = screen.getByRole('button', { name: 'Begin Training' })
@@ -156,7 +189,9 @@ describe('WelcomeScreen', () => {
     
     // Fill out form
     const developmentRole = screen.getByText('Development').closest('[role="button"]')
-    fireEvent.click(developmentRole!)
+    if (developmentRole) {
+      fireEvent.click(developmentRole)
+    }
     
     const nameInput = screen.getByLabelText(/full name/i)
     fireEvent.change(nameInput, { target: { value: 'John Doe' } })
