@@ -1,0 +1,59 @@
+{
+  "id": "7.3",
+  "title": "ScaleSec's Specific Responsibilities",
+  "content": [
+    {
+      "type": "text",
+      "content": "ScaleSec provides augmented support - assisting but never replacing ClearTriage's primary responsibilities."
+    },
+    {
+      "type": "subsection",
+      "title": "Key Support Areas",
+      "content": [
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Incident Response**: Consultation and forensic assistance when Pete escalates (per RACI matrix: Consulted)",
+            "**Monthly POA&M**: Review findings, draft entries, track deadlines (Pete approves all entries)",
+            "**ConMon Deliverables**: Prepare monthly packages for FedRAMP PMO",
+            "**Annual Assessment**: Coordinate 3PAO engagement, act as liaison",
+            "**Documentation Reviews**: Quarterly SSP reviews, suggest updates (Shelly approves changes)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Clear Boundaries",
+      "content": [
+        {
+          "type": "text",
+          "content": "ScaleSec NEVER:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Makes security decisions (Pete's role)",
+            "Implements changes in production",
+            "Communicates directly with VA",
+            "Approves documentation (Shelly's role)",
+            "Acts as primary incident commander"
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "content": "All ScaleSec requests go through Pete or Shelly. They advise - we decide."
+        }
+      ]
+    }
+  ],
+  "keyTakeaways": [
+    "ScaleSec assists with POA&M, ConMon, assessments, and documentation reviews",
+    "Pete retains all security decision authority",
+    "Shelly retains all documentation approval authority", 
+    "ScaleSec is 'Consulted' in RACI matrix - never 'Responsible' or 'Accountable'"
+  ]
+}

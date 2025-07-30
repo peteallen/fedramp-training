@@ -1,0 +1,70 @@
+{
+  "id": "7.1",
+  "title": "ClearTriage Environment Overview",
+  "content": [
+    {
+      "type": "text",
+      "content": "As a ScaleSec contractor, here's what you need to know about ClearTriage's specific environment."
+    },
+    {
+      "type": "subsection",
+      "title": "Key Contacts",
+      "content": [
+        {
+          "type": "list",
+          "items": [
+            "**Pete Allen (CTO/ISSO)** - Your primary technical contact for all security and incident matters",
+            "**Savvy (Senior Engineer)** - Secondary technical contact when Pete is unavailable",
+            "**Shelly (Office Manager/FedRAMP Coordinator)** - Documentation and audit coordination"
+          ]
+        },
+        {
+          "type": "text",
+          "content": "Dave (President) handles VA communications. Braden (Engineer) and Krista (Sales) have limited technical involvement."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Technical Environment",
+      "content": [
+        {
+          "type": "text",
+          "content": "**AWS Services**: Fargate/ECS, Aurora PostgreSQL, ElastiCache, S3/CloudFront, WAF, GuardDuty, Security Hub, Inspector, IAM Identity Center, CloudWatch, Incident Manager"
+        },
+        {
+          "type": "text",
+          "content": "**Access**: You'll use AWS IAM Identity Center. No SSH to production (everything is serverless/managed)."
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "content": "FedRAMP boundary: AWS services listed in SSP + Google Drive for compliance docs. Nothing else."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "ClearTriage Specifics",
+      "content": [
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "LI-SaaS impact level (we only store username, password hash, email)",
+            "No PHI/medical records - just nurse triage protocols",
+            "VA is primary customer - system used by VA nurses",
+            "6-person fully remote team - expect direct Slack communication",
+            "Multi-tenant architecture with logical data separation"
+          ]
+        }
+      ]
+    }
+  ],
+  "keyTakeaways": [
+    "Pete is your primary contact, Savvy is backup, Shelly handles documentation",
+    "Everything runs on AWS managed services - familiarize yourself with our specific stack",
+    "We're LI-SaaS because we store minimal data (login credentials only)",
+    "Direct communication via Slack - no formal ticketing system"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": 7,
+  "title": "ScaleSec-Specific Training",
+  "description": "Specialized training for ScaleSec contractors covering ClearTriage environment, continuous monitoring responsibilities, and augmented incident response procedures.",
+  "requiredForMembers": ["ScaleSec"],
+  "objectives": [
+    "Understand ClearTriage's small team dynamics and cloud-native architecture",
+    "Master FedRAMP continuous monitoring integration with ClearTriage systems",
+    "Execute augmented incident response procedures effectively",
+    "Coordinate documentation and assessment support activities"
+  ],
+  "sections": ["a", "b", "c"]
+}

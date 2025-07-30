@@ -1,0 +1,76 @@
+{
+  "id": "7.2",
+  "title": "Continuous Monitoring Responsibilities",
+  "content": [
+    {
+      "type": "text",
+      "content": "ScaleSec provides augmented continuous monitoring support. Here's what you need to know."
+    },
+    {
+      "type": "subsection",
+      "title": "Your Core Responsibilities",
+      "content": [
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Monthly POA&M Updates**: Pull findings from Security Hub, categorize, track remediation",
+            "**ConMon Package**: Prepare monthly deliverables for FedRAMP PMO",
+            "**Finding Investigation**: Use AWS tools to validate and document security findings",
+            "**Incident Support**: Assist with investigation and documentation (Pete leads response)"
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "warning",
+          "content": "Remediation timelines: High - 30 days, Moderate - 90 days, Low - 180 days. Missing these requires deviation requests."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Tools and Access",
+      "content": [
+        {
+          "type": "text",
+          "content": "Access via AWS IAM Identity Center. Primary tools: Security Hub (finding aggregation), GuardDuty (threats), Inspector (vulnerabilities), Config (compliance), Incident Manager (response tracking)."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Monthly Process",
+      "content": [
+        {
+          "type": "list",
+          "style": "ordered",
+          "items": [
+            "By 25th: Draft POA&M and ConMon package to Shelly",
+            "By 28th: Pete approves technical content",
+            "By 30th: Submit to FedRAMP PMO"
+          ]
+        },
+        {
+          "type": "text",
+          "content": "For detailed procedures, refer to the Continuous Monitoring Plan."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Decision Authority",
+      "content": [
+        {
+          "type": "text",
+          "content": "**Pete (CTO/ISSO)**: All security decisions, risk acceptance, remediation priorities<br>**Shelly**: Documentation standards and PMO submissions<br>**ScaleSec**: Investigation, reporting, recommendations (no decision authority)"
+        }
+      ]
+    }
+  ],
+  "keyTakeaways": [
+    "Monthly POA&M and ConMon deliverables are your primary responsibility",
+    "Pete makes all security decisions - you provide recommendations",
+    "Strict remediation timelines: 30/90/180 days for High/Moderate/Low",
+    "Submit drafts to Shelly by the 25th of each month"
+  ]
+}
