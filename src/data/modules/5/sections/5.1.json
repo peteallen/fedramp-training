@@ -36,11 +36,43 @@
       "content": [
         {
           "type": "text",
-          "content": "Priority order: 1) VA nurse access 2) Authentication 3) Clinical protocols 4) Core triage functions"
+          "content": "Prioritize these functions in order during any incident:"
+        },
+        {
+          "type": "list",
+          "style": "ordered",
+          "items": [
+            "**VA nurse access** - Nurses must be able to reach the triage system",
+            "**Authentication** - Login system must function securely",
+            "**Clinical protocols** - Triage protocols must remain accessible",
+            "**Core triage functions** - Basic functionality over advanced features"
+          ]
         },
         {
           "type": "text",
-          "content": "**Acceptable degraded operation:** Slower performance, limited features, read-only protocols<br>**Requires shutdown:** Authentication failures, data integrity concerns, active breach"
+          "content": "**Acceptable degraded operation:**"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Slower performance (if still usable)",
+            "Limited features disabled",
+            "Read-only protocol access"
+          ]
+        },
+        {
+          "type": "text",
+          "content": "**Requires immediate shutdown:**"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Authentication failures",
+            "Data integrity concerns",
+            "Active security breach"
+          ]
         },
         {
           "type": "callout",
