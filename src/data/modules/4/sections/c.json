@@ -1,0 +1,215 @@
+{
+  "id": "4.C",
+  "title": "Security Monitoring and Response (ESSENTIALS)",
+  "content": [
+    {
+      "type": "text",
+      "content": "Security monitoring isn't about watching screens constantly - it's about knowing what to look for and how to respond when something happens. Since we're a small team, we need to be smart about what we monitor and how we handle incidents."
+    },
+    {
+      "type": "subsection",
+      "title": "What Constitutes a Security Event",
+      "content": [
+        {
+          "type": "text",
+          "content": "Not every log entry is a security event. Focus on patterns and behaviors that could indicate real threats to our AWS infrastructure or Google Drive data."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Unauthorized access attempts**: Multiple failed logins, access from unusual locations, attempts to access resources without permissions",
+            "**Unusual system behavior**: Unexpected CPU/memory spikes, new processes running, unexpected network connections, configuration files being modified",
+            "**Configuration changes**: Unauthorized modifications to security groups, IAM policies, system settings, or application configurations",
+            "**Failed authentication patterns**: Brute force attempts, credential stuffing, unusual timing of login attempts (like 3 AM from multiple IPs)"
+          ]
+        },
+        {
+          "type": "callout",
+          "variant": "tip",
+          "title": "Real vs. Noise",
+          "content": "A single failed login? Probably someone mistyping. Ten failed logins in 30 seconds from different IPs? That's an event worth investigating."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Evidence Preservation Basics",
+      "content": [
+        {
+          "type": "text",
+          "content": "When something suspicious happens, your first instinct might be to fix it immediately. Stop. Preserve evidence first, then remediate. Future you (and potentially FedRAMP auditors) will thank you."
+        },
+        {
+          "type": "subsection",
+          "title": "What to Preserve",
+          "content": [
+            {
+              "type": "list",
+              "items": [
+                "**System logs**: CloudTrail logs, application logs, system logs - capture everything from at least 24 hours before the event",
+                "**Network data**: VPC Flow Logs, load balancer logs, any firewall or WAF logs",
+                "**System state**: Running processes, network connections, user sessions at the time of the event",
+                "**Configuration snapshots**: Current security group rules, IAM policies, system configurations",
+                "**Screenshots**: If you're seeing something unusual in a console or dashboard, screenshot it immediately"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "How to Preserve Integrity",
+          "content": [
+            {
+              "type": "list",
+              "items": [
+                "**Don't modify original logs**: Export copies to a separate S3 bucket with versioning enabled",
+                "**Document everything**: Create a timeline of what you observed and what actions you took",
+                "**Use read-only access**: When investigating, use read-only credentials when possible to avoid accidentally changing evidence",
+                "**Calculate checksums**: For critical files, generate MD5 or SHA256 hashes to prove they haven't been modified"
+              ]
+            },
+            {
+              "type": "example",
+              "title": "Quick Evidence Preservation",
+              "content": "```bash\n# Export CloudTrail logs\naws s3 sync s3://your-cloudtrail-bucket/AWSLogs/ ./incident-evidence/cloudtrail/\n\n# Generate checksums\nfind ./incident-evidence -type f -exec sha256sum {} \\; > evidence-checksums.txt\n\n# Document the incident\necho \"$(date): Started evidence collection for suspected breach\" >> incident-timeline.txt\n```"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Vulnerability Management Requirements",
+      "content": [
+        {
+          "type": "text",
+          "content": "FedRAMP has specific requirements for how quickly we need to fix vulnerabilities. These aren't suggestions - they're requirements that can affect our authorization."
+        },
+        {
+          "type": "subsection",
+          "title": "Scanning Requirements",
+          "content": [
+            {
+              "type": "list",
+              "items": [
+                "**Monthly scanning**: Run Amazon Inspector on all EC2 instances and ZAP on web applications",
+                "**Document results**: Keep scan reports for at least 1 year",
+                "**Track remediation**: Maintain a log of what was found and what was fixed"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Remediation Timelines",
+          "content": [
+            {
+              "type": "list",
+              "items": [
+                "**Critical vulnerabilities**: Must be fixed within 15 days",
+                "**High-Risk vulnerabilities**: Must be fixed within 30 days",
+                "**Moderate-Risk vulnerabilities**: Must be fixed within 90 days",
+                "**Low-Risk vulnerabilities**: Must be fixed within 180 days"
+              ]
+            },
+            {
+              "type": "callout",
+              "variant": "warning",
+              "title": "No Extensions",
+              "content": "These timelines are non-negotiable. If you can't patch within the timeline (15/30/90/180 days for Critical/High/Moderate/Low), you need to implement compensating controls and document why. For CISA KEV vulnerabilities, the 21-day timeline cannot be extended."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "CISA KEV Catalog",
+          "content": [
+            {
+              "type": "text",
+              "content": "The CISA Known Exploited Vulnerabilities (KEV) catalog lists vulnerabilities being actively exploited in the wild. **If a vulnerability appears in the KEV catalog, it must be remediated within 21 days regardless of severity rating.**"
+            },
+            {
+              "type": "list",
+              "items": [
+                "Check the KEV catalog weekly at: https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+                "KEV vulnerabilities must be remediated within 21 days, no exceptions",
+                "Document when you checked and what actions you took"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Annual Assessment",
+          "content": [
+            {
+              "type": "text",
+              "content": "Once a year, our independent assessor (ScaleSec) will run their own vulnerability scans. This isn't a surprise - schedule it during a maintenance window and be prepared to fix any findings quickly."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Communication During Incidents",
+      "content": [
+        {
+          "type": "text",
+          "content": "When an incident happens, communication is critical. Poor communication can turn a minor incident into a major problem, especially with FedRAMP reporting requirements."
+        },
+        {
+          "type": "subsection",
+          "title": "Internal Communication Protocols",
+          "content": [
+            {
+              "type": "list",
+              "items": [
+                "**Immediate notification**: Pete and Savvy must be notified within 15 minutes of discovering a potential incident",
+                "**Status updates**: Every hour during active incidents, even if it's \"still investigating\"",
+                "**Clear handoffs**: If you need to step away, explicitly hand off to someone else with a status summary",
+                "**Single source of truth**: Use our incident Slack channel for all updates - no side conversations"
+              ]
+            },
+            {
+              "type": "example",
+              "title": "Good Incident Communication",
+              "content": "**2:15 PM**: Detected unusual API activity - 500+ requests/second from single IP to patient lookup endpoint. Investigating.\n\n**2:18 PM**: Blocked IP at WAF level. Activity stopped. Reviewing CloudTrail for any successful requests.\n\n**2:45 PM**: Confirmed no data was accessed. IP traced to known scanner. Updating WAF rules to prevent similar attacks.\n\n**3:15 PM**: Incident resolved. WAF rules updated, no data exposure. Will monitor for next 24 hours."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "FedRAMP Reporting Obligations",
+          "content": [
+            {
+              "type": "text",
+              "content": "FedRAMP has strict incident reporting requirements. Missing these deadlines can result in losing our authorization."
+            },
+            {
+              "type": "list",
+              "items": [
+                "**Within 1 hour of discovery**: Report significant cyber incidents to FedRAMP PMO (not just data breaches)",
+                "**Within 24 hours**: Submit initial incident report for any security incident",
+                "**Within 5 days**: Provide detailed incident analysis and remediation plan",
+                "**Monthly**: Include all incidents in continuous monitoring report"
+              ]
+            },
+            {
+              "type": "callout",
+              "variant": "important",
+              "title": "When in Doubt, Report",
+              "content": "If you're unsure whether something qualifies as a reportable incident, treat it as one. It's better to over-report than to miss a requirement. Pete makes the final call on FedRAMP notifications."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "title": "Remember: Speed vs. Accuracy",
+      "content": "During an incident, you'll feel pressure to fix things fast. But FedRAMP values accurate reporting and proper evidence preservation. Take the extra 5 minutes to document what you're seeing before you start fixing. Your future self (and our auditors) will appreciate it."
+    }
+  ]
+}

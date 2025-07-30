@@ -1,0 +1,321 @@
+{
+  "id": "4.B",
+  "title": "Secure Development Practices (STREAMLINED)",
+  "content": [
+    {
+      "type": "text",
+      "text": "As our technical team building and maintaining ClearTriage, we have a direct responsibility for the security of our code and infrastructure. This section covers the essential secure development practices we follow, with special attention to supply chain security—a critical concern for FedRAMP compliance."
+    },
+    {
+      "type": "subsection",
+      "title": "Follow OWASP Secure Coding Guidelines",
+      "content": [
+        {
+          "type": "text",
+          "text": "The OWASP (Open Web Application Security Project) guidelines form the foundation of our secure coding practices. While we won't cover all of OWASP here (that's what their documentation is for), the key principle is simple: write code that assumes the worst about inputs and the environment."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Input Validation Principles",
+      "content": [
+        {
+          "type": "text",
+          "text": "The golden rule of secure development: **Never trust user input**. This applies to everything—form fields, API requests, file uploads, URL parameters, and even data from our own database if it originally came from users."
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Whitelist validation approaches**: Define what's allowed rather than trying to block what's bad. For example, if expecting a phone number, validate against a specific format rather than trying to strip out dangerous characters.",
+            "**Data sanitization**: Clean all input before processing. This means escaping HTML entities, removing control characters, and validating data types and ranges.",
+            "**Validate at every layer**: Don't rely solely on frontend validation. Always validate again on the backend, and sanitize before database storage or display."
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Input Validation Example",
+          "content": "```javascript\n// Bad: Trusting user input\nconst userId = req.params.id;\nconst user = db.query(`SELECT * FROM users WHERE id = ${userId}`);\n\n// Good: Parameterized query with validation\nconst userId = req.params.id;\nif (!userId.match(/^[0-9]+$/)) {\n  throw new Error('Invalid user ID format');\n}\nconst user = db.query('SELECT * FROM users WHERE id = ?', [userId]);\n```"
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Secret Management",
+      "content": [
+        {
+          "type": "text",
+          "text": "Credentials and secrets are the keys to our kingdom. One leaked API key or database password could compromise everything."
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Never hardcode credentials**: No passwords, API keys, or tokens in source code. Ever. This includes 'temporary' test credentials.",
+            "**Use environment variables**: Store all secrets in environment variables or secure secret management systems. In production, these are managed through AWS Systems Manager Parameter Store.",
+            "**Key rotation practices**: Rotate credentials regularly. When someone leaves the team, rotate all shared credentials they had access to."
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "warning",
+          "title": "Git History Remembers Everything",
+          "text": "If you accidentally commit a secret, don't just delete it in the next commit. Git history preserves it forever. Contact Pete immediately to rotate the credential and clean the repository history."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Dependency Security",
+      "content": [
+        {
+          "type": "text",
+          "text": "Modern applications rely on hundreds of dependencies. Each one is a potential security risk if not properly managed."
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Keep dependencies updated**: Run dependency updates at least monthly. Use tools like `npm audit` and Dependabot to identify vulnerabilities.",
+            "**Monitor for vulnerabilities**: Set up automated alerts for security advisories in our dependencies. Don't ignore these—patch or mitigate promptly.",
+            "**Minimize dependency footprint**: Before adding a new package, ask if it's really needed. Fewer dependencies mean fewer potential vulnerabilities."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Code Review for Security",
+      "content": [
+        {
+          "type": "text",
+          "text": "Every code review is a security review. While reviewing code, always ask:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Does this code validate all inputs?",
+            "Are there any hardcoded secrets or credentials?",
+            "Could this code be vulnerable to injection attacks?",
+            "Are errors handled securely without exposing system details?",
+            "Does this follow the principle of least privilege?"
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Since we're a small team, we can't always have a dedicated security reviewer. That means each of us needs to think like an attacker when reviewing code."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Supply Chain Security and Component Authenticity",
+      "content": [
+        {
+          "type": "text",
+          "text": "Supply chain attacks are increasingly common and sophisticated. Attackers compromise legitimate tools and packages to infiltrate systems. For FedRAMP compliance under SR-11(1), we must actively defend against counterfeit or compromised components."
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "title": "Critical for FedRAMP SR-11(1) Compliance",
+          "text": "Supply chain security is not optional. FedRAMP explicitly requires us to protect against counterfeit components. A single compromised package could fail our entire authorization."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Recognizing Counterfeit Risks in Our Environment",
+      "content": [
+        {
+          "type": "text",
+          "text": "In our tech stack, counterfeit components typically appear as:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Fake npm packages with similar names (typosquatting)**: Packages like 'express-js' instead of 'express', or 'react-dom-router' instead of 'react-router-dom'",
+            "**Compromised Docker base images**: Unofficial copies of popular images with backdoors or cryptominers",
+            "**Unofficial AWS marketplace offerings**: Services claiming to be official AWS tools but actually operated by third parties",
+            "**Counterfeit YubiKeys or hardware tokens**: Fake security keys that look legitimate but contain malicious firmware"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Real Typosquatting Examples",
+          "content": "These are actual malicious packages that have been found on npm:\n- `crossenv` instead of `cross-env`\n- `react-dev-tools` instead of `react-devtools`\n- `babelcli` instead of `babel-cli`\n- `web3-providor` instead of `web3-provider`"
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Verification Procedures",
+      "content": [
+        {
+          "type": "text",
+          "text": "Before installing or using any component, follow these verification steps:"
+        },
+        {
+          "type": "subsection",
+          "title": "NPM Package Verification",
+          "content": [
+            {
+              "type": "list",
+              "style": "numbered",
+              "items": [
+                "Check the exact package name against the official documentation",
+                "Verify the publisher (look for verified checkmarks on npm)",
+                "Check download counts (legitimate packages usually have thousands/millions)",
+                "Review recent updates (abandoned packages are risky)",
+                "Look at the GitHub repository if linked",
+                "Run `npm view [package-name]` to see all details before installing"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Docker Image Verification",
+          "content": [
+            {
+              "type": "list",
+              "style": "numbered",
+              "items": [
+                "Use only official images marked with 'Docker Official Image' or 'Verified Publisher'",
+                "Check the full image name (e.g., `nginx` not `nginx-official` or `official-nginx`)",
+                "Verify image digests when pulling specific versions",
+                "Never use 'latest' tag in production—always specify exact versions"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "AWS Marketplace Verification",
+          "content": [
+            {
+              "type": "list",
+              "style": "numbered",
+              "items": [
+                "Only use products from 'AWS' or verified publishers we explicitly trust",
+                "Check reviews and deployment numbers",
+                "Verify pricing matches official AWS pricing",
+                "When in doubt, use native AWS services instead of marketplace alternatives"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "YubiKey/Hardware Token Verification",
+          "content": [
+            {
+              "type": "list",
+              "style": "numbered",
+              "items": [
+                "Purchase only from Yubico.com or authorized resellers listed on their site",
+                "Never buy from third-party marketplaces like eBay or Alibaba",
+                "Verify packaging matches official Yubico packaging (check their website)",
+                "Test with Yubico Authenticator app immediately upon receipt",
+                "Register serial numbers with our inventory"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Red Flags for Counterfeit Components",
+      "content": [
+        {
+          "type": "text",
+          "text": "Stop immediately if you notice any of these warning signs:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Unusually low prices for hardware**: YubiKeys at 50% off are fake",
+            "**Typosquatting in package/image names**: Even one character difference matters",
+            "**Missing or invalid digital signatures**: Legitimate packages are signed",
+            "**Suspicious version histories**: Sudden ownership changes, deleted versions, or big gaps in updates",
+            "**Low download counts for 'popular' tools**: If it claims to be widely used but has <1000 downloads, it's fake",
+            "**Requests for unnecessary permissions**: Why does a logging library need network access?",
+            "**Poor documentation or grammar**: Official packages have professional documentation"
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "warning",
+          "title": "Trust Your Instincts",
+          "text": "If something feels off about a package or component, it probably is. It's better to spend 10 minutes verifying than to compromise our entire system."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Reporting Procedures",
+      "content": [
+        {
+          "type": "text",
+          "text": "If you encounter a suspicious component, follow these steps immediately:"
+        },
+        {
+          "type": "list",
+          "style": "numbered",
+          "items": [
+            "**Stop installation immediately** - Do not proceed 'just to test'",
+            "**Document all details**:\n   - Exact name of the component\n   - Where you found it (npm, Docker Hub, etc.)\n   - What raised your suspicion\n   - Screenshots of the listing/page\n   - Any commands you ran",
+            "**Report to Pete immediately** - Use Slack for quick response, follow up with email. If Pete is unavailable, contact Savvy. If it's after hours and seems critical, call.",
+            "**Quarantine affected systems** - If you already installed it:\n   - Disconnect the system from network if possible\n   - Do not run any code from the suspicious package\n   - Wait for Pete's instructions on cleanup"
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "title": "No Blame Culture",
+          "text": "We will never blame anyone for reporting a potential security issue, even if it turns out to be a false alarm. We WILL have problems if someone notices something suspicious and doesn't report it. When in doubt, report."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Practical Implementation",
+      "content": [
+        {
+          "type": "text",
+          "text": "Here's how we put all this into practice in our daily work:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Before every `npm install`, verify the package name matches documentation exactly",
+            "Use `npm audit` as part of our CI/CD pipeline",
+            "Keep a shared document of verified packages we commonly use",
+            "When onboarding new tools, have a second person verify the source",
+            "Include supply chain checks in our code review checklist"
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "Create a bookmark folder with official sources: npmjs.com for the exact package, official Docker Hub pages, and the real Yubico store. Use these bookmarks instead of searching each time."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "text": "Remember: We handle government data. The bad actors targeting us are sophisticated and persistent. These practices aren't paranoia—they're professionalism. One compromised component could end ClearTriage's FedRAMP authorization and our business."
+    },
+    {
+      "type": "callout",
+      "style": "info",
+      "title": "Questions or Concerns?",
+      "text": "If you're unsure about any security practice or need clarification, ask Pete or Savvy. For supply chain security specifically, when in doubt, verify before you trust."
+    }
+  ]
+}

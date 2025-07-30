@@ -52,7 +52,7 @@
       "content": [
         {
           "type": "text",
-          "text": "In a 6-person company, there's no \"someone else\" to handle security. We don't have a dedicated security team watching everything 24/7. Instead:"
+          "text": "In a 6-person company, there's no \"someone else\" to handle security. We don't have a dedicated security team watching everything. Instead:"
         },
         {
           "type": "list",

@@ -1,0 +1,320 @@
+{
+  "id": "4.A",
+  "title": "Cloud Security Administration",
+  "content": [
+    {
+      "type": "text",
+      "text": "As part of our technical team, you need to understand how we secure our AWS environment. This isn't about memorizing every AWS service - it's about knowing the security tools we actually use and when to take action."
+    },
+    {
+      "type": "subsection",
+      "title": "Cloud Security Principles",
+      "content": [
+        {
+          "type": "text",
+          "text": "Our cloud security is built on a few key principles that keep our FedRAMP boundary secure while staying practical for a small team."
+        },
+        {
+          "type": "subsection",
+          "title": "Identity and Access Management",
+          "content": [
+            {
+              "type": "text",
+              "text": "We use **AWS IAM Identity Center** with mandatory MFA enforcement. This means:"
+            },
+            {
+              "type": "list",
+              "listType": "bullet",
+              "items": [
+                "Every team member has a single sign-on account",
+                "MFA is required for all access - no exceptions",
+                "Permissions are assigned through groups, not individual users",
+                "Session timeouts and strong password requirements are enforced"
+              ]
+            },
+            {
+              "type": "callout",
+              "calloutType": "important",
+              "title": "MFA is Non-Negotiable",
+              "text": "If you lose your MFA device or it stops working, contact Pete immediately. Never try to bypass MFA or share authentication codes."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Network and Database Security",
+          "content": [
+            {
+              "type": "text",
+              "text": "Database and network access is secured through:"
+            },
+            {
+              "type": "list",
+              "listType": "bullet",
+              "items": [
+                "VPC security groups that restrict access to authorized sources",
+                "Database authentication using IAM where possible",
+                "Encrypted connections (TLS) for all database traffic",
+                "No direct internet access to databases - only through application layer"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Monitoring and Alerting Overview",
+      "content": [
+        {
+          "type": "text",
+          "text": "AWS provides several monitoring tools that work together to keep our environment secure. Here's what each one does and why it matters to you."
+        },
+        {
+          "type": "subsection",
+          "title": "Essential Security Monitoring Tools",
+          "content": [
+            {
+              "type": "text",
+              "text": "We use core AWS security services that provide automated monitoring:"
+            },
+            {
+              "type": "list",
+              "listType": "bullet",
+              "items": [
+                "**AWS Security Hub**: Central dashboard showing security findings from all services",
+                "**AWS GuardDuty**: Threat detection for unusual API calls and compromised resources",
+                "**Amazon Inspector**: Automated vulnerability scanning for EC2 and containers",
+                "**AWS CloudTrail**: Audit log of all API activity in our account"
+              ]
+            },
+            {
+              "type": "text",
+              "text": "Alerts from these tools come to our Slack channel. Critical findings require immediate response."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "How to Respond to Security Alerts",
+          "content": [
+            {
+              "type": "text",
+              "text": "If you see a security alert in Slack:"
+            },
+            {
+              "type": "list",
+              "listType": "numbered",
+              "items": [
+                "**Don't panic** - Many alerts are informational or low-severity",
+                "**Read the alert carefully** - Note the severity level and affected resources",
+                "**Check if it's related to your recent activities** - Did you just deploy something or make configuration changes?",
+                "**Follow the escalation path** - See below for when to escalate"
+              ]
+            },
+            {
+              "type": "example",
+              "title": "Example Alert Response",
+              "content": "You see: \"GuardDuty Alert: Unusual API call pattern detected on instance i-abc123\"\n\nYour response:\n1. Check if i-abc123 is an instance you were just working on\n2. If yes, and you were doing legitimate work, note this in Slack\n3. If no, or if you're unsure, immediately notify Pete or Savvy"
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "When to Escalate to Pete/Dave",
+          "content": [
+            {
+              "type": "text",
+              "text": "Escalate immediately for:"
+            },
+            {
+              "type": "list",
+              "listType": "bullet",
+              "items": [
+                "**Critical or High severity alerts** from any monitoring tool",
+                "**Repeated alerts** about the same issue, even if low severity",
+                "**Anything involving unauthorized access** attempts or suspicious authentication",
+                "**Vulnerability findings** marked as actively exploited",
+                "**Any alert you don't understand** - better safe than sorry"
+              ]
+            },
+            {
+              "type": "text",
+              "text": "Contact Pete first for technical security issues. If Pete is unavailable, contact Dave. For urgent issues outside business hours, use phone calls instead of Slack."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Secure Configuration Management",
+      "content": [
+        {
+          "type": "text",
+          "text": "We maintain secure configurations using FedRAMP baselines appropriate for our Li-SaaS environment."
+        },
+        {
+          "type": "text",
+          "text": "**AWS Security Hub** monitors our compliance automatically by checking:"
+        },
+        {
+          "type": "list",
+          "listType": "bullet",
+          "items": [
+            "Security group configurations (no wide-open ports)",
+            "S3 bucket permissions (no public access)",
+            "IAM policies (principle of least privilege)",
+            "Encryption settings (data at rest and in transit)",
+            "Logging enablement (CloudTrail, VPC Flow Logs)"
+          ]
+        },
+        {
+          "type": "text",
+          "text": "When Security Hub flags a compliance issue, it appears in our dashboard and Slack. Most issues have clear remediation steps. If you're unsure how to fix something, ask before making changes."
+        },
+        {
+          "type": "tip",
+          "text": "Security Hub includes automated remediation for common issues. Look for the \"Remediation\" button before trying to fix things manually."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Access Key and Credential Security",
+      "content": [
+        {
+          "type": "text",
+          "text": "This is critical: mishandled credentials are the #1 way cloud environments get compromised. Follow these rules without exception."
+        },
+        {
+          "type": "subsection",
+          "title": "Never Hardcode Credentials",
+          "content": [
+            {
+              "type": "text",
+              "text": "This means:"
+            },
+            {
+              "type": "list",
+              "listType": "bullet",
+              "items": [
+                "No AWS access keys in code, ever",
+                "No passwords in configuration files",
+                "No secrets in environment variables checked into git",
+                "No credentials in Slack, email, or documentation"
+              ]
+            },
+            {
+              "type": "text",
+              "text": "Instead, use:"
+            },
+            {
+              "type": "list",
+              "listType": "bullet",
+              "items": [
+                "IAM roles for EC2 instances and Lambda functions",
+                "AWS Secrets Manager for application secrets",
+                "AWS Systems Manager Parameter Store for configuration"
+              ]
+            },
+            {
+              "type": "callout",
+              "calloutType": "warning",
+              "title": "Git Guardian is Watching",
+              "text": "We use automated scanning that will catch and alert on any credentials committed to git. If you accidentally commit credentials, notify Pete immediately - we'll need to rotate them even if you remove them in the next commit."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Rotation Requirements",
+          "content": [
+            {
+              "type": "text",
+              "text": "Different credentials have different rotation schedules:"
+            },
+            {
+              "type": "list",
+              "listType": "bullet",
+              "items": [
+                "**IAM user access keys**: 90 days (automated reminder via Security Hub)",
+                "**Database passwords**: 90 days (managed by Secrets Manager)",
+                "**Service account credentials**: 90 days or on personnel changes",
+                "**MFA devices**: Only when lost, damaged, or employee separation"
+              ]
+            },
+            {
+              "type": "text",
+              "text": "You'll get automated reminders for most rotations. Don't ignore them - outdated credentials are a compliance violation."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Secure Storage Methods",
+          "content": [
+            {
+              "type": "text",
+              "text": "When you must handle credentials:"
+            },
+            {
+              "type": "list",
+              "listType": "numbered",
+              "items": [
+                "**AWS Secrets Manager**: Primary choice for application secrets. Provides automatic rotation, encryption, and audit logging.",
+                "**Systems Manager Parameter Store**: Good for configuration values that might include sensitive data. Free tier usually sufficient for our needs.",
+                "**Environment variables**: For local development only - never in production."
+              ]
+            },
+            {
+              "type": "tip",
+              "text": "When in doubt about where to store something sensitive, ask. It's much easier to do it right the first time than to clean up exposed credentials later."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Emergency Access Procedures",
+          "content": [
+            {
+              "type": "text",
+              "text": "Sometimes you need emergency access outside normal channels:"
+            },
+            {
+              "type": "list",
+              "listType": "bullet",
+              "items": [
+                "**Break-glass IAM roles** exist for true emergencies (production down, normal access failed)",
+                "These are monitored heavily - any use triggers immediate alerts",
+                "Must document reason for use within 1 hour",
+                "Pete must approve retroactively within 24 hours"
+              ]
+            },
+            {
+              "type": "text",
+              "text": "To use break-glass access:"
+            },
+            {
+              "type": "list",
+              "listType": "numbered",
+              "items": [
+                "Try normal access methods first",
+                "If those fail and it's a true emergency, assume the break-glass role",
+                "Immediately notify Pete and Dave via phone",
+                "Document what you did and why in the incident ticket",
+                "Return to normal access as soon as possible"
+              ]
+            },
+            {
+              "type": "callout",
+              "calloutType": "important",
+              "title": "Break-Glass is Not a Shortcut",
+              "text": "Using emergency access because normal access is \"too slow\" or \"inconvenient\" is a serious violation. It's only for actual emergencies where ClearTriage services are impacted."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

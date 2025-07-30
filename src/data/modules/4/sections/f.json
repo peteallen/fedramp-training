@@ -1,0 +1,202 @@
+{
+  "id": "4.F",
+  "title": "Technical Spillage Response",
+  "content": [
+    {
+      "type": "text",
+      "content": "Information spillage at ClearTriage means login credentials have been exposed outside our FedRAMP boundary (AWS and Google Drive). Since we only handle login credentials, our spillage response is focused on credential rotation and access verification."
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "title": "Scope",
+      "content": "This training covers FedRAMP IR-9 requirements. For ClearTriage, spillage = exposed credentials. We don't handle PHI or other sensitive data that would require complex sanitization procedures."
+    },
+    {
+      "type": "subsection",
+      "title": "Immediate Response Steps",
+      "content": [
+        {
+          "type": "text",
+          "content": "When credentials are exposed (emailed to wrong person, committed to git, posted in Slack, etc.):"
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            "**Identify** - Which credentials were exposed? (AWS keys, passwords, API tokens)",
+            "**Disable** - Immediately disable the exposed credentials in the source system",
+            "**Document** - Record what was exposed, when, how, and who had potential access",
+            "**Rotate** - Issue new credentials and update all systems that use them",
+            "**Verify** - Confirm old credentials no longer work and new ones do",
+            "**Report** - Notify Pete for FedRAMP reporting requirements"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Quick Credential Rotation",
+          "content": "```bash\n# AWS Access Key rotation\naws iam delete-access-key --access-key-id AKIAIOSFODNN7EXAMPLE\naws iam create-access-key --user-name service-account\n\n# Update application with new credentials\n# Document the rotation in incident report\n```"
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Platform-Specific Procedures",
+      "content": [
+        {
+          "type": "subsection",
+          "title": "AWS Credential Spillage",
+          "content": [
+            {
+              "type": "list",
+              "items": [
+                "**IAM User Keys**: Delete via console or CLI, create new keys, update applications",
+                "**IAM Role Sessions**: Can't directly revoke - attach DenyAll policy to role temporarily",
+                "**EC2 Instance Credentials**: Replace instance or rotate instance profile",
+                "**RDS Passwords**: Use RDS console to reset master password immediately",
+                "**Secrets Manager**: Trigger immediate rotation if configured, otherwise update manually"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Google Workspace Spillage",
+          "content": [
+            {
+              "type": "list",
+              "items": [
+                "**User Passwords**: Force password reset via admin console",
+                "**OAuth Tokens**: Revoke all tokens for affected user",
+                "**Service Account Keys**: Delete and regenerate via Cloud Console",
+                "**Shared Drive Access**: Review and revoke inappropriate access"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Application Credentials",
+          "content": [
+            {
+              "type": "list",
+              "items": [
+                "**Database passwords**: Reset in RDS/CloudSQL and update connection strings",
+                "**API keys**: Regenerate in respective service and update consumers",
+                "**JWT secrets**: Rotate immediately - this will log out all users",
+                "**Encryption keys**: If exposed, data re-encryption may be required"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Documentation Requirements",
+      "content": [
+        {
+          "type": "text",
+          "content": "FedRAMP requires specific documentation for spillage incidents:"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**What**: Exact credentials or data exposed",
+            "**When**: Time of exposure and discovery",
+            "**Where**: All systems where data was exposed",
+            "**Who**: Everyone who had potential access",
+            "**Why**: Root cause of spillage",
+            "**Actions**: All remediation steps taken with timestamps"
+          ]
+        },
+        {
+          "type": "callout",
+          "variant": "warning",
+          "title": "Important",
+          "content": "Even if exposure was brief or no unauthorized access occurred, full documentation is required. Pete needs this for FedRAMP reporting within 24 hours."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Common Scenarios",
+      "content": [
+        {
+          "type": "subsection",
+          "title": "Credentials in Git Commit",
+          "content": [
+            {
+              "type": "list",
+              "ordered": true,
+              "items": [
+                "Rotate credentials immediately (don't wait for git cleanup)",
+                "Use `git filter-branch` or BFG to remove from history",
+                "Force push to all branches",
+                "Notify any developers who might have pulled the commit",
+                "Consider the credentials compromised even if repo is private"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Email Misdelivery",
+          "content": [
+            {
+              "type": "list",
+              "ordered": true,
+              "items": [
+                "Contact recipient to delete if possible (but assume compromised)",
+                "Rotate credentials immediately",
+                "Check email server logs for forwarding or additional delivery",
+                "Document recipient details for incident report"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Slack/Chat Exposure",
+          "content": [
+            {
+              "type": "list",
+              "ordered": true,
+              "items": [
+                "Delete message if within time window",
+                "Rotate credentials (visible briefly = compromised)",
+                "Check Slack audit logs for who was in channel",
+                "Review workspace retention settings"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Post-Incident Actions",
+      "content": [
+        {
+          "type": "text",
+          "content": "After immediate response:"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Review access logs** - Check if exposed credentials were used",
+            "**Update procedures** - Prevent similar spillage (e.g., add .env to .gitignore)",
+            "**Team notification** - Inform team of new credentials without creating new spillage",
+            "**Lessons learned** - Document cause and prevention for team training"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "tip",
+      "title": "Remember",
+      "content": "For ClearTriage, spillage response is primarily about credential rotation. We don't need complex data sanitization procedures because we don't handle sensitive data beyond login credentials. When in doubt: rotate the credential, document everything, and notify Pete."
+    }
+  ]
+}

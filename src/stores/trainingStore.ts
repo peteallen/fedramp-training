@@ -55,7 +55,10 @@ export interface TrainingState {
 // Helper function to load module metadata
 const loadModuleMetadata = async (moduleId: number) => {
   try {
-    const response = await fetch(`/src/data/modules/${moduleId}/module.json`)
+    // In development, Vite serves /src files directly
+    // In production, these files are copied to /data/modules
+    const basePath = import.meta.env.DEV ? '/src/data/modules' : '/data/modules'
+    const response = await fetch(`${basePath}/${moduleId}/module.json`)
     if (!response.ok) return null
     return await response.json()
   } catch {
@@ -66,7 +69,10 @@ const loadModuleMetadata = async (moduleId: number) => {
 // Helper function to load a module section
 const loadModuleSection = async (moduleId: number, sectionId: string) => {
   try {
-    const response = await fetch(`/src/data/modules/${moduleId}/sections/${sectionId}.json`)
+    // In development, Vite serves /src files directly
+    // In production, these files are copied to /data/modules
+    const basePath = import.meta.env.DEV ? '/src/data/modules' : '/data/modules'
+    const response = await fetch(`${basePath}/${moduleId}/sections/${sectionId}.json`)
     if (!response.ok) return null
     return await response.json()
   } catch {

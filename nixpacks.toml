@@ -6,7 +6,8 @@ cmds = ["npm install -g pnpm", "npx pnpm install --frozen-lockfile"]
 
 [phases.build]
 # Skip TypeScript checking for now and build directly with Vite
-cmds = ["npx vite build"]
+# Then copy module data files to dist for production serving
+cmds = ["npx vite build", "cp -r src/data/modules dist/data/"]
 
 [start]
 cmd = "npx pnpm preview --port $PORT --host 0.0.0.0"
