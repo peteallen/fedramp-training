@@ -8,6 +8,27 @@
     },
     {
       "type": "subsection",
+      "title": "Learning Objectives",
+      "content": [
+        {
+          "type": "text",
+          "text": "After completing this section, you will be able to:"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Understand AWS IAM Identity Center and MFA requirements for FedRAMP compliance",
+            "Identify and respond to security alerts from our monitoring tools",
+            "Know when to escalate security issues to Pete or Dave",
+            "Apply secure credential management practices in your daily work",
+            "Use AWS Secrets Manager and Parameter Store instead of hardcoding credentials",
+            "Follow proper procedures for emergency access scenarios"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
       "title": "Cloud Security Principles",
       "content": [
         {
