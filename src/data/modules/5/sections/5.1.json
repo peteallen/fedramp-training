@@ -1,0 +1,113 @@
+{
+  "id": "5.1",
+  "title": "Management Continuity Decisions",
+  "content": [
+    {
+      "type": "text",
+      "content": "This section covers decision authority, essential functions, and stakeholder management during incidents."
+    },
+    {
+      "type": "subsection",
+      "title": "Decision Authority",
+      "content": [
+        {
+          "type": "text",
+          "content": "**Primary:** Pete (CTO/ISSO)<br>**Backup:** Dave (President)<br>**Technical Delegation:** Savvy (when Pete delegates)"
+        },
+        {
+          "type": "text",
+          "content": "Dave's authority triggers when:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Pete unreachable for 2+ hours during critical incident",
+            "Pete has conflict of interest",
+            "Time-critical decisions during Pete's off-hours",
+            "Pete explicitly delegates"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Mission-Essential Functions",
+      "content": [
+        {
+          "type": "text",
+          "content": "Priority order: 1) VA nurse access 2) Authentication 3) Clinical protocols 4) Core triage functions"
+        },
+        {
+          "type": "text",
+          "content": "**Acceptable degraded operation:** Slower performance, limited features, read-only protocols<br>**Requires shutdown:** Authentication failures, data integrity concerns, active breach"
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "content": "15-minute rule: If you can't reach Pete or Dave during an active breach, initiate shutdown and contact ScaleSec."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Business Impact Analysis",
+      "content": [
+        {
+          "type": "text",
+          "content": "Key metrics: **RTO:** 4 hours | **RPO:** 1 hour | **Max downtime:** 24 hours"
+        },
+        {
+          "type": "text",
+          "content": "See Contingency Plan for full BIA. At 3 hours downtime, consider alternate recovery or external help."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Stakeholder Management",
+      "content": [
+        {
+          "type": "text",
+          "content": "Communication order: 1) Team (30 min) 2) VA (1 hr) 3) ScaleSec 4) AWS Support 5) FedRAMP PMO (major only)"
+        },
+        {
+          "type": "callout",
+          "style": "info",
+          "content": "Dave owns VA communications. Pete handles technical response, Dave handles VA messaging."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Quick Decision Framework",
+      "content": [
+        {
+          "type": "text",
+          "content": "During incidents: 1) Check PII/security risk 2) Confirm authority 3) Consider FedRAMP impact 4) Can nurses work? 5) Document decision 6) Communicate"
+        },
+        {
+          "type": "callout",
+          "style": "tip",
+          "content": "Make the best decision with available info. Document it. Move forward. Adjust as needed."
+        }
+      ]
+    }
+  ],
+  "keyTakeaways": [
+    "Pete decides, Dave backs up when: Pete unavailable 2+ hrs, conflict of interest, off-hours, or delegation",
+    "Priority: VA nurse access > authentication > protocols > features",
+    "Shutdown required for: auth failures, data integrity issues, or active breach",
+    "Dave owns VA communications even when Pete manages technical response"
+  ],
+  "quiz": {
+    "question": "During a security incident, Pete is at a medical appointment and unreachable. The system is experiencing authentication failures affecting 30% of VA nurses. As President, what is your immediate priority?",
+    "options": [
+      "Wait up to 2 hours for Pete to respond before taking action",
+      "Make the decision to initiate emergency procedures and engage ScaleSec",
+      "Contact the VA to explain the situation and get their input first",
+      "Delegate the technical decisions to Savvy while you handle communications"
+    ],
+    "correctAnswer": 1
+  }
+}

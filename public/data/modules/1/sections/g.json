@@ -1,0 +1,94 @@
+{
+  "id": "1.G",
+  "title": "Security Best Practices",
+  "content": [
+    {
+      "type": "text",
+      "text": "Good security isn't about memorizing complex procedures - it's about adopting smart habits that protect you and ClearTriage. These best practices form the foundation of our security culture."
+    },
+    {
+      "type": "subsection",
+      "title": "Password Management",
+      "content": [
+        {
+          "type": "text",
+          "text": "Passwords are like keys to your digital life. Weak or reused passwords are like using the same flimsy key for your house, car, and office - one compromise opens everything."
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Use strong, unique passwords for every account** - This means no variations of 'ClearTriage2024!' across different services. Each password should be completely different.",
+            "**Never reuse passwords** - When one service gets breached (and they do, regularly), reused passwords put all your other accounts at risk.",
+            "**Use a password manager** - 1Password, Bitwarden, or similar tools make strong passwords easy. You only need to remember one master password, and the manager handles the rest.",
+            "**Enable two-factor authentication (2FA) everywhere possible** - This adds a critical second layer of security. Even if someone gets your password, they can't access your account without your phone or authentication app."
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "A good password manager costs less than a Netflix subscription and provides infinitely more value for your security. ClearTriage will reimburse the cost - just ask Pete."
+        },
+        {
+          "type": "example",
+          "title": "Why Password Reuse is Dangerous",
+          "content": "Imagine you used the same password for your personal LinkedIn and your ClearTriage AWS access. LinkedIn gets breached (this has happened), and suddenly attackers have a password that might work on our critical infrastructure. This is why unique passwords matter."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "System Maintenance",
+      "content": [
+        {
+          "type": "text",
+          "text": "Keeping your systems updated is like maintaining your car - ignore it, and eventually something breaks at the worst possible time."
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Enable automatic updates for your operating system** - Security patches often fix vulnerabilities that attackers are actively exploiting.",
+            "**Keep your browser updated** - Your browser is your primary interface to cloud services. An outdated browser is a security risk.",
+            "**Update software promptly** - When you see update notifications for Slack, Zoom, or other tools we use, don't postpone indefinitely.",
+            "**Restart regularly** - Many updates only take effect after a restart. Aim to restart your computer at least weekly."
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "info",
+          "text": "Set aside time each Friday afternoon for updates and restarts. It's a good way to end the week and ensures you start Monday with a fully patched system."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Creating a Security-First Culture",
+      "content": [
+        {
+          "type": "text",
+          "text": "In a team of six, we're all in this together. Security isn't just Pete's job - it's everyone's responsibility."
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Report concerns without fear** - See something suspicious? Notice a potential vulnerability? Speak up. There's no such thing as a dumb security question.",
+            "**Share security tips with teammates** - Found a great password manager feature? Discovered a security setting in AWS? Share it in Slack.",
+            "**Learn from incidents** - If something goes wrong, we treat it as a learning opportunity, not a blame game.",
+            "**Stay curious about security** - The threat landscape evolves constantly. Staying informed helps us all stay protected."
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "title": "Remember This Above All",
+          "text": "We're a small team with a culture of trust and open communication. If you're unsure about something, ask. If you make a security mistake, tell someone immediately. Quick disclosure allows quick response, and that's what keeps small incidents from becoming big problems."
+        },
+        {
+          "type": "text",
+          "text": "Security best practices aren't about paranoia - they're about being professionally responsible with the data entrusted to us. Each practice listed here takes minimal effort but provides substantial protection. Together, they create multiple layers of security that protect ClearTriage, our infrastructure, and ultimately, the VA nurses who depend on our service to help veterans."
+        }
+      ]
+    }
+  ]
+}

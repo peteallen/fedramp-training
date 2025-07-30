@@ -1,0 +1,66 @@
+{
+  "id": "1.F",
+  "title": "Physical Security Essentials",
+  "content": [
+    {
+      "type": "text",
+      "text": "Physical security might seem less relevant for a remote team, but it's actually just as important. Your home office is now part of ClearTriage's security perimeter, and a few simple practices go a long way toward maintaining FedRAMP compliance."
+    },
+    {
+      "type": "subsection",
+      "title": "Screen Security",
+      "content": [
+        {
+          "type": "text",
+          "text": "Your computer screen is a window into ClearTriage's systems. Protecting it is one of the easiest and most effective security measures you can take."
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Lock your screen whenever you step away** - Yes, even at home. It takes one keystroke (Windows+L or Cmd+Control+Q) and prevents family members, visitors, or service workers from accidentally (or intentionally) accessing sensitive data.",
+            "**Position your screen thoughtfully** - Avoid having your back to windows or high-traffic areas where others might see sensitive information.",
+            "**Use privacy screens if needed** - If you work in shared spaces or travel frequently, consider a privacy filter for your laptop."
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "Make screen locking a reflex. Every time you stand up, lock your screen. It's like putting on your seatbelt - a small action that becomes automatic and provides significant protection."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Document Handling",
+      "content": [
+        {
+          "type": "text",
+          "text": "Even in our digital world, physical documents still exist and need proper handling."
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Secure any printed sensitive documents** - If you must print something containing patient data or system information, treat it like cash. Keep it in sight or locked away.",
+            "**Proper disposal is critical** - Any document containing sensitive information must be shredded, not just thrown away. This includes draft documents, old notes, or even Post-its with passwords.",
+            "**Minimize printing** - The best way to secure physical documents is to not create them in the first place. Question whether printing is truly necessary."
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "warning",
+          "text": "Your regular trash becomes public domain once it hits the curb. Always shred sensitive documents - a $30 cross-cut shredder is a worthwhile investment for your home office."
+        },
+        {
+          "type": "example",
+          "title": "What Counts as Sensitive?",
+          "content": "You printed out some AWS configuration details for reference during a call. Even though it doesn't contain patient data, it reveals information about our infrastructure. This document needs to be shredded when you're done, not tossed in the recycling bin."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "text": "Remember, physical security is about building good habits. Since we're all working from home, we're each responsible for maintaining the physical security of our own workspace. The practices above aren't burdensome - they're simple actions that protect both ClearTriage and the veterans' data we help safeguard."
+    }
+  ]
+}

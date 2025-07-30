@@ -1,0 +1,22 @@
+{
+  "id": 1,
+  "title": "Foundation Security Training",
+  "description": "Essential security awareness and practices for all ClearTriage team members and partners. Covers FedRAMP fundamentals, authentication requirements, data protection, and security best practices.",
+  "requiredForMembers": [
+    "Pete",
+    "Dave",
+    "Savvy",
+    "Braden",
+    "Shelly",
+    "Krista",
+    "ScaleSec"
+  ],
+  "objectives": [
+    "Understand FedRAMP requirements and their importance to ClearTriage's survival",
+    "Master authentication procedures for AWS (YubiKey) and Google Drive (MFA)",
+    "Recognize and respond to social engineering attempts targeting our team",
+    "Classify and handle different types of data according to FedRAMP requirements",
+    "Apply essential security practices for remote work and daily operations"
+  ],
+  "sections": ["a", "b", "c", "d", "e", "f", "g"]
+}

@@ -1,0 +1,171 @@
+{
+  "id": "1.B",
+  "title": "Authentication and Access Control",
+  "content": [
+    {
+      "type": "text",
+      "text": "Authentication is your first line of defense in protecting ClearTriage's systems and data. Since our FedRAMP boundary includes AWS and Google Drive, we need to ensure everyone follows strict authentication procedures for these systems."
+    },
+    {
+      "type": "callout",
+      "style": "important",
+      "title": "Key Point",
+      "text": "Every access attempt to our FedRAMP systems creates an audit trail. Proper authentication ensures we know exactly who accessed what and when."
+    },
+    {
+      "type": "subsection",
+      "title": "AWS Access Requirements",
+      "content": [
+        {
+          "type": "text",
+          "text": "AWS contains our production infrastructure and customer data. To meet FedRAMP requirements, we enforce hardware-based multi-factor authentication for all AWS access."
+        },
+        {
+          "type": "callout",
+          "style": "warning",
+          "title": "Mandatory Requirement",
+          "text": "ALL AWS access requires a FIPS-enabled YubiKey. No exceptions. This includes console access, CLI access, and programmatic access."
+        },
+        {
+          "type": "text",
+          "text": "To get AWS access, Pete will provide you with a FIPS-enabled YubiKey and help you set it up. Keep your YubiKey with you whenever working."
+        },
+        {
+          "type": "subsection",
+          "title": "Lost or Damaged YubiKey",
+          "content": [
+            {
+              "type": "text",
+              "text": "If you lose your YubiKey or it stops working:"
+            },
+            {
+              "type": "list",
+              "style": "numbered",
+              "items": [
+                "Immediately notify Pete via Slack or phone",
+                "Pete will disable the lost YubiKey within 15 minutes",
+                "A replacement will be ordered same-day",
+                "You'll be temporarily unable to access AWS (plan accordingly)",
+                "Once received, Pete will help you register the new YubiKey"
+              ]
+            },
+            {
+              "type": "callout",
+              "style": "warning",
+              "title": "Security Note",
+              "text": "Report lost YubiKeys immediately. A lost YubiKey is a security incident that requires prompt action."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Google Drive Access (FedRAMP Documentation)",
+      "content": [
+        {
+          "type": "text",
+          "text": "Our FedRAMP documentation lives in Google Drive. While not as sensitive as AWS, these documents still require proper authentication."
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "title": "MFA Required",
+          "text": "Multi-factor authentication is mandatory for all Google accounts accessing FedRAMP documentation. You must use an approved authenticator app."
+        },
+        {
+          "type": "subsection",
+          "title": "Approved Authenticators",
+          "content": [
+            {
+              "type": "text",
+              "text": "You may use any of these authenticator apps:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "**Google Authenticator** - Simple and reliable, works on iOS/Android",
+                "**Authy** - Includes cloud backup capabilities",
+                "**Keeper** - If you're already using Keeper for password management"
+              ]
+            },
+            {
+              "type": "callout",
+              "style": "warning",
+              "title": "Not Approved",
+              "text": "SMS/text message codes are NOT approved for FedRAMP. You must use an authenticator app."
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Set up MFA through myaccount.google.com/security using your chosen authenticator app. Save backup codes securely."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Access Control Best Practices",
+      "content": [
+        {
+          "type": "text",
+          "text": "Beyond just authentication, following these practices helps maintain our security posture:"
+        },
+        {
+          "type": "text",
+          "text": "Never share credentials with anyone, including passwords or YubiKeys. If someone needs access, direct them to Pete."
+        },
+        {
+          "type": "subsection",
+          "title": "Screen Locking",
+          "content": [
+            {
+              "type": "text",
+              "text": "Lock your screen whenever you step away from your computer. Configure automatic lock after 10 minutes of inactivity."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Report Unauthorized Access Attempts",
+          "content": [
+            {
+              "type": "text",
+              "text": "If you notice anything suspicious, report it immediately:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "Unexpected MFA prompts when you're not logging in",
+                "Email notifications about login attempts you didn't make",
+                "Your YubiKey not working when it should",
+                "Being logged out unexpectedly",
+                "Any \"account locked\" messages"
+              ]
+            },
+            {
+              "type": "callout",
+              "style": "important",
+              "title": "How to Report",
+              "text": "1. Take a screenshot if possible\n2. Note the exact time and what you were doing\n3. Immediately message Pete on Slack\n4. If Pete isn't available, message Dave\n5. Don't try to \"investigate\" yourself - let Pete handle it"
+            },
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Quick Reference",
+      "content": [
+        {
+          "type": "callout",
+          "style": "info",
+          "title": "Authentication Summary",
+          "text": "**AWS**: FIPS YubiKey required (hardware token)\n**Google Drive**: MFA with approved app (soft token)\n**Both**: Never share credentials, always lock screens, report suspicious activity immediately"
+        },
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "id": 2,
+  "title": "Incident Recognition and Reporting",
+  "description": "Learn to identify security incidents and understand ClearTriage's reporting procedures. Covers incident categories, response timelines, and information spillage awareness.",
+  "requiredForMembers": [
+    "Pete",
+    "Dave",
+    "Savvy",
+    "Braden",
+    "Shelly",
+    "Krista",
+    "ScaleSec"
+  ],
+  "objectives": [
+    "Recognize what constitutes a security incident at ClearTriage",
+    "Understand incident categories and required response times",
+    "Know exactly who to contact and how during an incident",
+    "Identify and report information spillage scenarios",
+    "Preserve evidence properly without attempting to 'fix' issues"
+  ],
+  "sections": ["a", "b", "c"]
+}

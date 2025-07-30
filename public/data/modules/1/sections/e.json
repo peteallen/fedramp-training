@@ -1,0 +1,295 @@
+{
+  "id": "1.E",
+  "title": "Data Protection and Classification",
+  "content": [
+    {
+      "type": "text",
+      "text": "At ClearTriage, we handle sensitive information that requires proper classification and protection. Understanding what type of data you're working with - and where it belongs - is critical to maintaining our FedRAMP compliance and protecting both company and customer information."
+    },
+    {
+      "type": "subsection",
+      "title": "ClearTriage Data Classification",
+      "content": [
+        {
+          "type": "text",
+          "text": "We classify our data into four categories, each with specific handling requirements. Since we're a small team, everyone needs to understand these classifications:"
+        },
+        {
+          "type": "subsection",
+          "title": "Public Information",
+          "content": [
+            {
+              "type": "text",
+              "text": "**What it is:** Marketing materials, public website content, published blog posts, and general product information."
+            },
+            {
+              "type": "text",
+              "text": "**Handling:** Can be freely shared and stored on any system. No special protection required."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Internal Information",
+          "content": [
+            {
+              "type": "text",
+              "text": "**What it is:** Business documents, internal communications, meeting notes, and general operational information that isn't meant for public consumption."
+            },
+            {
+              "type": "text",
+              "text": "**Handling:** Should stay within company-approved systems. Use Google Workspace for collaboration and storage."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Confidential Information",
+          "content": [
+            {
+              "type": "text",
+              "text": "**What it is:** This is the critical stuff - FedRAMP documentation, source code, security configurations, API keys, and any technical documentation about our systems."
+            },
+            {
+              "type": "text",
+              "text": "**Handling:** Must be stored only in approved locations:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "FedRAMP docs: Google Drive only (in the designated FedRAMP folders)",
+                "Source code: GitHub repositories only",
+                "Secrets/credentials: AWS Secrets Manager only",
+                "Never on personal devices or accounts"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Customer Data (VA Information)",
+          "content": [
+            {
+              "type": "text",
+              "text": "**What it is:** Any data from our VA customers. Here's the key point: ClearTriage stores minimal PII - just login credentials (username, password, email). We don't store Protected Health Information (PHI) or patient records."
+            },
+            {
+              "type": "text",
+              "text": "**Handling:** Exists only within our FedRAMP boundary (AWS production environment). Never download, copy, or access outside the secure environment."
+            },
+            {
+              "type": "callout",
+              "style": "important",
+              "title": "Remember: Minimal PII",
+              "text": "Unlike many healthcare systems, we only handle login credentials - no patient health records, no medical information, no SSNs. This significantly reduces our risk profile, but we still must protect what we do have."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Data Handling Requirements",
+      "content": [
+        {
+          "type": "text",
+          "text": "Now that you understand our data classifications, here's where everything must be stored:"
+        },
+        {
+          "type": "subsection",
+          "title": "Approved Storage Locations",
+          "content": [
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "**FedRAMP Documentation:** Google Drive FedRAMP folders only - nowhere else, not even temporarily",
+                "**Source Code:** GitHub repositories (our GitHub Enterprise Cloud account is FedRAMP authorized)",
+                "**Business Documents:** Google Workspace (Docs, Sheets, Drive)",
+                "**Customer Data:** Stays in AWS production environment - you shouldn't be downloading this anyway",
+                "**Secrets/Credentials:** AWS Secrets Manager or documented secure storage only"
+              ]
+            },
+            {
+              "type": "callout",
+              "style": "warning",
+              "title": "Personal Device Warning",
+              "text": "Never store confidential information or customer data on personal devices. This includes your personal laptop, phone, or home computer. If you need to work with sensitive data, use company-approved systems and access methods."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Encryption Standards",
+          "content": [
+            {
+              "type": "text",
+              "text": "All sensitive data must be encrypted, and we use FIPS 140-validated encryption modules as required by FedRAMP:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "**Data in Transit:** TLS 1.3 for all connections (web traffic, API calls, database connections)",
+                "**Data at Rest:** AES-256 encryption for all storage (databases, file storage, backups)",
+                "**Key Management:** AWS Key Management Service (KMS) with FIPS 140-validated hardware security modules"
+              ]
+            },
+            {
+              "type": "text",
+              "text": "The good news? AWS handles most of this automatically. As long as you're using our approved services and not trying to build your own crypto, you're covered."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Data Sharing Rules",
+      "content": [
+        {
+          "type": "text",
+          "text": "When it comes to sharing data, the rules are straightforward but critical:"
+        },
+        {
+          "type": "subsection",
+          "title": "Never Use Personal Accounts",
+          "content": [
+            {
+              "type": "text",
+              "text": "This is non-negotiable. Never use:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "Personal email (Gmail, Yahoo, etc.) for work documents",
+                "Personal cloud storage (Dropbox, iCloud, personal Google Drive)",
+                "Personal messaging apps for sensitive discussions",
+                "USB drives or external storage for confidential data"
+              ]
+            },
+            {
+              "type": "text",
+              "text": "Always use company-provided accounts and approved services. If you're unsure whether something is approved, ask Pete."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Sharing Within the Team",
+          "content": [
+            {
+              "type": "text",
+              "text": "For internal collaboration:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "Use Google Workspace for documents and general collaboration",
+                "Use Slack for quick communications (but remember, no secrets or credentials in Slack)",
+                "Use GitHub for code reviews and technical discussions",
+                "For FedRAMP docs, share Google Drive links, don't download and re-upload"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "External Sharing",
+          "content": [
+            {
+              "type": "text",
+              "text": "If you need to share information outside the company:"
+            },
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "Get approval from Dave or Pete first",
+                "Use secure methods appropriate to the data classification",
+                "For FedRAMP or security-related information, coordinate with Pete",
+                "Never share customer data externally - period"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Practical Scenarios",
+      "content": [
+        {
+          "type": "example",
+          "title": "Working on FedRAMP Documentation",
+          "content": "Sarah needs to update the incident response procedures. She accesses the document directly in Google Drive's FedRAMP folder, makes her edits online, and shares the link with Pete for review. She doesn't download it to her laptop or email it as an attachment."
+        },
+        {
+          "type": "example",
+          "title": "Debugging a Production Issue",
+          "content": "Tom needs to check application logs that might contain user email addresses. He uses AWS CloudWatch through the console with his MFA-enabled account. He takes notes about the issue in a Google Doc but doesn't copy any actual user data into his notes."
+        },
+        {
+          "type": "example",
+          "title": "Sharing Code for Review",
+          "content": "Emma pushes her feature branch to GitHub and creates a pull request. The code review happens entirely within GitHub. She doesn't email code snippets or use personal repositories for work-in-progress code."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Red Flags to Watch For",
+      "content": [
+        {
+          "type": "text",
+          "text": "These situations should immediately raise concerns:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Someone asking you to send FedRAMP docs to a personal email",
+            "Requests to download customer data for 'analysis' on a local machine",
+            "Suggestions to use unapproved tools because they're 'more convenient'",
+            "Finding sensitive documents in unexpected places (like shared Slack channels)",
+            "Any attempt to bypass our security controls, even temporarily"
+          ]
+        },
+        {
+          "type": "text",
+          "text": "If you encounter any of these situations, speak up immediately. In our small team, everyone plays a role in maintaining security."
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "style": "tip",
+      "text": "When in doubt about data classification or handling, ask yourself: 'Would I be comfortable explaining this to a FedRAMP auditor?' If the answer is no, stop and ask for guidance."
+    },
+    {
+      "type": "subsection",
+      "title": "Key Takeaways",
+      "content": [
+        {
+          "type": "list",
+          "style": "numbered",
+          "items": [
+            "Know your data classifications: Public, Internal, Confidential, and Customer Data",
+            "ClearTriage handles minimal PII - just login credentials, not health records",
+            "FedRAMP docs stay in Google Drive, code stays in GitHub, customer data stays in AWS",
+            "All sensitive data is encrypted with FIPS 140-validated modules (TLS 1.3 in transit, AES-256 at rest)",
+            "Never use personal email or cloud storage for any work data",
+            "When sharing data, use approved methods and get approval for external sharing"
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Remember, in a 6-person company, one mistake with data handling can impact everyone. But by following these straightforward rules, we maintain both security and efficiency in our daily work."
+        }
+      ]
+    }
+  ]
+}

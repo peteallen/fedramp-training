@@ -1,0 +1,556 @@
+{
+  "id": "4.D",
+  "title": "Advanced Incident Response",
+  "content": [
+    {
+      "type": "text",
+      "content": "Welcome to advanced incident response training. Since you're part of ClearTriage's incident response team, you need deeper technical knowledge than the basic incident recognition covered in Module 2. This section covers the specific tools, procedures, and techniques you'll use when responding to security incidents in our AWS environment."
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "title": "Team Context",
+      "content": "This training is for Pete (IRT Program Manager/ISSO) and Savvy (Technical Lead). You two are responsible for ALL immediate incident response, regardless of time. ScaleSec provides support during business hours for complex investigations when Pete determines it's needed."
+    },
+    {
+      "type": "subsection",
+      "title": "ClearTriage Detection Infrastructure",
+      "content": [
+        {
+          "type": "text",
+          "content": "Our incident detection relies heavily on AWS native security services. Here's how to navigate and use each tool effectively."
+        },
+        {
+          "type": "subsection",
+          "title": "AWS Security Hub Dashboard Navigation",
+          "content": [
+            {
+              "type": "text",
+              "content": "Security Hub is your primary dashboard for security findings across all our AWS services. It aggregates alerts from GuardDuty, Inspector, Config, and other services into a single view."
+            },
+            {
+              "type": "list",
+              "ordered": true,
+              "items": [
+                "Access Security Hub from the AWS Console",
+                "Check the **Summary** page first - it shows critical and high findings",
+                "Use the **Findings** page to drill into specific alerts",
+                "Filter by service (GuardDuty, Inspector) to focus your investigation",
+                "Sort by severity and age to prioritize response"
+              ]
+            },
+            {
+              "type": "tip",
+              "content": "Set up custom insights in Security Hub to track findings specific to our environment, like EC2 instances in production VPCs or IAM credential issues."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Understanding Security Alerts",
+          "content": [
+            {
+              "type": "text",
+              "content": "Not every alert is an incident. Here's how to quickly assess what you're seeing:"
+            },
+            {
+              "type": "list",
+              "items": [
+                "**Critical findings** - Immediate response required (active compromise indicators)",
+                "**High findings** - Investigate within 1 hour (potential compromise)",
+                "**Medium findings** - Review within 24 hours (misconfigurations, policy violations)",
+                "**Low/Informational** - Address during regular reviews"
+              ]
+            },
+            {
+              "type": "example",
+              "title": "Real Alert Assessment",
+              "content": "GuardDuty shows 'UnauthorizedAccess:EC2/TorClient' - This means an EC2 instance is making connections through Tor. In our environment, this is always suspicious since we don't use Tor for any legitimate purposes. Immediate containment required."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Log Analysis Basics",
+          "content": [
+            {
+              "type": "text",
+              "content": "CloudTrail is your primary source for understanding what happened. Here's the efficient way to analyze logs:"
+            },
+            {
+              "type": "list",
+              "ordered": true,
+              "items": [
+                "Start with CloudTrail Insights if the incident involves API activity",
+                "Use CloudWatch Logs Insights for quick queries across multiple log groups",
+                "Filter by time range first - narrow to the incident window",
+                "Search for the compromised resource (instance ID, user ARN, etc.)",
+                "Look for patterns: failed attempts followed by success, unusual API calls"
+              ]
+            },
+            {
+              "type": "callout",
+              "variant": "warning",
+              "content": "Remember: CloudTrail has a 15-minute delay. For real-time investigation, check VPC Flow Logs and application logs directly on instances."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Alert Response Procedures",
+          "content": [
+            {
+              "type": "text",
+              "content": "When you receive an alert (via Slack, email, or console):"
+            },
+            {
+              "type": "list",
+              "ordered": true,
+              "items": [
+                "**Acknowledge** - Reply in Slack that you're investigating",
+                "**Assess** - Determine if it's a real incident or false positive (you make this call, not ScaleSec)",
+                "**Document** - Start an incident in Systems Manager Incident Manager",
+                "**Investigate** - Use the detection tools to understand scope",
+                "**Communicate** - Update the team on findings and next steps"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "AWS Systems Manager Incident Manager",
+          "content": [
+            {
+              "type": "text",
+              "content": "Incident Manager is where we formally track and manage incidents. It's already configured with our response plans."
+            },
+            {
+              "type": "list",
+              "items": [
+                "Access via Systems Manager > Incident Manager",
+                "Use the appropriate response plan based on incident type",
+                "The system will automatically create a dedicated Slack channel",
+                "All team communications should happen in the incident channel",
+                "Document all actions taken in the incident timeline"
+              ]
+            },
+            {
+              "type": "tip",
+              "content": "Incident Manager integrates with our runbooks. For common incidents like credential compromise, it can automatically execute remediation steps while you investigate."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Common ClearTriage Attack Vectors",
+      "content": [
+        {
+          "type": "text",
+          "content": "Understanding how we might be attacked helps you respond more effectively. Here are the most likely scenarios for our environment."
+        },
+        {
+          "type": "subsection",
+          "title": "Compromised AWS Credentials",
+          "content": [
+            {
+              "type": "text",
+              "content": "This is our highest risk given our small team size. Watch for:"
+            },
+            {
+              "type": "list",
+              "items": [
+                "Unusual API calls from developer accounts",
+                "Access from unexpected IP addresses or regions",
+                "Privilege escalation attempts",
+                "Mass data downloads or resource creation"
+              ]
+            },
+            {
+              "type": "callout",
+              "variant": "warning",
+              "content": "Our developers have significant permissions. A compromised developer account could quickly escalate to production access."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Supply Chain Attacks (npm packages)",
+          "content": [
+            {
+              "type": "text",
+              "content": "As a Node.js application, we're vulnerable to malicious npm packages. Indicators include:"
+            },
+            {
+              "type": "list",
+              "items": [
+                "Unexpected outbound connections from Lambda functions",
+                "New packages appearing in package-lock.json without corresponding package.json changes",
+                "Build failures after dependency updates",
+                "Unusual Lambda execution patterns or errors"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Insider Threats (Accidental or Malicious)",
+          "content": [
+            {
+              "type": "text",
+              "content": "With only 6 team members, insider threats are particularly sensitive but must be considered:"
+            },
+            {
+              "type": "list",
+              "items": [
+                "After-hours access to production systems",
+                "Bulk data exports or API calls",
+                "Configuration changes that reduce security",
+                "Access to resources outside normal job function"
+              ]
+            },
+            {
+              "type": "tip",
+              "content": "Most insider incidents are accidental. Approach with the assumption of good intent while securing systems."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "DDoS Against VA-Facing Services",
+          "content": [
+            {
+              "type": "text",
+              "content": "Service availability is critical for VA users. DDoS indicators:"
+            },
+            {
+              "type": "list",
+              "items": [
+                "Sudden spike in API Gateway requests",
+                "CloudFront cache hit rate dropping significantly",
+                "Lambda concurrent execution limits being hit",
+                "Unusual traffic patterns from specific regions"
+              ]
+            },
+            {
+              "type": "callout",
+              "variant": "info",
+              "content": "AWS Shield Standard provides baseline DDoS protection. For sustained attacks, we can engage AWS Support for Shield Advanced if needed."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Social Engineering Targeting Small Team",
+          "content": [
+            {
+              "type": "text",
+              "content": "Our small team size makes us vulnerable to targeted social engineering:"
+            },
+            {
+              "type": "list",
+              "items": [
+                "Phishing emails claiming to be from team members",
+                "Fake vendor communications (especially claiming to be AWS)",
+                "Phone calls requesting credential resets",
+                "LinkedIn-based reconnaissance followed by targeted attacks"
+              ]
+            },
+            {
+              "type": "example",
+              "title": "Recent Example",
+              "content": "Attackers might impersonate ScaleSec consultants requesting AWS access. Always verify through our established Slack channels."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Containment Strategies for ClearTriage",
+      "content": [
+        {
+          "type": "text",
+          "content": "Quick containment prevents minor incidents from becoming major breaches. Here are our specific procedures."
+        },
+        {
+          "type": "subsection",
+          "title": "AWS-Specific Containment",
+          "content": [
+            {
+              "type": "text",
+              "content": "These are your immediate containment options in order of increasing severity:"
+            },
+            {
+              "type": "list",
+              "ordered": true,
+              "items": [
+                "**Security Group Modification** - Add deny rules for suspicious IPs",
+                "**IAM Policy Restrictions** - Attach explicit deny policies to compromised users/roles",
+                "**EC2 Instance Isolation** - Move instance to isolated security group with no inbound/outbound",
+                "**Lambda Function Disabling** - Set reserved concurrency to 0",
+                "**Account Quarantine** - For severe compromises, restrict all account access"
+              ]
+            },
+            {
+              "type": "callout",
+              "variant": "warning",
+              "content": "Always preserve evidence before containment. Take EBS snapshots and export logs BEFORE isolating instances."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Account Suspension Procedures",
+          "content": [
+            {
+              "type": "text",
+              "content": "For compromised user accounts:"
+            },
+            {
+              "type": "list",
+              "ordered": true,
+              "items": [
+                "Disable AWS IAM user access keys immediately",
+                "Reset AWS console password",
+                "Remove user from all IAM groups",
+                "Attach explicit deny-all policy",
+                "Revoke all active sessions via IAM",
+                "Document all actions in Incident Manager for potential ScaleSec review later"
+              ]
+            },
+            {
+              "type": "tip",
+              "content": "We have a 'SecurityIncidentDenyAll' policy pre-created. Attach this for immediate lockdown."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Network Isolation Techniques",
+          "content": [
+            {
+              "type": "text",
+              "content": "For network-level containment:"
+            },
+            {
+              "type": "list",
+              "items": [
+                "**VPC Level** - Modify route tables to black hole suspicious traffic",
+                "**NACLs** - More powerful than security groups for blocking at subnet level",
+                "**CloudFront** - Use AWS WAF to block malicious patterns",
+                "**API Gateway** - Implement request throttling or IP restrictions"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Evidence Preservation Requirements",
+          "content": [
+            {
+              "type": "text",
+              "content": "FedRAMP requires 90-day evidence retention. Before any containment:"
+            },
+            {
+              "type": "list",
+              "ordered": true,
+              "items": [
+                "Create EBS snapshots of affected instances",
+                "Export CloudTrail logs for the incident timeframe", 
+                "Skip memory dumps unless you have the tools - document system state instead",
+                "Screenshot Security Hub findings and alerts",
+                "Save all Slack communications to Google Drive",
+                "Document chain of custody in Incident Manager",
+                "Write detailed notes about what you're seeing - ScaleSec may review later"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Eradication Procedures",
+      "content": [
+        {
+          "type": "text",
+          "content": "After containment, completely remove the threat from our environment. If this is beyond your expertise, stabilize the situation and Pete will engage ScaleSec during business hours."
+        },
+        {
+          "type": "subsection",
+          "title": "Malware Removal from EC2",
+          "content": [
+            {
+              "type": "text",
+              "content": "If an EC2 instance is compromised:"
+            },
+            {
+              "type": "list",
+              "ordered": true,
+              "items": [
+                "Never try to 'clean' a compromised instance",
+                "Launch new instance from known-good AMI",
+                "Restore application data from clean backups",
+                "Update security groups and IAM roles",
+                "Terminate the compromised instance",
+                "Delete associated EBS volumes (after evidence preservation)"
+              ]
+            },
+            {
+              "type": "callout",
+              "variant": "warning",
+              "content": "Our infrastructure is in Terraform. After emergency changes, use 'terraform import' to update state or plan to rebuild from code after the incident. Never manually edit state files."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Compromised Credential Rotation",
+          "content": [
+            {
+              "type": "text",
+              "content": "When credentials are compromised, rotate everything that might be affected:"
+            },
+            {
+              "type": "list",
+              "items": [
+                "**IAM User Keys** - Delete old, create new, update applications",
+                "**IAM Role Session** - Revoke all sessions for the role",
+                "**EC2 Instance Profiles** - Rotate by replacing instances",
+                "**Secrets Manager** - Rotate all secrets in affected scope",
+                "**Database Passwords** - Reset RDS master passwords",
+                "**API Keys** - Regenerate all application API keys"
+              ]
+            },
+            {
+              "type": "tip",
+              "content": "We maintain a credential inventory in our runbooks. Use it as a checklist during rotation."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Vulnerability Patching",
+          "content": [
+            {
+              "type": "text",
+              "content": "After an incident, patch the vulnerability that allowed it:"
+            },
+            {
+              "type": "list",
+              "ordered": true,
+              "items": [
+                "Identify the root vulnerability (misconfiguration, missing patch, etc.)",
+                "Test the fix in development environment first",
+                "Deploy patches using our standard deployment process",
+                "Verify the vulnerability is resolved",
+                "Update our baseline configurations"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Configuration Remediation",
+          "content": [
+            {
+              "type": "text",
+              "content": "Fix security misconfigurations:"
+            },
+            {
+              "type": "list",
+              "items": [
+                "Review and fix Security Hub compliance findings",
+                "Update Terraform configurations",
+                "Run AWS Config conformance packs",
+                "Verify least privilege access",
+                "Enable any missing logging or monitoring"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Infrastructure Validation",
+          "content": [
+            {
+              "type": "text",
+              "content": "Before returning to normal operations:"
+            },
+            {
+              "type": "list",
+              "ordered": true,
+              "items": [
+                "Run Terraform plan to verify infrastructure state",
+                "Execute our security validation runbook",
+                "Confirm all monitoring and alerting is functional",
+                "Test application functionality end-to-end",
+                "Verify backup systems are operational",
+                "Get sign-off from Pete before closing incident"
+              ]
+            },
+            {
+              "type": "callout",
+              "variant": "important",
+              "content": "Never rush validation. A missed backdoor or persistence mechanism could lead to re-compromise."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "When to Engage ScaleSec",
+      "content": [
+        {
+          "type": "text",
+          "content": "ScaleSec is NOT on-call. They provide business-hours support only. Pete decides when their expertise is needed."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Complex forensics** - When you need deep malware analysis or advanced log correlation",
+            "**FedRAMP compliance questions** - When incident response intersects with compliance requirements",
+            "**Overwhelmed by scope** - Multiple simultaneous incidents or organization-wide compromise",
+            "**Specialized expertise** - Attack techniques beyond your current knowledge",
+            "**Post-incident analysis** - Detailed root cause analysis and lessons learned"
+          ]
+        },
+        {
+          "type": "callout",
+          "variant": "important",
+          "title": "Remember",
+          "content": "You handle the immediate response ALWAYS. Document everything meticulously so ScaleSec can assist effectively when engaged during business hours."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Critical Reality Check",
+      "content": [
+        {
+          "type": "text",
+          "content": "With only Pete and Savvy as the ENTIRE incident response team, you must be prepared for anything at any time:"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Automate everything possible** - Use Incident Manager runbooks for common tasks",
+            "**Internal response** - You ARE the incident response team 24/7. ScaleSec assists during business hours only.",
+            "**Preparation is key** - Maintain runbooks and keep credentials accessible",
+            "**Cross-training critical** - Both Pete and Savvy MUST be able to handle any incident independently",
+            "**Documentation** - Over-document during incidents for later review"
+          ]
+        },
+        {
+          "type": "callout",
+          "variant": "tip",
+          "title": "Remember",
+          "content": "You're responsible for immediate response at all times. Document everything thoroughly - Pete will coordinate with ScaleSec during business hours for complex investigations or when additional expertise is needed."
+        }
+      ]
+    }
+  ]
+}

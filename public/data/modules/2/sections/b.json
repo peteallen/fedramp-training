@@ -1,0 +1,94 @@
+{
+  "id": "2.B",
+  "title": "ClearTriage Reporting Procedures",
+  "content": [
+    {
+      "type": "text",
+      "text": "When you identify a security incident, swift action matters. Here's exactly how to report it at ClearTriage."
+    },
+    {
+      "type": "subsection",
+      "title": "Who to Contact",
+      "content": [
+        {
+          "type": "text",
+          "text": "**Primary Contact:** Pete Allen (CTO)\n\n**Secondary Contact:** Dave Schmitt (President) - if Pete unavailable"
+        },
+        {
+          "type": "text",
+          "text": "You have their contact info. Use Slack for most incidents, phone for urgent situations."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "What to Report",
+      "content": [
+        {
+          "type": "text",
+          "text": "Provide this information (as much as you can gather quickly):"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**What happened** - Brief description of what you observed",
+            "**When** - Time you noticed it (be specific)",
+            "**Where** - Which system, service, or location (AWS, Google Drive, specific app)",
+            "**Who** - Any users, accounts, or external parties involved",
+            "**Impact** - What's affected or at risk (data, services, access)"
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Good Initial Report",
+          "content": "\"Pete - I just noticed unusual login attempts on our AWS production account from an IP in Russia. Started seeing CloudTrail alerts about 10 minutes ago (2:15 PM). Multiple failed attempts on the admin console. I'm watching it now - seems ongoing.\""
+        },
+        {
+          "type": "tip",
+          "text": "Don't wait for perfect information. Report what you know immediately."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Critical Timelines",
+      "content": [
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Your job**: Report within minutes of discovery",
+            "**Pete's job**: FedRAMP notification within 1 hour for CAT 1 incidents (unauthorized access)",
+            "**Don't delay** reporting to gather more info - Pete needs time to meet FedRAMP deadlines"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "During an Incident",
+      "content": [
+        {
+          "type": "text",
+          "text": "After you report:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Pete handles all external communications (agencies, FedRAMP, customers)",
+            "You may be asked to preserve evidence: screenshot everything, don't delete anything, stay available",
+            "Don't investigate on your own or discuss outside the team",
+            "If Pete creates a Slack thread for the incident, keep all discussion there"
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "info",
+          "text": "That's it. Report fast, let leadership handle the rest."
+        }
+      ]
+    }
+  ]
+}

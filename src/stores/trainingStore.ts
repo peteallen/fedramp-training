@@ -85,7 +85,7 @@ const loadAllModules = async (): Promise<TrainingModule[]> => {
   const modules: TrainingModule[] = []
   
   // Load all available modules
-  const moduleIds = [1, 2, 3, 4] // Module 1: Foundation Security Training, Module 2: Incident Recognition and Reporting, Module 3: Basic Response Procedures, Module 4: Detection Infrastructure
+  const moduleIds = [1, 2, 3, 4, 5] // Module 1: Foundation Security Training, Module 2: Incident Recognition and Reporting, Module 3: Basic Response Procedures, Module 4: Detection Infrastructure, Module 5: Leadership and Management Training
   
   for (const moduleId of moduleIds) {
     const metadata = await loadModuleMetadata(moduleId)

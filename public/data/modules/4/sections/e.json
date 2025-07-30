@@ -1,0 +1,193 @@
+{
+  "id": "4.5",
+  "title": "Technical Recovery Procedures",
+  "content": [
+    {
+      "type": "text",
+      "content": "As a Li-SaaS application, AWS handles most infrastructure recovery automatically. Your job is to manage configuration recovery, validate services are working, and coordinate communications."
+    },
+    {
+      "type": "callout",
+      "variant": "info",
+      "title": "Your Role vs AWS's Role",
+      "content": "AWS handles: instance failures, load balancer routing, RDS failovers, network issues. You handle: configuration rollbacks, service validation, vendor coordination, and stakeholder communication."
+    },
+    {
+      "type": "subsection",
+      "title": "Configuration Recovery",
+      "content": [
+        {
+          "type": "text",
+          "content": "When configuration issues cause problems, use Terraform to restore known-good state:"
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            "Identify the last working configuration in GitHub",
+            "Run `terraform plan` to preview changes",
+            "Review carefully for unexpected deletions",
+            "Apply with `terraform apply` if changes look correct",
+            "Monitor deployment and verify services"
+          ]
+        },
+        {
+          "type": "callout",
+          "variant": "tip",
+          "title": "State Recovery",
+          "content": "Terraform state is in S3 with versioning. If corrupted, restore previous version through S3 console."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Database Recovery",
+      "content": [
+        {
+          "type": "text",
+          "content": "RDS provides automated backups with 14-day retention. To restore:"
+        },
+        {
+          "type": "list",
+          "ordered": true,
+          "items": [
+            "RDS Console → Select database → Actions → Restore to point in time",
+            "Choose restoration time (latest or specific)",
+            "Name new instance clearly (e.g., cleartriage-prod-recovery-YYYYMMDD)",
+            "Once restored, update application to use new endpoint",
+            "Test thoroughly before switching production traffic"
+          ]
+        },
+        {
+          "type": "tip",
+          "content": "For point-in-time recovery, check CloudWatch logs to identify the exact time before corruption occurred."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Service Validation Checklist",
+      "content": [
+        {
+          "type": "text",
+          "content": "After any recovery operation:"
+        },
+        {
+          "type": "list",
+          "items": [
+            "✓ ECS tasks are running (check task count matches desired)",
+            "✓ Health check endpoint responds with 200 OK",
+            "✓ Can log in with test account",
+            "✓ Database queries return expected data",
+            "✓ CloudWatch logs are flowing",
+            "✓ All alarms are in OK state"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Coordination During Recovery",
+      "content": [
+        {
+          "type": "subsection",
+          "title": "AWS Support",
+          "content": [
+            {
+              "type": "text",
+              "content": "We have Business Support. Contact them for:"
+            },
+            {
+              "type": "list",
+              "items": [
+                "Multi-AZ or region-wide issues",
+                "AWS infrastructure problems (not app bugs)",
+                "Emergency limit increases",
+                "Complex recovery guidance"
+              ]
+            },
+            {
+              "type": "text",
+              "content": "Create case in Support Center, mark as FedRAMP workload, include resource IDs."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "ScaleSec Coordination",
+          "content": [
+            {
+              "type": "text",
+              "content": "Pete will engage ScaleSec during business hours for:"
+            },
+            {
+              "type": "list",
+              "items": [
+                "Security incident recovery guidance",
+                "FedRAMP compliance during incidents",
+                "Post-incident documentation requirements"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "VA Communication",
+          "content": [
+            {
+              "type": "list",
+              "items": [
+                "**Security incidents**: Notify within 1 hour",
+                "**Outages > 15 minutes**: Email technical POC",
+                "**Data incidents**: Immediate notification",
+                "Include: nature, impact, steps taken, ETA"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Common Recovery Scenarios",
+      "content": [
+        {
+          "type": "subsection",
+          "title": "Application Won't Start",
+          "content": [
+            {
+              "type": "text",
+              "content": "Check ECS task logs for startup errors. Common fixes: Roll back task definition, verify environment variables, check Secrets Manager access."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Database Connection Failed",
+          "content": [
+            {
+              "type": "text",
+              "content": "Verify security groups, check RDS status, confirm connection string in Secrets Manager, validate IAM database auth if used."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Region Failure (Rare)",
+          "content": [
+            {
+              "type": "text",
+              "content": "Manual DR to us-east-2 from backups. Requires AWS support coordination. Set realistic expectations: several hours minimum."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "variant": "important",
+      "title": "Focus Areas",
+      "content": "Remember: AWS handles infrastructure recovery. You handle configuration, validation, and communication. Don't try to fix AWS problems - engage support and focus on what you control."
+    }
+  ]
+}

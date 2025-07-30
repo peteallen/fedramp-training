@@ -1,0 +1,14 @@
+{
+  "id": 5,
+  "title": "Leadership and Management Training",
+  "description": "Decision-making authority, continuity planning, and stakeholder management for ClearTriage leadership during security incidents and normal operations.",
+  "duration": "45 minutes",
+  "requiredForMembers": ["Pete", "Dave"],
+  "sections": [
+    {
+      "id": "5.1",
+      "title": "Management Continuity Decisions",
+      "contentFile": "sections/5.1.json"
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "id": "1.D",
+  "title": "ClearTriage-Specific Security Scenarios",
+  "content": [
+    {
+      "type": "text",
+      "text": "As a small team where everyone knows each other, we might think we're immune to social engineering. But attackers know this too—and they'll use it against us. These scenarios are based on real tactics used against small FedRAMP contractors. Pay attention to the details; they could save us from a major breach."
+    },
+    {
+      "type": "subsection",
+      "title": "Scenario 1: The Urgent VA Representative",
+      "content": [
+        {
+          "type": "example",
+          "title": "Friday Afternoon Crisis",
+          "content": "It's 4:30 PM on Friday. You receive a call from someone claiming to be Sarah Mitchell from the VA's IT Security Office. She sounds stressed:\n\n\"Hi, this is Sarah Mitchell from VA IT Security. We've detected suspicious activity from ClearTriage's AWS account accessing veteran records. I need to verify your identity and then have you run some commands to help us investigate. This is extremely urgent—if we don't resolve this in the next hour, we'll have to suspend your access over the weekend.\"\n\nShe knows about your VA contract, mentions Pete by name, and even references last month's security update. She asks you to verify your identity by providing your AWS login credentials \"for the investigation log.\""
+        },
+        {
+          "type": "callout",
+          "style": "warning",
+          "title": "Red Flags",
+          "text": "• Urgent deadline creating pressure\n• Requesting credentials over the phone\n• Threatening immediate consequences\n• Calling late on Friday (common tactic)\n• Asking you to run unverified commands"
+        },
+        {
+          "type": "text",
+          "text": "**What Actually Happened**: An attacker found our VA contract announcement online and is using publicly available information to seem legitimate. Real VA security teams have established communication channels and would never ask for credentials over the phone."
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "title": "Correct Response",
+          "text": "\"I understand this sounds urgent. Let me call you back through the official VA contact number we have on file. Can you provide your ticket number for this investigation?\" Then immediately notify Pete and Savvy."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Scenario 2: The Helpful ScaleSec Consultant",
+      "content": [
+        {
+          "type": "example",
+          "title": "The Overeager Helper",
+          "content": "You receive an email from 'David Chen' at scalesec-consulting.com:\n\n\"Subject: Urgent: FedRAMP Audit Prep Issue\n\nHi team,\n\nI'm David from ScaleSec's emergency response team. We've been notified by our audit team that ClearTriage's security documentation in Google Drive needs immediate updates before Monday's review. \n\nI've prepared the corrected templates you need. Please click here to grant me temporary access to your Google Drive so I can upload them directly. This will save hours of work!\n\nI know this is last minute, but we want to ensure you pass the audit. Pete usually handles this, but he mentioned he's traveling this week.\n\nBest,\nDavid Chen\nScaleSec Emergency Support\"\n\nThe email includes ScaleSec's logo and looks professional."
+        },
+        {
+          "type": "callout",
+          "style": "warning",
+          "title": "Spot the Deception",
+          "text": "• Wrong domain: scalesec-consulting.com vs real domain\n• Creating urgency with fake deadline\n• Requesting Google Drive access (our FedRAMP boundary!)\n• Claims Pete is traveling (easy to verify with team)\n• \"Emergency response team\" - not a real ScaleSec team"
+        },
+        {
+          "type": "text",
+          "text": "**The Attacker's Goal**: Gain access to our Google Drive, which is part of our FedRAMP boundary and could contain sensitive compliance documentation, credentials, or customer data."
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "title": "Correct Response",
+          "text": "Never grant access through email links. Forward to Pete immediately and verify through our established ScaleSec contact. Real ScaleSec consultants use specific communication channels we've already set up."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Scenario 3: The AWS Security Alert Special",
+      "content": [
+        {
+          "type": "example",
+          "title": "The Sophisticated AWS Phish",
+          "content": "You receive an official-looking email:\n\n\"From: AWS Security <no-reply@aws-amazonservices.com>\nSubject: [ACTION REQUIRED] Unusual activity detected on ClearTriage production account\n\nDear ClearTriage Administrator,\n\nOur automated security systems have detected unusual API activity on your production account ending in -7842. Multiple failed authentication attempts from IP addresses in foreign countries suggest a potential breach attempt.\n\nClick here to review security logs and enable additional protections.\n\nThis link will expire in 2 hours for security purposes.\n\nFailure to respond may result in automatic account suspension to protect your resources.\n\nAmazon Web Services Security Team\"\n\nThe email includes AWS logos and formatting that looks authentic."
+        },
+        {
+          "type": "callout",
+          "style": "warning",
+          "title": "Phishing Indicators",
+          "text": "• Fake domain: aws-amazonservices.com\n• Generic greeting instead of account-specific info\n• Partial account number (they're guessing)\n• Link expiration creating false urgency\n• Threatening account suspension"
+        },
+        {
+          "type": "tip",
+          "text": "Real AWS security alerts appear in your AWS Console and use your registered email. They never threaten immediate suspension or use expiring links."
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "title": "Correct Response",
+          "text": "Don't click any links. Log into AWS Console directly (using bookmarked URL) and check CloudTrail and GuardDuty for actual alerts. Forward the email to stop-spoofing@amazon.com and alert Pete."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Scenario 4: The Fake FedRAMP Auditor",
+      "content": [
+        {
+          "type": "example",
+          "title": "The Document Collector",
+          "content": "Wednesday morning, you receive a call from 'Jennifer Walsh' who claims to be a FedRAMP auditor:\n\n\"Good morning! I'm Jennifer Walsh with the FedRAMP PMO audit team. We're conducting spot checks on recent authorizations, and ClearTriage has been randomly selected. This is routine—nothing to worry about!\n\nI need to verify your security documentation is up to date. Can you share your System Security Plan and latest vulnerability scan reports? I can provide a secure upload link, or you can just email them to my government address at jwalsh.fedramp@gmail.com.\n\nOh, and I'll need a quick screen share session to verify your AWS security configurations. This should only take 30 minutes. When are you free today?\""
+        },
+        {
+          "type": "callout",
+          "style": "warning",
+          "title": "Major Red Flags",
+          "text": "• FedRAMP PMO doesn't do surprise spot checks\n• Using Gmail instead of .gov address\n• Requesting sensitive security documents\n• Wanting screen share access to AWS\n• Too friendly and reassuring (social engineering tactic)"
+        },
+        {
+          "type": "text",
+          "text": "**Why This is Dangerous**: Your SSP and vulnerability reports contain detailed information about your security controls and weaknesses. Screen sharing your AWS console would expose your entire infrastructure."
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "title": "Correct Response",
+          "text": "\"Thank you for calling. I'll need to verify this request through our official FedRAMP channels. Can you provide your official .gov email and reference number for this audit?\" Then immediately contact Pete and your ScaleSec representative."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Scenario 5: The Inside Knowledge Email",
+      "content": [
+        {
+          "type": "example",
+          "title": "The Team Impersonator",
+          "content": "You receive an email that appears to be from Pete:\n\n\"From: Pete Harrison <pete.harrison@cleartriage-med.com>\nSubject: Quick favor - urgent AWS task\n\nHey,\n\nI'm in back-to-back FedRAMP meetings and can't access AWS right now. Can you do me a quick favor?\n\nI need you to create a new IAM user for our new security consultant. Name it 'security-audit-temp' and attach the AdministratorAccess policy. Then reply with the access key and secret.\n\nThis is for the compliance review happening this afternoon. Thanks for covering!\n\n-Pete\n\nPS - Don't worry about the usual approval process, we can document it later.\""
+        },
+        {
+          "type": "callout",
+          "style": "warning",
+          "title": "Impersonation Tactics",
+          "text": "• Slight domain variation (cleartriage-med.com)\n• Uses Pete's name and role knowledge\n• Creates urgency with meetings excuse\n• Requests powerful AWS credentials\n• Asks to bypass normal procedures\n• Too casual about security\n• Email sent at 7:30 AM (dead giveaway - Pete hasn't seen 7:30 AM since the last FedRAMP audit)"
+        },
+        {
+          "type": "text",
+          "text": "**The Small Team Advantage**: In a 6-person team, you can literally turn around and ask Pete. Or text him. Or check Slack. Use this advantage!"
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "title": "Correct Response",
+          "text": "Never create AWS credentials based on email requests alone. Message Pete on Slack: \"Hey, did you just email about creating an IAM user?\" If you can't reach Pete, wait. No legitimate request is so urgent it can't wait for verification."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Key Lessons for Our Small Team",
+      "content": [
+        {
+          "type": "list",
+          "style": "numbered",
+          "items": [
+            "**Use Our Size**: We all know each other. Verify suspicious requests with a quick Slack message or by walking over to someone's desk.",
+            "**Attackers Do Homework**: They know about our VA contract, ScaleSec partnership, and FedRAMP status. Don't be impressed by insider knowledge—it's often publicly available.",
+            "**Pressure Tactics Work**: Urgency, fear of consequences, and authority figures are psychological triggers. Recognize when you're being pressured.",
+            "**Trust Your Gut**: If something feels off, it probably is. It's better to delay and verify than to be the cause of a breach.",
+            "**Document Everything**: When you receive suspicious communications, save them. They help us understand attack patterns and improve our defenses."
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "tip",
+          "title": "Quick Verification Methods",
+          "text": "• VA Contacts: Use only phone numbers from our official contract documents\n• ScaleSec: Verify through our designated account manager\n• AWS: Log in directly through bookmarked console URL\n• Team Members: Use Slack or face-to-face communication\n• FedRAMP: All official communications come from .gov addresses"
+        },
+        {
+          "type": "text",
+          "text": "Remember: Real security professionals understand the need for verification. Anyone who objects to you double-checking their identity is likely not who they claim to be. In our small team, paranoia isn't rude—it's professional."
+        }
+      ]
+    }
+  ]
+}

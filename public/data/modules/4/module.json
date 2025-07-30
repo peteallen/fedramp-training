@@ -1,0 +1,23 @@
+{
+  "id": 4,
+  "title": "Technical Security Training",
+  "description": "Comprehensive technical security training for ClearTriage's technical team covering cloud security, secure development, monitoring, incident response, recovery, and information spillage procedures.",
+  "sections": ["a", "b", "c", "d", "e", "f"],
+  "requiredForMembers": ["Pete", "Savvy", "Braden", "ScaleSec"],
+  "specialRequirements": {
+    "b": ["Pete", "Savvy", "Braden"],
+    "c": ["Pete", "Savvy", "Braden", "Dave", "ScaleSec"],
+    "d": ["Pete", "Savvy", "ScaleSec"],
+    "e": ["Pete", "Savvy"],
+    "f": ["Pete", "Savvy", "Braden"]
+  },
+  "estimatedDuration": "3 hours",
+  "lastUpdated": "2025-01-30",
+  "complianceControls": [
+    "AT-3",
+    "IR-2",
+    "IR-9",
+    "SR-11(1)"
+  ],
+  "notes": "Role-based technical training with specific sections restricted to relevant personnel. Section b includes critical anti-counterfeit training for SR-11(1) compliance."
+}

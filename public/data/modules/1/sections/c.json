@@ -1,0 +1,63 @@
+{
+  "id": "1.C",
+  "title": "Remote Work Security",
+  "content": [
+    {
+      "type": "text",
+      "text": "As a fully remote team, maintaining security from our home offices is critical to protecting ClearTriage's data and maintaining our FedRAMP compliance. The good news? Most remote security boils down to a few simple habits that quickly become second nature."
+    },
+    {
+      "type": "subsection",
+      "title": "Device Security",
+      "content": [
+        {
+          "type": "text",
+          "text": "Your laptop is the gateway to ClearTriage's systems. Keeping it secure is your first line of defense against potential threats."
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Keep your operating system and software updated** - Those update notifications aren't just annoying pop-ups. They often contain critical security patches. Enable automatic updates whenever possible.",
+            "**Use full disk encryption** - This is required for FedRAMP compliance. On Mac, FileVault should be enabled. On Windows, use BitLocker. Pete can help you verify this is set up correctly.",
+            "**Lock your screen** - Every time you step away, even at home. It takes one second and prevents unauthorized access if someone enters your space."
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "Set your computer to automatically lock after 10 minutes of inactivity. It's a simple setting that provides continuous protection."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Environmental Awareness",
+      "content": [
+        {
+          "type": "text",
+          "text": "Working from home doesn't mean working in isolation from security risks. Your environment matters more than you might think."
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Be aware of who can hear your conversations** - Video calls from coffee shops might seem harmless, but discussing patient data or system details in public is a security violation.",
+            "**Never discuss ClearTriage business in public spaces** - This includes phone calls in shared spaces, working on sensitive documents where others can see your screen, or leaving printed materials where they might be seen.",
+            "**Consider your background on video calls** - Whiteboards, sticky notes, or screens visible in your background could inadvertently share sensitive information."
+          ]
+        },
+        {
+          "type": "example",
+          "title": "Real Scenario",
+          "content": "You're at a coffee shop and need to join a quick team call. Instead of discussing the details of our AWS infrastructure where others might overhear, excuse yourself to your car or reschedule for when you're in a private space. A minor inconvenience prevents a major security incident."
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "title": "Remember",
+          "text": "Working remotely gives us flexibility, but with that comes the responsibility to maintain security wherever we choose to work. When in doubt, err on the side of caution."
+        }
+      ]
+    }
+  ]
+}
