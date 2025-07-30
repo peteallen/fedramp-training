@@ -1,0 +1,13 @@
+{
+  "id": 6,
+  "title": "FedRAMP Compliance and Documentation",
+  "description": "Understanding FedRAMP compliance requirements, incident reporting obligations, continuous monitoring, and documentation management for ClearTriage's cloud environment.",
+  "requiredForMembers": ["Pete", "Savvy", "Dave", "Shelly", "ScaleSec"],
+  "objectives": [
+    "Understand daily FedRAMP compliance activities and common mistakes to avoid",
+    "Know FedRAMP incident communication requirements and timelines",
+    "Master continuous monitoring and POA&M management processes",
+    "Support audits effectively and maintain proper documentation"
+  ],
+  "sections": ["a", "b", "c"]
+}

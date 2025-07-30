@@ -1,0 +1,118 @@
+{
+  "id": "6.2",
+  "title": "FedRAMP Incident Requirements",
+  "content": [
+    {
+      "type": "text",
+      "content": "When security incidents occur, FedRAMP compliance doesn't pause. You must know the critical reporting requirements and maintain compliance while managing the incident."
+    },
+    {
+      "type": "subsection",
+      "title": "Critical One-Hour Notification",
+      "content": [
+        {
+          "type": "callout",
+          "style": "warning",
+          "content": "You have ONE HOUR from incident identification to notify: Agency AO (VA), FedRAMP PMO, and US-CERT. The clock starts when we identify the incident, not when it occurred."
+        },
+        {
+          "type": "text",
+          "content": "Pete (as ISSO) handles these notifications using phone first, then email follow-up. Everyone should understand this urgency - it's not negotiable."
+        },
+        {
+          "type": "text",
+          "content": "For incident categories and detailed procedures, refer to our Incident Response Plan."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Compliance During Incidents",
+      "content": [
+        {
+          "type": "subsection",
+          "title": "Documentation Requirements",
+          "content": [
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "Document all decisions and who made them",
+                "Record exact times for major actions",
+                "Capture manual interventions",
+                "Save all communications"
+              ]
+            },
+            {
+              "type": "text",
+              "content": "AWS Systems Manager Incident Manager tracks technical actions automatically, but human decisions need manual documentation."
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "POA&M Updates",
+          "content": [
+            {
+              "type": "text",
+              "content": "If an incident reveals a vulnerability or control weakness, add it to the POA&M even after fixing it. This shows systematic issue resolution."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "VA-Specific Requirements",
+      "content": [
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Prioritize keeping services available for veterans",
+            "Status updates every 2 hours during active incidents",
+            "Dave handles VA executive communications",
+            "No public statements without VA coordination"
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "content": "If choosing between perfect security logging and veteran access, keep the service running and document the decision."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Key Resources",
+      "content": [
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "AWS Systems Manager Incident Manager - Primary tracking",
+            "Slack #security-incidents - Team communication",
+            "Incident Response Plan - Detailed procedures",
+            "ScaleSec - 24/7 augmented response support"
+          ]
+        }
+      ]
+    }
+  ],
+  "keyTakeaways": [
+    "ONE HOUR notification requirement for security incidents",
+    "Pete handles FedRAMP notifications; Dave handles VA communications",
+    "Document every action and decision during incidents",
+    "Refer to Incident Response Plan for detailed procedures"
+  ],
+  "quiz": {
+    "question": "You've identified unauthorized access to ClearTriage's AWS environment. How long do you have to notify required parties?",
+    "options": [
+      "1 hour from identification",
+      "24 hours from identification",
+      "2 hours if ongoing",
+      "Next monthly report"
+    ],
+    "correctAnswer": 0
+  }
+}

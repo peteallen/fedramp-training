@@ -1,0 +1,145 @@
+{
+  "id": "6.3",
+  "title": "Documentation Management (Shelly's Domain)",
+  "content": [
+    {
+      "type": "text",
+      "content": "As FedRAMP Coordinator, Shelly manages our compliance documentation in Google Drive. This section covers the essentials of keeping our documents organized and audit-ready."
+    },
+    {
+      "type": "subsection",
+      "title": "Google Drive Organization",
+      "content": [
+        {
+          "type": "text",
+          "content": "Keep it simple:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Use the shared FedRAMP folder - no compliance docs in personal drives",
+            "Follow naming convention: `YYYY-MM-DD_DocumentType`",
+            "Set up notifications for changes to critical documents",
+            "Only give access to people who need it"
+          ]
+        },
+        {
+          "type": "tip",
+          "content": "Google Drive tracks version history automatically. Don't overcomplicate it."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Working with ScaleSec",
+      "content": [
+        {
+          "type": "text",
+          "content": "You're the bridge between ScaleSec and the team:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Know where evidence lives in Drive",
+            "Route technical questions to Pete",
+            "Coordinate policy approvals with Pete or Dave",
+            "Provide requested documents quickly"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Key Monthly Tasks",
+      "content": [
+        {
+          "type": "list",
+          "style": "numbered",
+          "items": [
+            "**POA&M Updates**: Get status from Pete by the 5th",
+            "**Training Records**: Update completion dates",
+            "**Evidence Filing**: Ensure scan results are saved",
+            "**Calendar Check**: Review upcoming deadlines"
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "warning",
+          "content": "Never let POA&M items go overdue. Alert Pete 2 weeks before deadlines."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Audit Support",
+      "content": [
+        {
+          "type": "text",
+          "content": "Stay audit-ready year-round:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Keep evidence organized by control family",
+            "Ensure all documents have clear timestamps",
+            "Create auditor access folders when needed",
+            "Flag missing evidence to Pete immediately"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Document Retention",
+      "content": [
+        {
+          "type": "text",
+          "content": "Follow our retention policy - don't delete compliance documents. Archive old versions in clearly dated folders."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Simple Tracking",
+      "content": [
+        {
+          "type": "text",
+          "content": "Use one spreadsheet or the LMS to track:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Training completion dates",
+            "Policy review dates",
+            "POA&M status",
+            "Evidence locations"
+          ]
+        },
+        {
+          "type": "tip",
+          "content": "For a 6-person team, complex tracking systems waste time. Keep it simple and consistent."
+        }
+      ]
+    }
+  ],
+  "keyTakeaways": [
+    "Google Drive is our FedRAMP documentation repository - keep it organized and secure",
+    "Monthly tasks: POA&M updates, training records, evidence filing",
+    "Stay audit-ready year-round - don't scramble at audit time",
+    "Keep tracking simple - one system for our small team"
+  ],
+  "quiz": {
+    "question": "As FedRAMP Coordinator, when should you alert Pete about upcoming POA&M deadlines?",
+    "options": [
+      "2 weeks before the deadline",
+      "1 week before the deadline",
+      "On the deadline date",
+      "Only if asked"
+    ],
+    "correctAnswer": 0
+  }
+}

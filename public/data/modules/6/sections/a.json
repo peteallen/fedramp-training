@@ -1,0 +1,176 @@
+{
+  "id": "6.1",
+  "title": "FedRAMP Compliance Basics",
+  "content": [
+    {
+      "type": "text",
+      "content": "FedRAMP compliance is our license to work with federal agencies. As a 6-person team, everyone plays a part in maintaining our LI-SaaS authorization."
+    },
+    {
+      "type": "subsection",
+      "title": "What Compliance Means for Your Role",
+      "content": [
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "**Pete and Savvy**: Manage technical compliance - scans, POA&Ms, AWS configuration",
+            "**Dave and Shelly**: Understand compliance impact on business decisions and customer conversations",
+            "**ScaleSec**: Help maintain security posture and prepare audit evidence",
+            "**Everyone**: Follow security procedures - one mistake can jeopardize our authorization"
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "important",
+          "content": "Before making any system change, ask: \"Does this affect our FedRAMP boundary?\""
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Common Compliance Mistakes",
+      "content": [
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Making changes without updating documentation",
+            "Missing vulnerability remediation deadlines",
+            "Forgetting monthly scanning and POA&M updates",
+            "Poor evidence organization during audits",
+            "Adding systems or data types without updating authorization boundary"
+          ]
+        },
+        {
+          "type": "tip",
+          "content": "When in doubt, ask Pete or Savvy before making changes."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Key Compliance Timelines",
+      "content": [
+        {
+          "type": "subsection",
+          "title": "Monthly Requirements",
+          "content": [
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "Vulnerability scanning with SCAP-validated tools",
+                "POA&M updates and reviews",
+                "Continuous monitoring report",
+                "Evidence collection"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Vulnerability Remediation Deadlines",
+          "content": [
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "**Critical (CVSS 9.0+) internet-facing**: 15 days",
+                "**High-Risk**: 30 days",
+                "**Moderate-Risk**: 90 days",
+                "**Low-Risk**: 180 days",
+                "**CISA KEV**: Follow catalog dates"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "subsection",
+          "title": "Change-Triggered Activities",
+          "content": [
+            {
+              "type": "list",
+              "style": "bullet",
+              "items": [
+                "New AWS service: Update SSP and add to scanning",
+                "Architecture changes: Update diagrams and monthly report",
+                "New team members: Background checks and training",
+                "Security incidents: Document and update POA&M if needed"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Documentation Requirements",
+      "content": [
+        {
+          "type": "text",
+          "content": "Document all system changes, security events, access changes, compliance activities, and customer-impacting events."
+        },
+        {
+          "type": "text",
+          "content": "For retention requirements, refer to our Documentation Retention Policy. AWS handles most retention automatically."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Supporting Audits",
+      "content": [
+        {
+          "type": "text",
+          "content": "During annual assessments:"
+        },
+        {
+          "type": "list",
+          "style": "bullet",
+          "items": [
+            "Be honest and direct - say \"I don't know\" rather than guess",
+            "Stick to facts about what we do, not future plans",
+            "Reference documentation when possible",
+            "Stay in scope - only discuss AWS and Google Drive"
+          ]
+        },
+        {
+          "type": "callout",
+          "style": "tip",
+          "content": "Good evidence organization prevents findings. Label everything clearly with timestamps."
+        }
+      ]
+    },
+    {
+      "type": "subsection",
+      "title": "Continuous Monitoring",
+      "content": [
+        {
+          "type": "text",
+          "content": "Monthly vulnerability management cycle: Discover → Prioritize → Remediate → Validate → Document"
+        },
+        {
+          "type": "text",
+          "content": "AWS native tools handle scanning. Our job is responding quickly and documenting thoroughly."
+        }
+      ]
+    }
+  ],
+  "keyTakeaways": [
+    "Everyone has a role in maintaining our LI-SaaS FedRAMP authorization",
+    "Vulnerability remediation deadlines are strict: 15 days for critical internet-facing, 30/90/180 for high/moderate/low",
+    "Monthly scanning and POA&M updates are mandatory",
+    "Document everything - changes, incidents, and remediation actions"
+  ],
+  "quiz": {
+    "question": "A critical vulnerability (CVSS 9.5) is found on our internet-facing load balancer. How many days do we have to remediate it?",
+    "options": [
+      "15 days",
+      "30 days",
+      "90 days",
+      "Until the next monthly scan"
+    ],
+    "correctAnswer": 0
+  }
+}
