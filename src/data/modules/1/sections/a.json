@@ -16,7 +16,7 @@
         },
         {
           "type": "text",
-          "text": "For ClearTriage, FedRAMP authorization means we've proven to the VA that we can protect veterans' healthcare information. Without it, we simply cannot provide our nurse triage tool to the VA."
+          "text": "For ClearTriage, FedRAMP authorization means we've proven to the VA that we can protect veterans' healthcare information. Without it, we cannot serve our VA customers, who represent a significant portion of our business."
         }
       ]
     },
@@ -35,14 +35,14 @@
             "**Immediate incident reporting**: We have just 1 hour to report certain incidents to federal authorities",
             "**Authorization suspension**: A serious incident could suspend our FedRAMP authorization",
             "**Contract termination**: The VA has broad authority to terminate contracts after security incidents",
-            "**Company closure**: Without the VA contract, ClearTriage cannot operate"
+            "**Major business impact**: Losing our VA contract would significantly affect ClearTriage's operations and growth"
           ]
         },
         {
           "type": "callout",
           "style": "warning",
-          "title": "This Affects All 6 of Us",
-          "text": "A security incident doesn't just affect \"the company\" - it directly threatens all six of our jobs. There's no ClearTriage without the VA contract, and there's no VA contract without maintaining our security posture."
+          "title": "This Affects Our Entire Team",
+          "text": "A security incident could jeopardize our VA contract, which would be a major setback for ClearTriage. Maintaining our security posture protects our ability to serve federal customers and ensures the stability of our team."
         }
       ]
     },
